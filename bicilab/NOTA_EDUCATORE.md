@@ -123,6 +123,9 @@ Le leve di pressione (scarsità, paura di perdere) sono volutamente leggere: nie
 - Pulsante **«Leggibilità»** in alto: testo grande o molto grande, sfondo giallo o azzurro chiaro, lettere più distanziate, tutto in stampato maiuscolo. Le scelte valgono solo su quel dispositivo.
 - Pulsanti **«Ascolta»**: leggono ad alta voce istruzioni, argomenti e parole straniere, con la pronuncia della lingua giusta. Usano solo le voci installate sul dispositivo, senza connessione. Se il dispositivo non ha una voce offline per una lingua, l'app lo dice.
 - Ogni informazione ha testo e icona, mai solo il colore. Tutto funziona anche da tastiera.
+- **Sfondo e movimento.** Ai bordi della pagina ci sono ingranaggi, ruote e una catena disegnati come un disegno tecnico. Girano piano, e quando si scorre la pagina le ruote girano un po'. Il centro della pagina resta libero, per non disturbare la lettura. Il colore dei disegni è quello dell'officina. Ogni prova superata aggiunge un pezzo: l'officina «cresce» con il gruppo.
+- I pulsanti rispondono al tocco: si abbassano come un tasto vero e fanno un'onda nel punto toccato. Una scelta fatta «salta» con un piccolo rimbalzo. Una risposta sbagliata trema. Un conto giusto fa partire i coriandoli. Una prova superata mostra una medaglia al centro dello schermo, e un lettore di schermo la legge ad alta voce.
+- In **«Leggibilità»** si possono spegnere i disegni sullo sfondo e il movimento. Se nel computer o nel telefono è attiva l'opzione di sistema «riduci movimento», BiciLab parte già senza movimento.
 - Una sola azione principale per schermata, frasi brevi, messaggi di errore che dicono che cosa fare.
 
 ## 10. I dati

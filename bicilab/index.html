@@ -339,6 +339,178 @@ legend{font-weight:700;margin-bottom:.4em;padding:0}
   .btn-enorme{width:100%}
 }
 
+/* =========================================================
+   ASPETTO E MOVIMENTO
+   ========================================================= */
+#sfondo{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  background-image:radial-gradient(rgba(35,33,30,.075) 1.3px,rgba(0,0,0,0) 1.6px);background-size:22px 22px}
+#sfondo.vuoto{background:none}
+#sfondo::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 56% 64% at 50% 46%,var(--carta) 42%,rgba(255,255,255,0) 100%)}
+#app,#modale{position:relative;z-index:1}
+.deco{position:absolute;color:var(--ink);opacity:.12;
+  transform:translate(calc(var(--mx,0) * var(--z) * -1px),calc(var(--my,0) * var(--z) * -1px));transition:transform .7s cubic-bezier(.2,.8,.3,1)}
+.deco.acc{color:var(--c-off,#C2410C);opacity:.2}
+.deco svg{display:block;width:100%;height:100%;overflow:visible}
+.deco svg *{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.deco .scorri{transform-box:fill-box;transform-origin:center;transform:rotate(calc(var(--sy,0) * var(--k,.06) * 1deg));transition:transform .5s ease-out}
+.deco .gira,.d-gira{transform-box:fill-box;transform-origin:center;animation:gira var(--t,90s) linear infinite}
+.deco .gira.inv,.d-gira.inv{animation-direction:reverse}
+.deco .maglie{stroke-width:4;stroke-dasharray:7 5;animation:maglie 1.8s linear infinite}
+.deco .galleggia{animation:galleggia 7s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}
+.deco .sottile *{stroke-width:1.1}
+.deco.entra{animation:decoEntra 1.4s cubic-bezier(.2,.8,.3,1) backwards}
+.deco.entra:nth-child(2){animation-delay:.12s}.deco.entra:nth-child(3){animation-delay:.24s}.deco.entra:nth-child(4){animation-delay:.36s}
+@keyframes gira{to{transform:rotate(360deg)}}
+@keyframes maglie{to{stroke-dashoffset:-12}}
+@keyframes galleggia{from{transform:translateY(-6px) rotate(-6deg)}to{transform:translateY(8px) rotate(5deg)}}
+@keyframes decoEntra{from{opacity:0;scale:.7}}
+@media (max-width:760px){.deco{scale:.6}.deco.acc{opacity:.16}}
+
+/* ---------- copertina (banco di lavoro e pagina iniziale) ---------- */
+.eroe{position:relative;display:grid;grid-template-columns:1.15fr 1fr;gap:6px 26px;align-items:center;color:#FFF6E8;
+  background:#2A2622 radial-gradient(rgba(255,255,255,.07) 1.4px,rgba(0,0,0,0) 1.6px) 0 0/15px 15px;
+  border-radius:24px;padding:26px 30px;margin:8px 0 22px;overflow:hidden;
+  box-shadow:0 6px 0 #171411,0 22px 40px -22px rgba(0,0,0,.55);
+  --telaio:#F4A261;--telaio:color-mix(in srgb,var(--c) 50%,#FFE3C8)}
+.eroe::before{content:"";position:absolute;right:-12%;bottom:-45%;width:70%;height:130%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(244,162,97,.35),rgba(0,0,0,0));background:radial-gradient(closest-side,color-mix(in srgb,var(--c) 55%,transparent),rgba(0,0,0,0))}
+.eroe-testo{position:relative}
+.eroe h1{color:#fff;font-size:2.05rem;margin:.25em 0 .2em}
+.eroe p{color:#EFE4D3;margin:.2em 0 .9em}
+.eroe-etich{display:inline-flex;gap:.45em;align-items:center;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.28);padding:.18em .8em;border-radius:999px;font-size:.8rem;font-weight:700;color:#FFE7C9}
+.eroe-stat{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.eroe-stat span{display:inline-flex;align-items:center;gap:.35em;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:.3em .8em;font-size:.85rem}
+.eroe-stat b{font-size:1.05rem;color:#fff}
+.eroe-disegno{position:relative}
+.eroe .btn-voce{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.55)}
+.eroe :focus-visible{outline-color:#FFD54A}
+.eroe-casa h1{font-size:2.6rem}
+@media (max-width:760px){.eroe{grid-template-columns:1fr;padding:18px 18px 20px;border-radius:20px}.eroe-disegno{order:-1;max-width:330px;width:100%;margin:-6px auto 0}.eroe h1,.eroe-casa h1{font-size:1.6rem}}
+.disegno{display:block;width:100%;height:auto}
+.disegno *{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.d-linea{stroke:#A89C8A;stroke-width:2}
+.d-terra{stroke:#6B6157;stroke-width:3}
+.d-ombra{fill:rgba(0,0,0,.3)!important;stroke:none}
+.d-cavalletto{stroke:#8E8475;stroke-width:5}
+.d-gomma{stroke:#F3E9DA;stroke-width:6}
+.d-cerchio{stroke:#A89C8A;stroke-width:2}
+.d-raggi line{stroke:#D8CDBB;stroke-width:1}
+.d-mozzo{stroke:#F3E9DA;stroke-width:3}
+.d-telaio{stroke:var(--telaio);stroke-width:6}
+.d-chiaro{stroke:#F3E9DA;stroke-width:5}
+.d-corona{stroke:#F6C445;stroke-width:3;stroke-dasharray:3 2}
+.d-pedivella{stroke:#F3E9DA;stroke-width:4}
+.d-pedale{stroke:#F6C445;stroke-width:5}
+.d-catena{stroke:#BDB19E;stroke-width:2.5;stroke-dasharray:3 2;animation:catenaH 1.2s linear infinite}
+.d-attrezzo{stroke:#D8CDBB;stroke-width:1.6}
+.d-gancio{stroke:#8E8475;stroke-width:2}
+.d-oscilla{transform-box:view-box;animation:oscilla 3.6s ease-in-out infinite alternate}
+.d-oscilla.lento{animation-duration:5s;animation-delay:-1.5s}
+@keyframes catenaH{to{stroke-dashoffset:5}}
+@keyframes oscilla{from{transform:rotate(-6deg)}to{transform:rotate(6deg)}}
+
+/* ---------- pulsanti reattivi ---------- */
+.btn{position:relative;overflow:hidden;--ombra-btn:#9C8F7C;box-shadow:0 4px 0 var(--ombra-btn);
+  transition:transform .13s ease,box-shadow .13s ease,background-color .15s,border-color .15s;-webkit-tap-highlight-color:transparent}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--ombra-btn)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ombra-btn);transition-duration:.05s}
+.btn-primario{--ombra-btn:#7C2D12}
+.btn-pericolo{--ombra-btn:#E8B4AE}
+.btn[disabled],.btn[disabled]:hover{transform:none;box-shadow:none}
+.btn-primario::after{content:"";position:absolute;top:0;left:-70%;width:45%;height:100%;pointer-events:none;
+  background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.38),rgba(255,255,255,0));transform:skewX(-18deg);transition:left .55s ease}
+.btn-primario:hover::after{left:125%}
+.brilla::after{animation:luccica 2.4s ease-in-out 1.2s 2}
+@keyframes luccica{0%{left:-70%}45%,100%{left:125%}}
+.btn .ico{transition:transform .18s ease}
+.btn:hover .ico{transform:scale(1.15) rotate(-6deg)}
+.btn-testa{transition:transform .12s,background-color .15s}
+.btn-testa:active,.livello:active,.marchio:active{transform:scale(.94)}
+.marchio:hover .marchio-ico{animation:sobbalza .5s ease}
+@keyframes sobbalza{30%{transform:translateY(-3px) rotate(-8deg)}60%{transform:translateY(1px) rotate(4deg)}}
+.chip,.tg,.scelta,.opz,.tondo-btn,.tab,.btn-voce,.radio-card span.rc,.lav-toggle .spunta{transition:transform .12s ease,box-shadow .15s,background-color .15s,border-color .15s}
+.chip:hover,.tg:hover,.scelta:hover,.opz:not([disabled]):hover{transform:translateY(-2px);border-color:var(--ink);box-shadow:0 3px 0 var(--linea)}
+.chip:active,.tg:active,.scelta:active,.opz:not([disabled]):active,.tondo-btn:active,.btn-voce:active,.radio-card:active span.rc{transform:scale(.94);box-shadow:none}
+.tondo-btn:hover{background:var(--pannello-2)}
+.tondo-btn:active .ico{transform:rotate(90deg)}
+.tondo-btn .ico{transition:transform .2s}
+.lav-toggle:active .spunta{transform:scale(.82)}
+.lavoro{transition:transform .15s ease,box-shadow .15s ease}
+.lavoro:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--linea)}
+.tessera,.card-off,.card-mat{transition:transform .15s ease,box-shadow .15s ease,border-color .15s}
+.tessera:hover,.card-off:hover,.card-mat:hover{transform:translateY(-4px);box-shadow:0 8px 0 var(--linea)}
+.tessera:active,.card-off:active,.card-mat:active{transform:translateY(2px);box-shadow:0 1px 0 var(--linea)}
+.tessera .tile{display:grid;place-items:center;width:3.2rem;height:3.2rem;border-radius:14px;background:var(--arancio-chiaro);transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+.tessera .tile .ico{width:1.8em;height:1.8em}
+.tessera:hover .tile{transform:rotate(-8deg) scale(1.08)}
+.card-off{border-top:8px solid var(--c)}
+.card-off .tondo{background:var(--c)}
+.card-off:hover .tondo .ico{animation:gira 1s cubic-bezier(.3,.8,.4,1)}
+.cartellino{transform-origin:22px 50%;transition:box-shadow .15s,border-color .15s}
+.cartellino:hover{animation:dondola .8s ease-in-out}
+.cartellino:active{transform:scale(.99)}
+.cartellino > .cart-num::before{content:"";position:absolute;left:-14px;top:calc(50% - 30px);width:37px;height:30px;border:2px solid var(--linea-forte);border-left:0;border-bottom:0;border-radius:0 30px 0 0;pointer-events:none}
+@keyframes dondola{0%{transform:rotate(0)}30%{transform:rotate(-1.6deg)}62%{transform:rotate(.9deg)}100%{transform:rotate(0)}}
+.barra > span{background:repeating-linear-gradient(45deg,rgba(255,255,255,.2) 0 8px,rgba(255,255,255,0) 8px 16px),var(--ok)}
+.barra > span.riempi{animation:riempi 1s cubic-bezier(.3,1.2,.5,1) .15s backwards}
+@keyframes riempi{from{width:var(--da)}}
+.livello{background:linear-gradient(100deg,rgba(255,255,255,.1) 40%,rgba(255,255,255,.3) 50%,rgba(255,255,255,.1) 60%) 0 0/250% 100%;animation:riflesso 6s linear infinite}
+@keyframes riflesso{from{background-position:120% 0}to{background-position:-120% 0}}
+
+/* ---------- risposte dei controlli ---------- */
+.pop{animation:pop .34s cubic-bezier(.3,1.7,.5,1)}
+@keyframes pop{0%{transform:scale(.88)}55%{transform:scale(1.06)}100%{transform:scale(1)}}
+.pop .spunta .ico,.pop.tg .ico,.pop .opz .ico,.opz.pop .ico,.pop > .ico{stroke-dasharray:60;stroke-dashoffset:60;animation:traccia .5s .06s ease-out forwards}
+@keyframes traccia{to{stroke-dashoffset:0}}
+.scuoti{animation:scuoti .42s ease}
+@keyframes scuoti{0%,100%{transform:translateX(0)}18%{transform:translateX(-8px)}36%{transform:translateX(7px)}54%{transform:translateX(-5px)}72%{transform:translateX(3px)}}
+.campo-conto.ok .fb .ico,.esito-ok > .ico{stroke-dasharray:60;stroke-dashoffset:60;animation:traccia .6s .1s ease-out forwards}
+
+/* ---------- passi e passaggi di pagina ---------- */
+.t-su{animation:entraSu .34s ease-out}
+.t-dx{animation:entraDx .32s ease-out}
+.t-sx{animation:entraSx .32s ease-out}
+.t-su .tessere > *,.t-su .lista-cart > *,.t-su .griglia-mat > *,.t-su .griglia-off > *,.t-su .edu-off > *,.t-su .percorso > li{animation:entraSu .45s ease-out backwards}
+.t-su .tessere > :nth-child(2),.t-su .lista-cart > :nth-child(2),.t-su .griglia-mat > :nth-child(2),.t-su .griglia-off > :nth-child(2),.t-su .percorso > li:nth-child(2){animation-delay:.05s}
+.t-su .tessere > :nth-child(3),.t-su .lista-cart > :nth-child(3),.t-su .griglia-mat > :nth-child(3),.t-su .griglia-off > :nth-child(3),.t-su .percorso > li:nth-child(3){animation-delay:.1s}
+.t-su .tessere > :nth-child(4),.t-su .lista-cart > :nth-child(4),.t-su .griglia-mat > :nth-child(4),.t-su .percorso > li:nth-child(4){animation-delay:.15s}
+.t-su .tessere > :nth-child(5),.t-su .griglia-mat > :nth-child(n+5),.t-su .percorso > li:nth-child(n+5){animation-delay:.2s}
+.t-pannello{animation:entraSu .28s ease-out}
+@keyframes entraSu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes entraDx{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:none}}
+@keyframes entraSx{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:none}}
+.nav-anima button[aria-current="page"] .ico{animation:sobbalza .5s ease}
+.stepper li{position:relative}
+.stepper li + li::before{content:"";position:absolute;top:calc(4px + 1.1rem - 2px);left:-50%;width:100%;height:4px;border-radius:2px;background:var(--linea);z-index:0}
+.stepper li.fatto::before{background:var(--petrolio)}
+.stepper li.attivo::before{background:linear-gradient(var(--petrolio),var(--petrolio)) left/100% 100% no-repeat var(--linea)}
+.t-dx .stepper li.attivo::before{animation:linea .6s ease-out}
+@keyframes linea{from{background-size:0 100%}}
+.stepper .num{position:relative;z-index:1}
+.stepper .attivo .num{animation:pulsa 2.2s ease-out 3}
+@keyframes pulsa{0%{box-shadow:0 0 0 0 rgba(194,65,12,.5)}70%,100%{box-shadow:0 0 0 12px rgba(194,65,12,0)}}
+
+/* ---------- onde, coriandoli, festa ---------- */
+#effetti{position:fixed;inset:0;pointer-events:none;z-index:80;overflow:hidden}
+.onda{position:absolute;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;border:3px solid var(--c,#C2410C);animation:onda .55s ease-out forwards}
+@keyframes onda{from{transform:scale(.4);opacity:.75}to{transform:scale(5.5);opacity:0}}
+.coriandolo{position:absolute;width:9px;height:9px;margin:-4px 0 0 -4px;border-radius:2px;background:var(--c);animation:scoppio .9s cubic-bezier(.15,.7,.35,1) forwards}
+.coriandolo.tondo{border-radius:50%}
+@keyframes scoppio{0%{transform:translate(0,0) rotate(0);opacity:1}75%{opacity:1}100%{transform:translate(var(--dx),var(--dy)) rotate(var(--r));opacity:0}}
+.festa{position:absolute;left:50%;top:38%;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:270px;max-width:90vw;text-align:center;
+  background:var(--scuro);color:#fff;border:3px solid #F6C445;border-radius:22px;padding:18px 28px 20px;box-shadow:0 20px 50px rgba(0,0,0,.35);
+  animation:festa 2.6s ease forwards}
+.festa .ico{width:3.2rem;height:3.2rem;color:#F6C445;animation:medaglia .9s cubic-bezier(.3,1.6,.5,1)}
+.festa b{font-size:1.2rem}
+.festa span{color:#EFE4D3}
+@keyframes festa{0%{opacity:0;transform:translate(-50%,-40%) scale(.8)}12%{opacity:1;transform:translate(-50%,-50%) scale(1)}82%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-58%) scale(.97)}}
+@keyframes medaglia{0%{transform:scale(.2) rotate(-40deg)}100%{transform:scale(1) rotate(0)}}
+.toast{transition:opacity .25s,transform .35s cubic-bezier(.2,1.5,.4,1)}
+
+/* ---------- senza movimento ---------- */
+html.fermo *,html.fermo *::before,html.fermo *::after{animation:none!important;transition:none!important}
+html.fermo .btn:hover,html.fermo .chip:hover,html.fermo .tessera:hover,html.fermo .card-off:hover,html.fermo .card-mat:hover,html.fermo .lavoro:hover,html.fermo .scelta:hover,html.fermo .opz:hover,html.fermo .tg:hover{transform:none}
+
 /* ---------- stampa ---------- */
 #stampa{display:none}
 .pagina{font-family:var(--font);color:#000;font-size:10.5pt;line-height:1.45}
@@ -433,9 +605,12 @@ legend{font-weight:700;margin-bottom:.4em;padding:0}
 </defs>
 </svg>
 <noscript><p style="padding:20px;font-family:Verdana,sans-serif">BiciLab ha bisogno di JavaScript. Apri il file con Chrome, Edge o Firefox.</p></noscript>
+<div id="sfondo" aria-hidden="true"></div>
 <div id="app"></div>
 <div id="modale"></div>
 <div id="avviso" class="toast" role="status" aria-live="polite"></div>
+<div id="effetti" aria-hidden="true"></div>
+<div id="annuncio" class="sr" aria-live="polite"></div>
 <div id="stampa" aria-hidden="true"></div>
 
 <script>
@@ -739,7 +914,8 @@ function carica(){
   try{ const t = localStorage.getItem(CHIAVE); D = t ? JSON.parse(t) : datiVuoti(); }catch(e){ D = datiVuoti(); }
   normalizza();
   try{ P = JSON.parse(localStorage.getItem(CHIAVE_PREF)) || {}; }catch(e){ P = {}; }
-  P = Object.assign({testo:"normale", spazio:false, maiuscolo:false, sfondo:"crema", voce:true}, P);
+  const riduci = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+  P = Object.assign({testo:"normale", spazio:false, maiuscolo:false, sfondo:"crema", voce:true, disegni:true, movimento:!riduci}, P);
 }
 function salva(){
   const o = off(); if(o) o.aggiornata = new Date().toISOString();
@@ -752,6 +928,7 @@ function applicaPref(){
   r.classList.toggle("t-grande", P.testo === "grande");
   r.classList.toggle("t-mgrande", P.testo === "mgrande");
   r.dataset.sfondo = P.sfondo;
+  r.classList.toggle("fermo", !P.movimento);
   document.body.classList.toggle("spazio", !!P.spazio);
   document.body.classList.toggle("maiuscolo", !!P.maiuscolo);
 }
@@ -943,7 +1120,11 @@ const nAbil = o => abilitazioni(o).filter(a => a.ok).length;
 function controllaAbilitazioni(){
   const o = off(); if(!o) return;
   const ab = abilitazioni(o); const n = ab.filter(a => a.ok).length;
-  if(n > o.abilVisti){ const nuova = ab[n - 1]; o.abilVisti = n; salva(); setTimeout(() => toast("Prova superata: " + nuova.n + "! Livello: " + LIVELLI[n] + "."), 250); }
+  if(n > o.abilVisti){
+    const nuove = ab.slice(o.abilVisti, n).map(a => a.n); o.abilVisti = n; salva();
+    const tit = nuove.length > 1 ? "Prove superate: " + elenco(nuove) + "!" : "Prova superata: " + nuove[0] + "!";
+    setTimeout(() => festa(tit, "Livello: " + LIVELLI[n]), 250);
+  }
   else if(n < o.abilVisti){ o.abilVisti = n; salva(); }
 }
 
@@ -997,9 +1178,10 @@ function render(){
   if(id){ const el = document.getElementById(id); if(el && !ui.focus){ el.focus({preventScroll:true}); try{ if(s1 != null) el.setSelectionRange(s1, s2); }catch(e){} } }
   if(ui.focus){ const el = document.getElementById(ui.focus); ui.focus = null; if(el) el.focus(); }
   else if(ui.modale){ const f = $("#modale [autofocus]") || $("#modale input, #modale button, #modale textarea"); if(f && !$("#modale").contains(document.activeElement)) f.focus(); }
+  dopoRender();
 }
 function vai(vista, extra){
-  Object.assign(ui, {vista, msg:null}, extra || {});
+  Object.assign(ui, {vista, msg:null, trans:"su"}, extra || {});
   ui.focus = "titolo";
   render(); window.scrollTo(0, 0);
   controllaAbilitazioni();
@@ -1030,7 +1212,7 @@ function navigazione(){
   if(ui.vista === "wizard") return "";
   const v = ui.vista;
   const att = x => (x === v || (x === "schede" && v === "scheda") || (x === "clienti" && v === "cliente") || (x === "studio" && v === "materia")) ? ' aria-current="page"' : "";
-  return '<nav class="nav" aria-label="Menu dell\'officina"><div class="nav-in">' +
+  return '<nav class="nav' + (ui.trans ? " nav-anima" : "") + '" aria-label="Menu dell\'officina"><div class="nav-in">' +
     '<button data-act="vai" data-v="banco"' + att("banco") + '>' + ico("casa") + '<span>Banco</span></button>' +
     '<button data-act="vai" data-v="clienti"' + att("clienti") + '>' + ico("persona") + '<span>Clienti</span></button>' +
     '<button class="nav-nuova" data-act="nuovaScheda">' + ico("piu") + '<span>Nuova scheda</span></button>' +
@@ -1058,8 +1240,9 @@ function vistaOfficina(){
 /* ---------- scelta dell'officina ---------- */
 function vScelta(){
   const lista = D.officine;
-  return '<main class="contenitore" id="main"><section class="benvenuto"><h1 id="titolo" tabindex="-1">' + ico("bici", "ico-xl") + ' BiciLab</h1>' +
-    '<p class="sotto">L\'officina delle biciclette: clienti, schede di lavoro, preventivi e «Cosa studio».</p></section>' +
+  return '<main class="contenitore" id="main"><section class="eroe eroe-casa" style="--c:#C2410C"><div class="eroe-testo"><span class="eroe-etich">' + ico("chiave") + ' L\'officina delle biciclette</span>' +
+    '<h1 id="titolo" tabindex="-1">BiciLab</h1><p>Accogli i clienti, controlla le bici, prepara il preventivo. E scopri che cosa c\'entra ogni lavoro con la scuola.</p></div>' +
+    '<div class="eroe-disegno" aria-hidden="true">' + disegnoOfficina() + '</div></section>' +
     (memoriaOk ? "" : '<p class="msg-passo">' + ico("avviso") + ' In questa pagina i dati non si salvano. Apri il file direttamente nel browser.</p>') +
     '<h2>' + ico("gruppo") + ' Scegli la tua officina</h2>' +
     (lista.length ? '<div class="griglia-off">' + lista.map(cardOfficina).join("") + '</div>' : '<p class="vuoto">Non c\'è ancora nessuna officina. Create la vostra.</p>') +
@@ -1068,7 +1251,7 @@ function vScelta(){
 }
 function cardOfficina(o){
   const n = nAbil(o);
-  return '<button class="card-off" data-act="apriOfficina" data-id="' + o.id + '"><span class="tondo" style="--c:' + o.colore + '">' + ico(o.simbolo) + '</span>' +
+  return '<button class="card-off" style="--c:' + o.colore + '" data-act="apriOfficina" data-id="' + o.id + '"><span class="tondo">' + ico(o.simbolo) + '</span>' +
     '<span><b>' + h(o.nome) + '</b>' + (o.membri ? '<small>' + h(o.membri) + '</small>' : "") + '<small>' + LIVELLI[n] + ' · ' + o.schede.length + ' schede</small></span></button>';
 }
 
@@ -1077,7 +1260,12 @@ function saluto(o){
   const nomi = (o.membri || "").split(/,| e /).map(x => x.trim()).filter(Boolean);
   return nomi.length ? "Ciao " + elenco(nomi) + "!" : "Ciao, officina «" + o.nome + "»!";
 }
-function barra(n, tot){ return '<div class="barra" role="img" aria-label="' + n + ' su ' + tot + '"><span style="width:' + Math.round(n / tot * 100) + '%"></span></div>'; }
+const memBarre = {};
+function barra(n, tot, chiave){
+  const v = Math.round(n / tot * 100); const da = chiave ? (memBarre[chiave] != null ? memBarre[chiave] : 0) : v;
+  if(chiave) memBarre[chiave] = v;
+  return '<div class="barra" role="img" aria-label="' + n + ' su ' + tot + '"><span style="width:' + v + '%' + (da !== v ? ';--da:' + da + '%' : "") + '"' + (da !== v ? ' class="riempi"' : "") + '></span></div>';
+}
 function ordinaSchede(a, b){ return (b.aggiornata || b.creata || "").localeCompare(a.aggiornata || a.creata || ""); }
 function bannerImprevisto(imp){
   return '<div class="imprevisto" role="alert">' + ico("lampo") + '<div><b>Imprevisto in officina!</b><p>' + h(imp.testo) + '</p>' + btnVoce("Imprevisto in officina. " + imp.testo) +
@@ -1087,14 +1275,16 @@ function vBanco(){
   const o = off(); const ab = abilitazioni(o); const n = ab.filter(a => a.ok).length; const prossima = ab.find(a => !a.ok);
   const aperte = o.schede.filter(s => s.stato !== "consegnata").sort(ordinaSchede);
   const imp = o.imprevisti.find(i => !i.risolto);
-  return '<main class="contenitore" id="main"><h1 id="titolo" tabindex="-1">' + h(saluto(o)) + '</h1>' +
-    '<p class="sotto">Questo è il banco di lavoro dell\'officina. ' + btnVoce("Questo è il banco di lavoro. Quando arriva un cliente con la bici, premi: nuova scheda intervento.") + '</p>' +
+  return '<main class="contenitore" id="main"><section class="eroe" style="--c:' + o.colore + '"><div class="eroe-testo">' +
+    '<span class="eroe-etich">' + ico(o.simbolo) + ' Banco di lavoro</span><h1 id="titolo" tabindex="-1">' + h(saluto(o)) + '</h1>' +
+    '<p>Arriva un cliente con la bici? Parti da qui. ' + btnVoce("Questo è il banco di lavoro. Quando arriva un cliente con la bici, premi: nuova scheda intervento.") + '</p>' +
+    '<button class="btn btn-primario btn-enorme brilla" data-act="nuovaScheda">' + ico("piu") + ' Nuova scheda intervento</button>' +
+    '<div class="eroe-stat"><span><b>' + aperte.length + '</b> bici in officina</span><span><b>' + o.clienti.length + '</b> ' + (o.clienti.length === 1 ? "cliente" : "clienti") + '</span><span>' + ico("medaglia") + ' <b>' + LIVELLI[n] + '</b></span></div>' +
+    '</div><div class="eroe-disegno" aria-hidden="true">' + disegnoOfficina() + '</div></section>' +
     (imp ? bannerImprevisto(imp) : "") +
-    '<div class="azione-centrale"><button class="btn btn-primario btn-enorme" data-act="nuovaScheda">' + ico("piu") + ' Nuova scheda intervento</button>' +
-    '<p class="nota">Arriva un cliente con la bici? Parti da qui.</p></div>' +
     '<h2>' + ico("bici") + ' Bici in officina (' + aperte.length + ')</h2>' +
     (aperte.length ? '<div class="lista-cart">' + aperte.map(cartellino).join("") + '</div>' : '<p class="vuoto">Adesso non ci sono bici in officina.</p>') +
-    '<section class="carta"><h2 style="margin-top:.2em">' + ico("medaglia") + ' Il vostro percorso: ' + LIVELLI[n] + '</h2>' + barra(n, 7) +
+    '<section class="carta"><h2 style="margin-top:.2em">' + ico("medaglia") + ' Il vostro percorso: ' + LIVELLI[n] + '</h2>' + barra(n, 7, "banco") +
     '<p>' + n + ' prove superate su 7.</p>' +
     (prossima ? '<p><b>Prossima prova: ' + h(prossima.n) + '.</b> ' + h(prossima.t) + '</p>' : '<p><b>Avete superato tutte le prove: siete capi officina!</b></p>') +
     '<button class="btn" data-act="vai" data-v="abil">Vedi il percorso</button></section>' +
@@ -1106,7 +1296,7 @@ function vBanco(){
     tessera("abil", "medaglia", "Percorso", n + " prove su 7") +
     '</div><p class="nota" style="margin-top:20px"><button class="link" data-act="esportaOfficina" data-id="' + o.id + '">' + ico("giu") + ' Salva una copia dell\'officina</button> Serve per portarla su un altro computer o per darla all\'educatore.</p></main>';
 }
-function tessera(v, i, t, s){ return '<button class="tessera" data-act="vai" data-v="' + v + '">' + ico(i) + '<b>' + t + '</b><small>' + h(s) + '</small></button>'; }
+function tessera(v, i, t, s){ return '<button class="tessera" data-act="vai" data-v="' + v + '"><span class="tile">' + ico(i) + '</span><b>' + t + '</b><small>' + h(s) + '</small></button>'; }
 function statoChip(st){ const s = STATI[IDX_STATO[st]] || STATI[0]; return '<span class="stato" data-s="' + s.id + '">' + ico(s.ico) + s.n + '</span>'; }
 function cartellino(s){
   const c = trovaCliente(s.clienteId);
@@ -1166,7 +1356,7 @@ function vSchede(){
   const conta = f => o.schede.filter(s => f === "tutte" || (f === "aperte" ? (s.stato !== "consegnata" && s.stato !== "bozza") : s.stato === f)).length;
   const lista = o.schede.filter(passa).filter(s => !q || (nomeCliente(trovaCliente(s.clienteId)) + " " + s.numero).toLowerCase().includes(q)).sort(ordinaSchede);
   return '<main class="contenitore" id="main"><h1 id="titolo" tabindex="-1">' + ico("scheda") + ' Schede intervento</h1>' +
-    '<div class="chips" role="group" aria-label="Quali schede vedere">' + filtri.map(f => '<button class="chip" data-act="filtroS" data-f="' + f[0] + '" aria-pressed="' + (ui.filtroS === f[0]) + '">' + f[1] + ' (' + conta(f[0]) + ')</button>').join("") + '</div>' +
+    '<div class="chips" role="group" aria-label="Quali schede vedere">' + filtri.map(f => '<button class="chip" id="f-' + f[0] + '" data-act="filtroS" data-f="' + f[0] + '" aria-pressed="' + (ui.filtroS === f[0]) + '">' + f[1] + ' (' + conta(f[0]) + ')</button>').join("") + '</div>' +
     (o.schede.length ? '<label class="etichetta" for="cercaS">' + ico("cerca") + ' Cerca per cliente o numero</label><input class="campo" id="cercaS" data-in="cercaS" value="' + h(ui.cercaS) + '" autocomplete="off" style="max-width:420px">' : "") +
     '<div class="lista-cart" style="margin-top:14px">' + (lista.map(cartellino).join("") || '<p class="vuoto">Nessuna scheda qui.</p>') + '</div>' +
     '<div class="azioni-riga"><button class="btn btn-primario btn-grande" data-act="nuovaScheda">' + ico("piu") + ' Nuova scheda intervento</button></div></main>';
@@ -1233,10 +1423,10 @@ function consigliati(s){
 function cardLavoro(def, s, cons){
   const l = s.lavori.find(x => x.id === def.id); const sel = !!l;
   const materie = [...new Set(itemsDi(def).map(i => i.m))];
-  return '<div class="lavoro' + (sel ? " scelto" : "") + (cons ? " consigliato" : "") + '"><button class="lav-toggle" id="lav-' + def.id + '" data-act="toggleLavoro" data-id="' + def.id + '" aria-pressed="' + sel + '">' +
+  return '<div class="lavoro' + (sel ? " scelto" : "") + (cons ? " consigliato" : "") + '" id="lc-' + def.id + '"><button class="lav-toggle" id="lav-' + def.id + '" data-act="toggleLavoro" data-id="' + def.id + '" aria-pressed="' + sel + '">' +
     '<span class="spunta">' + (sel ? ico("ok") : "") + '</span><span><span class="lav-nome">' + h(def.nome) + '</span><span class="lav-info">' + ico("orologio") + def.min + ' minuti' + (cons ? ' · consigliato dal controllo' : "") + '</span></span></button>' +
     '<div class="lav-materie" aria-label="Materie collegate">' + materie.map(badgeMat).join("") + '</div>' +
-    (sel ? '<div class="minuti" role="group" aria-label="Tempo del lavoro">' + ico("orologio") + '<button class="tondo-btn" id="min-' + def.id + '-m" data-act="minuti" data-id="' + def.id + '" data-d="-5" aria-label="5 minuti in meno">' + ico("meno") + '</button><b>' + l.min + ' min</b><button class="tondo-btn" id="min-' + def.id + '-p" data-act="minuti" data-id="' + def.id + '" data-d="5" aria-label="5 minuti in più">' + ico("piu") + '</button></div>' : "") + '</div>';
+    (sel ? '<div class="minuti" role="group" aria-label="Tempo del lavoro">' + ico("orologio") + '<button class="tondo-btn" id="min-' + def.id + '-m" data-act="minuti" data-id="' + def.id + '" data-d="-5" aria-label="5 minuti in meno">' + ico("meno") + '</button><b id="minv-' + def.id + '">' + l.min + ' min</b><button class="tondo-btn" id="min-' + def.id + '-p" data-act="minuti" data-id="' + def.id + '" data-d="5" aria-label="5 minuti in più">' + ico("piu") + '</button></div>' : "") + '</div>';
 }
 function wLavori(s){
   const cons = consigliati(s);
@@ -1253,14 +1443,14 @@ function wLavori(s){
     '<div class="riepilogo-lav" aria-live="polite">' + ico("chiave") + ' Lavori scelti: ' + s.lavori.length + ' · Tempo: ' + tot + ' minuti</div></section>' + barraAzioni();
 }
 function righeConto(c, vis){
-  const v = x => vis ? euro(x) : "?";
+  const v = x => vis ? '<span data-conta="' + x + '">' + euro(x) + '</span>' : "?";
   let html = '<div class="riga-conto tit"><span>VOCE</span><span class="mezzo">CALCOLO</span><span class="val">EURO</span></div>';
   c.righe.forEach(r => { html += '<div class="riga-conto"><span>' + h(r.nome) + (r.recupero ? " (di recupero)" : "") + '</span><span class="mezzo">' + r.qta + ' × ' + euro(r.prezzo) + '</span><span class="val">' + v(r.tot) + '</span></div>'; });
   if(!c.righe.length) html += '<div class="riga-conto"><span>Nessun ricambio</span><span class="mezzo"></span><span class="val">' + euro(0) + '</span></div>';
   html += '<div class="riga-conto"><span>Manodopera</span><span class="mezzo">' + c.minuti + ' min · ' + euro(c.tariffa) + ' all\'ora</span><span class="val">' + v(c.manodopera) + '</span></div>';
   if(c.scontoPct > 0 || c.ivaPct > 0) html += '<div class="riga-conto"><span><b>Ricambi + manodopera</b></span><span class="mezzo"></span><span class="val">' + v(c.subtotale) + '</span></div>';
-  if(c.scontoPct > 0) html += '<div class="riga-conto"><span>Sconto</span><span class="mezzo">' + c.scontoPct + ' %</span><span class="val">' + (vis ? "− " + euro(c.sconto) : "?") + '</span></div>';
-  if(c.ivaPct > 0) html += '<div class="riga-conto"><span>IVA</span><span class="mezzo">' + c.ivaPct + ' %</span><span class="val">' + (vis ? "+ " + euro(c.iva) : "?") + '</span></div>';
+  if(c.scontoPct > 0) html += '<div class="riga-conto"><span>Sconto</span><span class="mezzo">' + c.scontoPct + ' %</span><span class="val">' + (vis ? "− " + v(c.sconto) : "?") + '</span></div>';
+  if(c.ivaPct > 0) html += '<div class="riga-conto"><span>IVA</span><span class="mezzo">' + c.ivaPct + ' %</span><span class="val">' + (vis ? "+ " + v(c.iva) : "?") + '</span></div>';
   html += '<div class="riga-conto totale"><span><b>Totale da pagare</b></span><span class="mezzo"></span><span class="val">' + v(c.totale) + '</span></div>';
   return html;
 }
@@ -1287,7 +1477,7 @@ function correttore(s, c){
     '<p class="nota">Potete usare la calcolatrice. Scrivete i numeri con la virgola, per esempio 12,50.</p>' +
     campiConto(c).map(f => {
       const es = k.esito[f.k]; const cls = es === true ? " ok" : (es === false ? " ko" : "");
-      return '<div class="campo-conto' + cls + '"><label for="conto-' + f.k + '">' + h(f.lab) + '</label><div class="input-euro"><input class="campo" id="conto-' + f.k + '" inputmode="decimal" autocomplete="off" data-in="risposta" data-k="' + f.k + '" value="' + h(k.risp[f.k]) + '"' + (es === true ? " readonly" : "") + ' aria-describedby="fb-' + f.k + '"><span>€</span></div>' +
+      return '<div class="campo-conto' + cls + '" id="cc-' + f.k + '"><label for="conto-' + f.k + '">' + h(f.lab) + '</label><div class="input-euro"><input class="campo" id="conto-' + f.k + '" inputmode="decimal" autocomplete="off" data-in="risposta" data-k="' + f.k + '" value="' + h(k.risp[f.k]) + '"' + (es === true ? " readonly" : "") + ' aria-describedby="fb-' + f.k + '"><span>€</span></div>' +
         '<div class="fb" id="fb-' + f.k + '" aria-live="polite">' + (es === true ? ico("ok") + ' Giusto!' : (es === false ? ico("no") + ' ' + h(k.msg[f.k]) : "")) +
         (es === false && (k.tent[f.k] || 0) >= 3 && !k.pass[f.k] ? ' <button class="link" data-act="passaggi" data-k="' + f.k + '">Vedi i passaggi</button>' : "") +
         (k.pass[f.k] ? '<ol class="passaggi">' + passaggi(f.k, c).map(x => '<li>' + h(x) + '</li>').join("") + '</ol>' : "") + '</div></div>';
@@ -1298,7 +1488,7 @@ function wPreventivo(s){
   if(s.stato === "bozza"){ s.tariffa = +D.impostazioni.tariffa; s.ivaPct = D.impostazioni.iva ? +D.impostazioni.ivaPct : 0; }
   return '<section class="passo"><h2>' + ico("euro") + ' Il preventivo ' + btnVoce("Il preventivo dice al cliente quanto spende. Controllate i ricambi e le quantità. Poi fate il conto.") + '</h2>' +
     '<h3>' + ico("tag") + ' Ricambi</h3>' +
-    (s.ricambi.length ? s.ricambi.map((r, i) => '<div class="ricambio"><span class="nome">' + h(r.nome) + (r.recupero ? ' <small>(di recupero)</small>' : "") + '</span><span class="qta"><button class="tondo-btn" id="q-' + i + '-m" data-act="qta" data-i="' + i + '" data-d="-1" aria-label="Uno in meno">' + ico("meno") + '</button><b aria-label="Quantità">' + r.qta + '</b><button class="tondo-btn" id="q-' + i + '-p" data-act="qta" data-i="' + i + '" data-d="1" aria-label="Uno in più">' + ico("piu") + '</button></span><span>× ' + euro(r.prezzo) + '</span><button class="btn btn-piccolo btn-pericolo" data-act="rimuoviRicambio" data-i="' + i + '">' + ico("cestino") + ' Togli</button></div>').join("") : '<p class="vuoto">Nessun ricambio. Se serve, aggiungilo qui sotto.</p>') +
+    (s.ricambi.length ? s.ricambi.map((r, i) => '<div class="ricambio"><span class="nome">' + h(r.nome) + (r.recupero ? ' <small>(di recupero)</small>' : "") + '</span><span class="qta"><button class="tondo-btn" id="q-' + i + '-m" data-act="qta" data-i="' + i + '" data-d="-1" aria-label="Uno in meno">' + ico("meno") + '</button><b id="qv-' + i + '" aria-label="Quantità">' + r.qta + '</b><button class="tondo-btn" id="q-' + i + '-p" data-act="qta" data-i="' + i + '" data-d="1" aria-label="Uno in più">' + ico("piu") + '</button></span><span>× ' + euro(r.prezzo) + '</span><button class="btn btn-piccolo btn-pericolo" data-act="rimuoviRicambio" data-i="' + i + '">' + ico("cestino") + ' Togli</button></div>').join("") : '<p class="vuoto">Nessun ricambio. Se serve, aggiungilo qui sotto.</p>') +
     '<div class="due-col"><form class="carta" data-submit="aggiungiRicambio"><label class="etichetta" for="sel-ric" style="margin-top:0">Aggiungi dal listino</label><select class="campo" id="sel-ric" name="rid">' +
     D.listino.map(x => '<option value="' + x.id + '">' + h(x.nome) + ' – ' + euro(x.prezzo) + '</option>').join("") + '</select><div class="azioni-riga"><button class="btn" type="submit">' + ico("piu") + ' Aggiungi</button></div></form>' +
     '<form class="carta" data-submit="ricambioRecupero"><p style="margin:0"><b>Ricambio di recupero</b></p><p class="aiuto">Un pezzo usato ma buono, preso da un\'altra bici.</p><div class="due-col"><div><label class="etichetta" for="rec-nome">Che pezzo è?</label><input class="campo" id="rec-nome" name="nome" autocomplete="off"></div>' +
@@ -1392,7 +1582,7 @@ function vStudioScheda(s){
   return '<p>' + ico("libro") + ' <b>Con questa bici studi ' + materie.length + ' materie:</b> ' + btnVoce("Cosa studio. Ogni lavoro di questa scheda si collega a una materia di scuola. Leggi le schede e mettiti alla prova.") + '</p>' +
     '<div class="chips-mat">' + materie.map(m => badgeMat(m) + '<span class="sr">' + h(mat(m).n) + '</span>').join("") + '</div>' +
     (s.lavori.length ? "" : '<p class="vuoto">Scegli i lavori della scheda: per ogni lavoro qui compaiono le materie collegate.</p>') +
-    '<div class="chips" role="group" aria-label="Come ordinare"><button class="chip" data-act="studioVista" data-v="lavoro" aria-pressed="' + (ui.studioVista === "lavoro") + '">Per lavoro</button><button class="chip" data-act="studioVista" data-v="materia" aria-pressed="' + (ui.studioVista === "materia") + '">Per materia</button></div>' + corpo;
+    '<div class="chips" role="group" aria-label="Come ordinare"><button class="chip" id="sv-lavoro" data-act="studioVista" data-v="lavoro" aria-pressed="' + (ui.studioVista === "lavoro") + '">Per lavoro</button><button class="chip" id="sv-materia" data-act="studioVista" data-v="materia" aria-pressed="' + (ui.studioVista === "materia") + '">Per materia</button></div>' + corpo;
 }
 function lavoriFatti(o){ const set = new Set(); o.schede.filter(s => s.stato !== "bozza").forEach(s => s.lavori.forEach(l => set.add(l.id))); return set; }
 function vStudio(){
@@ -1427,7 +1617,7 @@ function vMateria(){
 function vAbil(){
   const o = off(); const ab = abilitazioni(o); const n = ab.filter(a => a.ok).length;
   return '<main class="contenitore" id="main"><h1 id="titolo" tabindex="-1">' + ico("medaglia") + ' Il percorso del meccanico</h1>' +
-    '<p>Ogni prova superata apre la prova dopo. Livello di oggi: <b>' + LIVELLI[n] + '</b> (' + n + ' prove su 7). ' + btnVoce("Il percorso del meccanico. Ogni prova superata apre la prova dopo. Il vostro livello è " + LIVELLI[n] + ".") + '</p>' + barra(n, 7) +
+    '<p>Ogni prova superata apre la prova dopo. Livello di oggi: <b>' + LIVELLI[n] + '</b> (' + n + ' prove su 7). ' + btnVoce("Il percorso del meccanico. Ogni prova superata apre la prova dopo. Il vostro livello è " + LIVELLI[n] + ".") + '</p>' + barra(n, 7, "abil") +
     '<ol class="percorso">' + ab.map(a => '<li class="' + a.stato + '"><span class="tappa-ico" aria-hidden="true">' + (a.stato === "superata" ? ico("ok") : (a.stato === "bloccata" ? ico("lucchetto") : (a.i + 1))) + '</span>' +
       '<h3>Prova ' + (a.i + 1) + ': ' + h(a.n) + '</h3><p>' + h(a.t) + '</p><p class="segno ' + (a.stato === "superata" ? "si" : "no") + '">' + (a.stato === "superata" ? "Superata" : (a.stato === "corrente" ? "È la vostra prossima prova" : "Si apre quando superate la prova " + a.i)) + '</p></li>').join("") + '</ol>' +
     '<p class="nota">Livelli: Apprendista · Aiuto meccanico · Meccanico · Meccanico esperto · Capo officina.</p></main>';
@@ -1469,7 +1659,7 @@ function eduOfficine(){
       const giuste = Object.values(o.quiz).filter(q => q.ok).length; const date = Object.values(o.quiz).length;
       const imp = o.imprevisti.find(i => !i.risolto); const ult = o.imprevisti.filter(i => i.risolto).slice(-1)[0];
       return '<article class="edu-card"><header><span class="tondo" style="--c:' + o.colore + '">' + ico(o.simbolo) + '</span><div style="flex:1;min-width:12em"><b>' + h(o.nome) + '</b><br><small>' + (h(o.membri) || "Nessun nome") + '</small></div><span class="contatore">' + LIVELLI[n] + ' · ' + n + '/7</span></header>' +
-        '<div style="margin:8px 0">' + barra(n, 7) + '</div>' +
+        '<div style="margin:8px 0">' + barra(n, 7, "edu-" + o.id) + '</div>' +
         '<div class="edu-stat"><span>' + ico("persona") + ' Clienti: <b>' + o.clienti.length + '</b></span><span>' + ico("scheda") + ' Schede: <b>' + o.schede.length + '</b> (in officina ' + aperte + ', consegnate ' + cons + ')</span><span>' + ico("libro") + ' Domande: <b>' + giuste + '</b> giuste su ' + date + '</span><span>' + ico("calendario") + ' Ultima attività: <b>' + (dataIT(o.aggiornata || o.creata) || "—") + '</b></span></div>' +
         (imp ? '<p class="esito esito-info">' + ico("lampo") + '<span>Imprevisto in corso: ' + h(imp.testo) + '</span></p>' : "") +
         (ult ? '<p class="nota">Ultimo imprevisto risolto il ' + dataIT(ult.risolto) + (ult.risposta ? ': «' + h(ult.risposta) + '»' : "") + '</p>' : "") +
@@ -1546,6 +1736,7 @@ function vModale(){
         '<fieldset><legend>Grandezza del testo</legend><div class="chips">' + b("testo", "normale", "Normale") + b("testo", "grande", "Grande") + b("testo", "mgrande", "Molto grande") + '</div></fieldset>' +
         '<fieldset><legend>Colore dello sfondo</legend><div class="chips">' + b("sfondo", "crema", "Crema", '<span class="campione" style="background:#FBF6EC"></span>') + b("sfondo", "giallo", "Giallo chiaro", '<span class="campione" style="background:#FFF7D1"></span>') + b("sfondo", "azzurro", "Azzurro chiaro", '<span class="campione" style="background:#EAF3F8"></span>') + b("sfondo", "bianco", "Bianco", '<span class="campione" style="background:#fff"></span>') + '</div></fieldset>' +
         '<fieldset><legend>Altre scelte</legend>' + t("spazio", "Lettere e parole più distanziate") + t("maiuscolo", "Tutto in STAMPATO MAIUSCOLO") + (haVoce ? t("voce", "Pulsanti «Ascolta» per leggere ad alta voce") : "") + '</fieldset>' +
+        '<fieldset><legend>Movimento</legend>' + t("disegni", "Disegni di ingranaggi e ruote sullo sfondo") + t("movimento", "Sfondo che si muove ed effetti sui pulsanti") + '</fieldset>' +
         '<p class="nota">Queste scelte valgono solo su questo dispositivo.</p><div class="azioni-riga"><button class="btn btn-primario btn-grande" data-act="chiudiModale" autofocus>' + ico("ok") + ' Fatto</button></div>';
       break;
     }
@@ -1690,6 +1881,142 @@ function creaEsempio(){
   D.officine.push(o); salva(); return o;
 }
 
+/* ---------------- ASPETTO E MOVIMENTO ---------------- */
+/* Profilo di un ingranaggio centrato in 0,0: r = raggio esterno, n = denti, p = altezza del dente */
+function ingranaggio(r, n, p){
+  const ri = r - p, s = Math.PI * 2 / n, pt = [];
+  for(let i = 0; i < n; i++){ const a = i * s; pt.push([ri, a], [r, a + s * .14], [r, a + s * .36], [ri, a + s * .5]); }
+  return "M" + pt.map(([q, a]) => (q * Math.cos(a)).toFixed(1) + " " + (q * Math.sin(a)).toFixed(1)).join(" L") + " Z";
+}
+function fori(r){ let s = ""; for(let i = 0; i < 5; i++){ const a = i * Math.PI * 2 / 5; s += '<circle cx="' + (r * .38 * Math.cos(a)).toFixed(1) + '" cy="' + (r * .38 * Math.sin(a)).toFixed(1) + '" r="' + (r * .1).toFixed(1) + '"/>'; } return s; }
+function svgIngr(n, r, t, inv){
+  const R = r + 4;
+  return '<svg viewBox="' + (-R) + ' ' + (-R) + ' ' + 2 * R + ' ' + 2 * R + '"><g class="scorri"><g class="gira' + (inv ? " inv" : "") + '" style="--t:' + t + 's"><path d="' + ingranaggio(r, n, Math.max(6, r * .12)) + '"/><circle r="' + (r * .62).toFixed(1) + '"/><circle r="' + (r * .16).toFixed(1) + '"/>' + fori(r) + '</g></g></svg>';
+}
+function svgRuota(r, n, t){
+  const R = r + 6; let s = "";
+  for(let i = 0; i < n; i++){ const a = i * Math.PI * 2 / n, b = a + (i % 2 ? .38 : -.38), q = r * .07;
+    s += '<line x1="' + (q * Math.cos(a)).toFixed(1) + '" y1="' + (q * Math.sin(a)).toFixed(1) + '" x2="' + (r * .9 * Math.cos(b)).toFixed(1) + '" y2="' + (r * .9 * Math.sin(b)).toFixed(1) + '"/>'; }
+  return '<svg viewBox="' + (-R) + ' ' + (-R) + ' ' + 2 * R + ' ' + 2 * R + '"><g class="scorri"><g class="gira" style="--t:' + t + 's"><circle r="' + r + '" style="stroke-width:7"/><circle r="' + (r * .9).toFixed(1) + '"/><circle r="' + (r * .07).toFixed(1) + '"/><g class="sottile">' + s + '</g></g></g></svg>';
+}
+function svgCoppia(){
+  /* 36 denti e 12 denti: la piccola gira 3 volte più veloce (rapporto 36 : 12 = 3) */
+  const d = 185, a = -.5, x = 170 + d * Math.cos(a), y = 170 + d * Math.sin(a);
+  return '<svg viewBox="0 0 400 360"><g transform="translate(170 170)"><g class="gira" style="--t:150s"><path d="' + ingranaggio(150, 36, 15) + '"/><circle r="93"/><circle r="24"/>' + fori(150) + '</g></g>' +
+    '<g transform="translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ') rotate(15)"><g class="gira inv" style="--t:50s"><path d="' + ingranaggio(50, 12, 15) + '"/><circle r="26"/><circle r="8"/></g></g></svg>';
+}
+function svgCatena(){
+  return '<svg viewBox="0 0 420 200"><g transform="translate(90 100)"><g class="gira" style="--t:60s"><path d="' + ingranaggio(60, 32, 9) + '"/><circle r="40"/><circle r="10"/>' + fori(60) + '</g></g>' +
+    '<g transform="translate(330 100)"><g class="gira" style="--t:23s"><path d="' + ingranaggio(22, 12, 6) + '"/><circle r="7"/></g></g>' +
+    '<path class="maglie" d="M90 36 L330 75 A25 25 0 0 1 330 125 L90 164 A64 64 0 0 1 90 36 Z"/></svg>';
+}
+function svgDado(t){
+  let p = ""; for(let i = 0; i < 6; i++){ const a = i * Math.PI / 3; p += (i ? "L" : "M") + (34 * Math.cos(a)).toFixed(1) + " " + (34 * Math.sin(a)).toFixed(1); }
+  return '<svg viewBox="-40 -40 80 80"><g class="scorri"><g class="gira" style="--t:' + t + 's"><path d="' + p + 'Z"/><circle r="15"/><circle r="26"/></g></g></svg>';
+}
+function svgChiave(){ return '<svg viewBox="0 0 24 24"><g class="galleggia sottile"><use href="#i-chiave"/></g></svg>'; }
+/* Elementi dello sfondo: ogni prova superata ne aggiunge uno */
+const DECO = [
+  {pos:"left:-190px;top:16vh;width:400px;height:400px", z:10, k:.05, html:() => svgIngr(36, 190, 160, false)},
+  {pos:"right:-120px;top:64px;width:300px;height:300px", z:16, k:.1, acc:true, html:() => svgRuota(140, 24, 80)},
+  {pos:"right:-70px;bottom:-110px;width:440px;height:400px", z:8, html:svgCoppia},
+  {pos:"left:-50px;bottom:-30px;width:430px;height:205px", z:12, acc:true, html:svgCatena},
+  {pos:"right:6vw;top:46vh;width:64px;height:64px", z:24, k:.2, html:() => svgDado(30)},
+  {pos:"left:4vw;top:60vh;width:96px;height:96px", z:22, acc:true, html:svgChiave},
+  {pos:"left:22vw;top:-70px;width:170px;height:170px", z:14, k:.12, html:() => svgIngr(16, 80, 60, true)},
+  {pos:"left:-70px;top:-60px;width:220px;height:220px", z:18, k:.12, html:() => svgRuota(100, 18, 55)},
+  {pos:"right:22vw;bottom:-80px;width:180px;height:180px", z:12, k:.1, acc:true, html:() => svgIngr(20, 85, 70, true)},
+  {pos:"right:3vw;top:24vh;width:44px;height:44px", z:28, k:.25, html:() => svgDado(18)}
+];
+let chiaveSfondo = "", decoPrima = 0;
+function aggiornaSfondo(){
+  const el = $("#sfondo"); if(!el) return;
+  const o = ui.vista !== "edu" ? off() : null;
+  const col = o ? o.colore : "#C2410C";
+  document.documentElement.style.setProperty("--c-off", col);
+  const quanti = !P.disegni ? 0 : (o ? Math.min(DECO.length, 3 + nAbil(o)) : 4);
+  const chiave = quanti + "|" + col;
+  if(chiave === chiaveSfondo) return;
+  const cambioColore = chiaveSfondo && chiaveSfondo.split("|")[1] !== col;
+  const da = (!chiaveSfondo || cambioColore) ? 0 : Math.min(decoPrima, quanti);
+  chiaveSfondo = chiave; decoPrima = quanti;
+  el.classList.toggle("vuoto", !P.disegni);
+  el.innerHTML = DECO.slice(0, quanti).map((d, i) => '<div class="deco' + (d.acc ? " acc" : "") + (i >= da ? " entra" : "") + '" style="' + d.pos + ';--z:' + d.z + ';--k:' + (d.k || .07) + '">' + d.html() + '</div>').join("");
+}
+/* Il banco di lavoro: bici sul cavalletto. Ruota dietro e pedivelle girano con il rapporto 3 : 1 */
+function disegnoOfficina(){
+  const raggi = (cx, cy, r, n) => { let s = ""; for(let i = 0; i < n; i++){ const a = i * Math.PI * 2 / n, b = a + (i % 2 ? .4 : -.4);
+    s += '<line x1="' + (cx + 4 * Math.cos(a)).toFixed(1) + '" y1="' + (cy + 4 * Math.sin(a)).toFixed(1) + '" x2="' + (cx + 38 * Math.cos(b)).toFixed(1) + '" y2="' + (cy + 38 * Math.sin(b)).toFixed(1) + '"/>'; } return s; };
+  const ruota = (cx, cy, cls, t) => '<g class="' + cls + '"' + (t ? ' style="--t:' + t + 's"' : "") + '><circle class="d-gomma" cx="' + cx + '" cy="' + cy + '" r="44"/><circle class="d-cerchio" cx="' + cx + '" cy="' + cy + '" r="38"/><g class="d-raggi">' + raggi(cx, cy, 38, 18) + '</g><circle class="d-mozzo" cx="' + cx + '" cy="' + cy + '" r="5"/></g>';
+  return '<svg class="disegno" viewBox="0 0 360 225" focusable="false">' +
+    '<g class="d-linea"><g transform="translate(318 40)"><path class="d-gira" style="--t:14s" d="' + ingranaggio(22, 12, 5) + '"/></g><circle cx="318" cy="40" r="5"/>' +
+    '<g transform="translate(294 54)"><path class="d-gira inv" style="--t:7s" d="' + ingranaggio(11, 6, 4) + '"/></g></g>' +
+    '<g class="d-gancio"><circle cx="40" cy="14" r="2.5"/><circle cx="84" cy="14" r="2.5"/></g>' +
+    '<g class="d-oscilla" style="transform-origin:40px 14px"><line class="d-gancio" x1="40" y1="14" x2="40" y2="22"/><use class="d-attrezzo" href="#i-chiave" x="22" y="20" width="36" height="36"/></g>' +
+    '<g class="d-oscilla lento" style="transform-origin:84px 14px"><path class="d-attrezzo" d="M84 14 V58 Q84 64 90 64 H102" style="stroke-width:3.5"/></g>' +
+    '<ellipse class="d-ombra" cx="196" cy="207" rx="120" ry="5"/><path class="d-terra" d="M14 206 H346"/>' +
+    '<path class="d-cavalletto" d="M206 205 V116 L172 90 M184 205 H228"/>' +
+    ruota(110, 140, "d-gira", 6) + ruota(282, 140, "") +
+    '<path class="d-catena" d="M182 135 L110 135"/><path class="d-catena" d="M110 145 L182 159"/>' +
+    '<path class="d-telaio" d="M110 140 L182 147 L166 84 Z M166 84 L250 80 M182 147 L256 98 M250 80 L256 98 L282 140"/>' +
+    '<path class="d-chiaro" d="M166 84 L162 68 M150 66 Q162 61 177 66 M250 80 L247 66 Q256 61 266 66 L268 74"/>' +
+    '<g class="d-gira" style="--t:18s"><circle class="d-corona" cx="182" cy="147" r="12"/><path class="d-pedivella" d="M182 127 V167"/><path class="d-pedale" d="M176 127 H188 M176 167 H188"/></g>' +
+    '<circle class="d-cavalletto" cx="172" cy="90" r="3" style="stroke-width:3"/></svg>';
+}
+const memVisti = {};
+function dopoRender(){
+  const vivo = P.movimento;
+  if(ui.trans){ const m = $("#main"); if(m && vivo) m.classList.add("t-" + ui.trans); ui.trans = null; }
+  if(ui.transPannello){ const p = $('[role="tabpanel"]'); if(p && vivo) p.classList.add("t-pannello"); ui.transPannello = false; }
+  if(ui.pop){ const el = document.getElementById(ui.pop); if(el && vivo) el.classList.add("pop"); ui.pop = null; }
+  if(ui.scuoti){ ui.scuoti.forEach(id => { const el = document.getElementById(id); if(el && vivo) el.classList.add("scuoti"); }); ui.scuoti = null; }
+  if(ui.contaSu){ ui.contaSu = false; if(vivo) contaSu(); }
+  aggiornaSfondo();
+}
+function contaSu(){
+  document.querySelectorAll("[data-conta]").forEach((el, i) => {
+    const fine = +el.dataset.conta, t0 = performance.now() + i * 90, dur = 650;
+    el.textContent = euro(0);
+    const passo = ora => { const p = Math.max(0, Math.min(1, (ora - t0) / dur)); el.textContent = euro(fine * (1 - Math.pow(1 - p, 3))); if(p < 1) requestAnimationFrame(passo); };
+    requestAnimationFrame(passo);
+  });
+}
+function onda(x, y, col){
+  const d = document.createElement("span"); d.className = "onda"; d.style.left = x + "px"; d.style.top = y + "px"; d.style.setProperty("--c", col);
+  $("#effetti").appendChild(d); d.addEventListener("animationend", () => d.remove());
+}
+function coriandoli(x, y, n, forza){
+  if(!P.movimento) return;
+  const col = ["#C2410C","#1F4E5F","#F6C445","#2E7D32","#BE185D","#1D4ED8"]; const box = $("#effetti"); const f = forza || 120;
+  for(let i = 0; i < n; i++){
+    const d = document.createElement("span"); d.className = "coriandolo" + (i % 3 === 0 ? " tondo" : "");
+    const a = Math.random() * Math.PI * 2, v = f * (.45 + Math.random() * .75);
+    d.style.left = x + "px"; d.style.top = y + "px";
+    d.style.setProperty("--dx", (Math.cos(a) * v).toFixed(0) + "px"); d.style.setProperty("--dy", (Math.sin(a) * v + f * .55).toFixed(0) + "px");
+    d.style.setProperty("--r", (Math.random() * 720 - 360).toFixed(0) + "deg"); d.style.setProperty("--c", col[i % col.length]);
+    d.style.animationDuration = (.75 + Math.random() * .5).toFixed(2) + "s";
+    box.appendChild(d); d.addEventListener("animationend", () => d.remove());
+  }
+}
+function festa(titolo, testo){
+  if(!P.movimento){ toast(titolo + " " + testo + "."); return; }
+  const a = $("#annuncio"); a.textContent = ""; setTimeout(() => { a.textContent = titolo + " " + testo + "."; }, 50);
+  const f = document.createElement("div"); f.className = "festa"; f.innerHTML = ico("medaglia") + "<b>" + h(titolo) + "</b><span>" + h(testo) + "</span>";
+  $("#effetti").appendChild(f); f.addEventListener("animationend", () => f.remove());
+  coriandoli(innerWidth / 2, innerHeight * .36, 36, 230);
+}
+/* Parallasse leggera: lo sfondo segue il mouse; le ruote girano quando scorri la pagina */
+let mx = 0, my = 0, sy = 0, rafP = 0;
+function aggiornaParallasse(){ rafP = 0; const s = $("#sfondo"); if(!s) return; s.style.setProperty("--mx", mx.toFixed(2)); s.style.setProperty("--my", my.toFixed(2)); s.style.setProperty("--sy", Math.round(sy)); }
+window.addEventListener("pointermove", e => { if(!P.movimento || e.pointerType !== "mouse") return; mx = (e.clientX / innerWidth - .5) * 2; my = (e.clientY / innerHeight - .5) * 2; if(!rafP) rafP = requestAnimationFrame(aggiornaParallasse); }, {passive:true});
+window.addEventListener("scroll", () => { if(!P.movimento) return; sy = scrollY; if(!rafP) rafP = requestAnimationFrame(aggiornaParallasse); }, {passive:true});
+document.addEventListener("pointerdown", e => {
+  if(!P.movimento) return;
+  const b = e.target.closest("button, .radio-card"); if(!b || b.disabled) return;
+  const col = b.matches(".btn-primario, .nav-nuova") ? "#C2410C" : (b.matches(".btn-pericolo") ? "#B42318" : "#1F4E5F");
+  onda(e.clientX, e.clientY, col);
+}, {passive:true});
+
 /* ---------------- MODIFICHE AI DATI ---------------- */
 function aggiungiLavoro(s, id){
   const def = LAV[id]; if(!def || s.lavori.some(l => l.id === id)) return;
@@ -1710,7 +2037,7 @@ const A = {
   vai: el => vai(el.dataset.v, {formCliente:false, modCliente:false}),
   parla: el => parla(el.dataset.t, el.dataset.l),
   apriPref: () => { ui.modale = {tipo:"pref"}; render(); },
-  pref: el => { P[el.dataset.k] = el.dataset.v; salvaPref(); ui.focus = el.id; render(); },
+  pref: el => { P[el.dataset.k] = el.dataset.v; salvaPref(); ui.focus = el.id; ui.pop = el.id; render(); },
   chiudiModale: () => { ui.modale = null; render(); },
   chiudiVelo: (el, e) => { if(e.target === el){ ui.modale = null; render(); } },
   conferma: () => { const f = ui.modale && ui.modale.ok; ui.modale = null; if(f) f(); else render(); },
@@ -1722,7 +2049,7 @@ const A = {
 
   nuovaScheda: () => { Object.assign(ui, {schedaId:null, wizCliente:null, passo:1, formCliente:false, cercaCli:"", errCli:null, bozzaCli:null}); vai("wizard"); },
   nuovaSchedaCliente: el => { const s = creaScheda(el.dataset.id); Object.assign(ui, {schedaId:s.id, passo:2, formCliente:false}); vai("wizard"); },
-  scegliCliente: el => { const s = ui.schedaId && trovaScheda(ui.schedaId); if(s){ s.clienteId = el.dataset.id; toccaScheda(s); } else ui.wizCliente = el.dataset.id; ui.msg = null; ui.focus = el.id; render(); },
+  scegliCliente: el => { const s = ui.schedaId && trovaScheda(ui.schedaId); if(s){ s.clienteId = el.dataset.id; toccaScheda(s); } else ui.wizCliente = el.dataset.id; ui.msg = null; ui.focus = el.id; ui.pop = el.id; render(); },
   mostraFormCliente: () => { ui.formCliente = true; ui.errCli = null; ui.bozzaCli = null; ui.focus = "cli-nome"; render(); },
   annullaCliente: () => { ui.formCliente = false; ui.modCliente = false; ui.errCli = null; ui.bozzaCli = null; render(); },
   apriCliente: el => vai("cliente", {clienteId:el.dataset.id, modCliente:false}),
@@ -1743,46 +2070,48 @@ const A = {
     }
     if(ui.passo === 2 && !s.bici.tipo){ ui.msg = "Scegli che tipo di bici è."; render(); return; }
     if(ui.passo === 4 && !s.lavori.length){ ui.msg = "Scegli almeno un lavoro."; render(); return; }
-    ui.passo = Math.min(6, ui.passo + 1); ui.focus = "titolo"; render(); window.scrollTo(0, 0); controllaAbilitazioni();
+    ui.passo = Math.min(6, ui.passo + 1); ui.focus = "titolo"; ui.trans = "dx"; render(); window.scrollTo(0, 0); controllaAbilitazioni();
   },
-  wizIndietro: () => { ui.msg = null; ui.passo = Math.max(1, ui.passo - 1); ui.focus = "titolo"; render(); window.scrollTo(0, 0); },
-  passo: el => { ui.msg = null; ui.passo = +el.dataset.p; ui.focus = "titolo"; render(); window.scrollTo(0, 0); },
+  wizIndietro: () => { ui.msg = null; ui.passo = Math.max(1, ui.passo - 1); ui.focus = "titolo"; ui.trans = "sx"; render(); window.scrollTo(0, 0); },
+  passo: el => { ui.msg = null; ui.trans = +el.dataset.p > ui.passo ? "dx" : "sx"; ui.passo = +el.dataset.p; ui.focus = "titolo"; render(); window.scrollTo(0, 0); },
   wizEsci: () => { const s = ui.schedaId && trovaScheda(ui.schedaId); if(s) vai("scheda", {tabScheda:"scheda"}); else vai("banco"); },
-  biciTipo: el => { const s = trovaScheda(ui.schedaId); s.bici.tipo = el.dataset.v; toccaScheda(s); ui.msg = null; ui.focus = el.id; render(); },
-  biciColore: el => { const s = trovaScheda(ui.schedaId); s.bici.colore = s.bici.colore === el.dataset.v ? "" : el.dataset.v; toccaScheda(s); ui.focus = el.id; render(); },
-  biciRuota: el => { const s = trovaScheda(ui.schedaId); s.bici.ruota = s.bici.ruota === el.dataset.v ? "" : el.dataset.v; toccaScheda(s); ui.focus = el.id; render(); },
+  biciTipo: el => { const s = trovaScheda(ui.schedaId); s.bici.tipo = el.dataset.v; toccaScheda(s); ui.msg = null; ui.focus = el.id; ui.pop = el.id; render(); },
+  biciColore: el => { const s = trovaScheda(ui.schedaId); s.bici.colore = s.bici.colore === el.dataset.v ? "" : el.dataset.v; toccaScheda(s); ui.focus = el.id; ui.pop = el.id; render(); },
+  biciRuota: el => { const s = trovaScheda(ui.schedaId); s.bici.ruota = s.bici.ruota === el.dataset.v ? "" : el.dataset.v; toccaScheda(s); ui.focus = el.id; ui.pop = el.id; render(); },
   usaBici: el => {
     const s = trovaScheda(ui.schedaId); const o = off(); const viste = [];
     o.schede.filter(x => x.clienteId === s.clienteId && x.id !== s.id && x.bici && x.bici.tipo).forEach(x => { if(!viste.some(v => descrBici(v) === descrBici(x.bici))) viste.push(x.bici); });
     const b = viste[+el.dataset.i]; if(b){ s.bici = {...b}; toccaScheda(s); render(); toast("Ho copiato i dati della bici."); }
   },
-  controllo: el => { const s = trovaScheda(ui.schedaId); s.controllo[el.dataset.id] = el.dataset.v; toccaScheda(s); ui.focus = el.id; render(); controllaAbilitazioni(); },
+  controllo: el => { const s = trovaScheda(ui.schedaId); s.controllo[el.dataset.id] = el.dataset.v; toccaScheda(s); ui.focus = el.id; ui.pop = el.id; render(); controllaAbilitazioni(); },
   restoOk: () => { const s = trovaScheda(ui.schedaId); CONTROLLI.forEach(c => { if(!s.controllo[c.id]) s.controllo[c.id] = "ok"; }); toccaScheda(s); render(); controllaAbilitazioni(); },
-  toggleLavoro: el => { const s = trovaScheda(ui.schedaId); const id = el.dataset.id; if(s.lavori.some(l => l.id === id)) togliLavoro(s, id); else aggiungiLavoro(s, id); ui.msg = null; toccaScheda(s); ui.focus = el.id; render(); },
-  minuti: el => { const s = trovaScheda(ui.schedaId); const l = s.lavori.find(x => x.id === el.dataset.id); if(l){ l.min = Math.max(5, Math.min(240, l.min + +el.dataset.d)); toccaScheda(s); } ui.focus = el.id; render(); },
+  toggleLavoro: el => { const s = trovaScheda(ui.schedaId); const id = el.dataset.id; if(s.lavori.some(l => l.id === id)) togliLavoro(s, id); else aggiungiLavoro(s, id); ui.msg = null; toccaScheda(s); ui.focus = el.id; ui.pop = "lc-" + id; render(); },
+  minuti: el => { const s = trovaScheda(ui.schedaId); const l = s.lavori.find(x => x.id === el.dataset.id); if(l){ l.min = Math.max(5, Math.min(240, l.min + +el.dataset.d)); toccaScheda(s); } ui.focus = el.id; ui.pop = "minv-" + el.dataset.id; render(); },
   rimuoviLavoro: el => { const s = trovaScheda(ui.schedaId); togliLavoro(s, el.dataset.id); toccaScheda(s); render(); },
-  qta: el => { const s = trovaScheda(ui.schedaId); const r = s.ricambi[+el.dataset.i]; if(r){ r.qta = Math.max(1, Math.min(99, r.qta + +el.dataset.d)); toccaScheda(s); } ui.focus = el.id; render(); },
+  qta: el => { const s = trovaScheda(ui.schedaId); const r = s.ricambi[+el.dataset.i]; if(r){ r.qta = Math.max(1, Math.min(99, r.qta + +el.dataset.d)); toccaScheda(s); } ui.focus = el.id; ui.pop = "qv-" + el.dataset.i; render(); },
   rimuoviRicambio: el => { const s = trovaScheda(ui.schedaId); s.ricambi.splice(+el.dataset.i, 1); toccaScheda(s); render(); },
 
   contoIo: () => { const s = trovaScheda(ui.schedaId); allineaConto(s); s.conto.modo = "io"; salva(); ui.focus = "conto-" + campiConto(calcola(s))[0].k; render(); },
-  contoComputer: () => { const s = trovaScheda(ui.schedaId); allineaConto(s); s.conto.rivelato = true; s.conto.aiuto = true; toccaScheda(s); render(); },
+  contoComputer: () => { const s = trovaScheda(ui.schedaId); allineaConto(s); s.conto.rivelato = true; s.conto.aiuto = true; toccaScheda(s); ui.contaSu = true; render(); },
   contoRifai: () => { const s = trovaScheda(ui.schedaId); const f = firmaConto(s); s.conto = contoNuovo(f); s.conto.aiuto = true; s.conto.modo = "io"; toccaScheda(s); render(); },
   ricominciaConto: () => { const s = trovaScheda(ui.schedaId); const aiuto = s.conto.aiuto; s.conto = contoNuovo(firmaConto(s)); s.conto.aiuto = aiuto; s.conto.modo = "io"; toccaScheda(s); render(); },
   passaggi: el => { const s = trovaScheda(ui.schedaId); s.conto.pass[el.dataset.k] = true; s.conto.aiuto = true; toccaScheda(s); render(); },
-  controllaConto: () => {
-    const s = trovaScheda(ui.schedaId); const c = calcola(s); const k = s.conto; let primo = null;
+  controllaConto: el => {
+    const s = trovaScheda(ui.schedaId); const c = calcola(s); const k = s.conto; let primo = null; const sbagliati = [];
+    const rb = el.getBoundingClientRect();
     campiConto(c).forEach(f => {
       if(k.esito[f.k] === true) return;
       const ans = leggiNumero(k.risp[f.k]);
       if(isNaN(ans)){ k.esito[f.k] = false; k.msg[f.k] = "Scrivi un numero, per esempio 12,50."; }
       else if(vicino(ans, f.v)){ k.esito[f.k] = true; }
       else { k.tent[f.k] = (k.tent[f.k] || 0) + 1; k.esito[f.k] = false; k.msg[f.k] = "Non torna. " + indizio(f.k, c, ans, k.tent[f.k], k); }
-      if(k.esito[f.k] !== true && !primo) primo = "conto-" + f.k;
+      if(k.esito[f.k] !== true){ if(!primo) primo = "conto-" + f.k; sbagliati.push("cc-" + f.k); }
     });
     k.ok = campiConto(c).every(f => k.esito[f.k] === true);
     toccaScheda(s);
-    ui.focus = k.ok ? null : primo; render();
-    if(k.ok) toast("Conto giusto! Bravi."); controllaAbilitazioni();
+    ui.focus = k.ok ? null : primo; ui.scuoti = sbagliati; ui.contaSu = k.ok; render();
+    if(k.ok){ toast("Conto giusto! Bravi."); coriandoli(rb.left + rb.width / 2, rb.top + rb.height / 2, 28, 170); }
+    controllaAbilitazioni();
   },
 
   salvaAccetta: () => { const s = trovaScheda(ui.schedaId); s.stato = "accettato"; toccaScheda(s); vai("scheda", {tabScheda:"scheda"}); toast("Scheda salvata: il cliente ha accettato il preventivo."); },
@@ -1790,7 +2119,7 @@ const A = {
   salvaModifiche: () => { const s = trovaScheda(ui.schedaId); toccaScheda(s); vai("scheda", {tabScheda:"scheda"}); toast("Modifiche salvate."); },
 
   apriScheda: el => vai("scheda", {schedaId:el.dataset.id, tabScheda:"scheda"}),
-  tabScheda: el => { ui.tabScheda = el.dataset.t; ui.focus = "tab-" + el.dataset.t; render(); },
+  tabScheda: el => { ui.tabScheda = el.dataset.t; ui.focus = "tab-" + el.dataset.t; ui.transPannello = true; render(); },
   modificaScheda: () => { ui.passo = 1; ui.formCliente = false; ui.cercaCli = ""; vai("wizard"); },
   avanzaStato: () => {
     const s = trovaScheda(ui.schedaId);
@@ -1802,20 +2131,23 @@ const A = {
     toccaScheda(s); ui.focus = "btn-stato"; render(); toast("Adesso la scheda è: " + STATI[i + 1].n + "."); controllaAbilitazioni();
   },
   indietroStato: () => { const s = trovaScheda(ui.schedaId); const i = IDX_STATO[s.stato]; if(i > 0){ s.stato = STATI[i - 1].id; toccaScheda(s); render(); controllaAbilitazioni(); } },
-  lavoroFatto: el => { const s = trovaScheda(ui.schedaId); const l = s.lavori[+el.dataset.i]; l.fatto = !l.fatto; toccaScheda(s); ui.focus = el.id; render(); if(s.lavori.every(x => x.fatto)) toast("Tutti i lavori sono fatti: la bici può essere pronta."); },
+  lavoroFatto: el => { const s = trovaScheda(ui.schedaId); const l = s.lavori[+el.dataset.i]; l.fatto = !l.fatto; toccaScheda(s); ui.focus = el.id; ui.pop = el.id; render(); if(s.lavori.every(x => x.fatto)) toast("Tutti i lavori sono fatti: la bici può essere pronta."); },
   eliminaScheda: () => { const s = trovaScheda(ui.schedaId); chiedi("Eliminare la scheda n. " + s.numero + "?", "La scheda viene cancellata. Non si può tornare indietro.", "Sì, elimina la scheda", () => { const o = off(); o.schede = o.schede.filter(x => x.id !== s.id); salva(); vai("schede"); }, true); },
   apriStampa: () => { ui.modale = {tipo:"stampa"}; render(); },
   stampa: el => stampa(trovaScheda(ui.schedaId), el.dataset.c),
 
-  filtroS: el => { ui.filtroS = el.dataset.f; render(); },
-  studioVista: el => { ui.studioVista = el.dataset.v; render(); },
+  filtroS: el => { ui.filtroS = el.dataset.f; ui.focus = el.id; ui.pop = el.id; render(); },
+  studioVista: el => { ui.studioVista = el.dataset.v; ui.focus = el.id; ui.pop = el.id; render(); },
   apriMateria: el => vai("materia", {materia:el.dataset.m}),
   rispondi: el => {
     const o = off(); const k = el.dataset.k; const i = +el.dataset.i;
     const st = o.quiz[k] || (o.quiz[k] = {tent:0, ok:false});
     if(st.ok || st.tent >= 2) return;
     st.ultima = i; if(i === 0) st.ok = true; else st.tent++;
-    salva(); ui.focus = el.id; render(); controllaAbilitazioni();
+    const rb = el.getBoundingClientRect();
+    salva(); ui.focus = el.id; if(st.ok) ui.pop = el.id; else ui.scuoti = [el.id]; render();
+    if(st.ok) coriandoli(rb.left + 40, rb.top + rb.height / 2, 16, 110);
+    controllaAbilitazioni();
   },
   risolviImprevisto: el => { ui.modale = {tipo:"risolvi", id:el.dataset.id}; render(); },
   esportaOfficina: el => { const o = D.officine.find(x => x.id === el.dataset.id); scarica("bicilab-officina-" + nomeFile(o.nome) + "-" + oggi() + ".json", JSON.stringify({versione:1, tipo:"officina", officina:o}, null, 1)); },
