@@ -67,7 +67,9 @@ Ogni scheda ha la sua «Cosa studio». Contiene:
 - per ogni lavoro scelto, 2–4 argomenti di materie diverse, ognuno con una spiegazione breve, un'attività «Prova a» e una domanda con correttore (indizio al primo errore, risposta giusta al secondo);
 - le parole del mestiere in inglese e nella seconda lingua.
 
-I ragazzi possono leggerla per lavoro o per materia. Dal menu «Cosa studio» si apre la mappa delle 13 materie, con i lavori collegati e il dizionario dell'officina.
+**Schema ad albero.** Quando si apre «Cosa studio», compare lo schema della scheda: a sinistra la scheda, al centro i lavori (i rami), a destra le materie collegate (le foglie), ognuna con il suo colore. Toccando una foglia si apre l'argomento da studiare. Le domande già risolte hanno la spunta verde. Si può passare anche alla lettura «per lavoro» o «per materia».
+
+Dal menu «Cosa studio» si apre la mappa delle 13 materie, con i lavori collegati e il dizionario dell'officina. Con «Schema ad albero» si vede lo schema completo di tutti i lavori, divisi in gruppi: i lavori già fatti dall'officina sono segnati in verde. «Stampa lo schema» produce la versione da dare ai docenti della scuola media. Il file `schema_interventi_discipline.pdf`, accanto a BiciLab, è lo stesso schema già stampato.
 
 In tutto ci sono 99 argomenti. Le materie toccate sono: Italiano, Inglese, Francese o Spagnolo, Storia, Geografia, Matematica, Scienze, Tecnologia, Musica, Arte e immagine, Educazione fisica, Religione cattolica, Educazione civica. L'elenco completo è in fondo a questa nota: puoi darlo ai docenti della scuola media per collegare l'attività alle loro lezioni.
 
@@ -76,7 +78,7 @@ In tutto ci sono 99 argomenti. Le materie toccate sono: Italiano, Inglese, Franc
 Dalla scheda premi **Stampa** e scegli che cosa stampare:
 
 - **Scheda intervento e preventivo:** dati del cliente e della bici, controllo, lavori, preventivo, firme. In alto c'è il **cartellino da ritagliare e appendere al manubrio**, come in un'officina vera. Se il conto non è ancora fatto, al posto dei numeri ci sono righe vuote da completare a mano.
-- **Cosa studio:** tutti gli argomenti della scheda, con le domande a crocette e uno spazio «Che cosa ho imparato oggi».
+- **Cosa studio:** in apertura lo schema ad albero dei lavori e delle materie, poi tutti gli argomenti della scheda, con le domande a crocette e uno spazio «Che cosa ho imparato oggi».
 
 Nella finestra di stampa puoi scegliere anche «Salva come PDF». La stampa rispetta le scelte di leggibilità del dispositivo (testo grande, maiuscolo, spaziatura). In fondo a ogni pagina c'è scritto: «Simulazione didattica: non è un documento fiscale».
 

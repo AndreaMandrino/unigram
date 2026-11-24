@@ -204,7 +204,7 @@ legend{font-weight:700;margin-bottom:.4em;padding:0}
 
 /* ---------- materie ---------- */
 .mat{display:inline-flex;align-items:center;justify-content:center;min-width:3.1em;padding:.08em .5em;border-radius:7px;background:var(--c);color:#fff;font-weight:700;font-size:.75rem;letter-spacing:.04em;line-height:1.6}
-.studio{background:var(--pannello);border:2px solid var(--linea);border-left:10px solid var(--c);border-radius:12px;padding:12px 16px;margin:12px 0}
+.studio{scroll-margin-top:18px;background:var(--pannello);border:2px solid var(--linea);border-left:10px solid var(--c);border-radius:12px;padding:12px 16px;margin:12px 0}
 .studio header{display:flex;align-items:center;gap:.6em;flex-wrap:wrap;font-weight:700;color:var(--ink-2);font-size:.9rem}
 .studio h4{margin:.35em 0 .3em;font-size:1.06rem}
 .studio .prova{background:var(--pannello-2);border-radius:10px;padding:.55em .85em}
@@ -543,6 +543,86 @@ html.fermo .btn:hover,html.fermo .chip:hover,html.fermo .tessera:hover,html.ferm
 .st-pd img{height:52mm}
 .st-foto figcaption{font-size:8pt;margin-top:1px}
 
+/* ---------- schema ad albero ---------- */
+.albero{--g:30px;--al-linea:var(--linea-forte);display:flex;align-items:center;margin:14px 0 6px;padding:8px 4px 14px;overflow-x:auto}
+.al-radice{flex:none;display:flex;flex-direction:column;gap:2px;max-width:12.5rem;background:var(--scuro);color:#FFF6E8;border-radius:16px;padding:12px 16px;box-shadow:0 4px 0 #171411;line-height:1.3}
+.al-radice .ico{width:1.7em;height:1.7em;color:#F6C445;margin-bottom:2px}
+.al-radice b{font-size:1.05rem;color:#fff}
+.al-radice span{font-size:.85rem}
+.al-conta{display:inline-block;margin-top:4px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:0 .6em;align-self:flex-start;font-weight:700}
+.al-rami,.al-foglie{list-style:none;margin:0;padding:0 0 0 var(--g);position:relative;display:flex;flex-direction:column}
+.al-rami::before,.al-foglie::before{content:"";position:absolute;left:0;top:50%;width:var(--g);border-top:3px solid var(--al-linea)}
+.al-rami > li,.al-foglie > li{position:relative;display:flex;align-items:center;padding:6px 0 6px calc(var(--g) / 2)}
+.al-foglie > li{padding-top:3px;padding-bottom:3px}
+.al-rami > li::before,.al-foglie > li::before{content:"";position:absolute;left:0;top:0;bottom:0;border-left:3px solid var(--al-linea)}
+.al-rami > li:first-child::before,.al-foglie > li:first-child::before{top:50%}
+.al-rami > li:last-child::before,.al-foglie > li:last-child::before{bottom:50%}
+.al-rami > li:only-child::before,.al-foglie > li:only-child::before{display:none}
+.al-rami > li::after,.al-foglie > li::after{content:"";position:absolute;left:0;top:50%;width:calc(var(--g) / 2);border-top:3px solid var(--al-linea)}
+.al-foglie > li::after{border-top-color:var(--c)}
+.al-nodo{flex:none;display:flex;align-items:center;gap:.5em;width:13.5rem;background:var(--pannello);border:2px solid var(--ink);border-radius:12px;padding:.5em .75em;font-weight:700;line-height:1.3;box-shadow:0 3px 0 var(--linea)}
+.al-nodo .ico{color:var(--arancio);flex:none}
+.al-nodo small{display:flex;align-items:center;gap:.25em;font-weight:700;color:var(--ok);font-size:.75rem;margin-top:2px}
+.al-nodo small .ico{color:var(--ok);width:1.1em;height:1.1em}
+.al-nodo.fatto{border-color:var(--ok);background:var(--ok-chiaro)}
+.al-foglia{display:flex;align-items:center;gap:.55em;width:19rem;text-align:left;background:#fff;border:2px solid var(--linea);border-left:7px solid var(--c);border-radius:10px;padding:.3em .7em;color:var(--ink);font-size:.88rem;line-height:1.3}
+button.al-foglia{cursor:pointer;transition:transform .12s ease,box-shadow .15s,border-color .15s}
+button.al-foglia:hover{transform:translateX(3px);border-color:var(--c);box-shadow:0 3px 0 var(--linea)}
+button.al-foglia:active{transform:scale(.97)}
+.al-testo{flex:1;min-width:0}
+.al-testo b,.al-testo small{display:block}
+.al-testo small{color:var(--ink-2)}
+.al-ok{flex:none;display:grid;place-items:center;width:1.7rem;height:1.7rem;border-radius:50%;background:var(--ok);color:#fff}
+.al-ok .ico{width:1.05em;height:1.05em}
+.al-sezione{margin:6px 0 18px}
+.al-sezione h3{display:flex;align-items:center;gap:.45em;margin:1.2em 0 0}
+.al-sezione h3 .ico{color:var(--arancio)}
+.al-entra .al-rami > li{animation:entraDx .4s ease-out backwards}
+.al-entra .al-foglie > li{animation:entraDx .4s ease-out backwards;animation-delay:.12s}
+.al-entra .al-rami > li:nth-child(2),.al-entra .al-rami > li:nth-child(2) .al-foglie > li{animation-delay:.1s}
+.al-entra .al-rami > li:nth-child(3),.al-entra .al-rami > li:nth-child(3) .al-foglie > li{animation-delay:.2s}
+.al-entra .al-rami > li:nth-child(n+4),.al-entra .al-rami > li:nth-child(n+4) .al-foglie > li{animation-delay:.3s}
+.al-entra .al-radice{animation:pop .45s cubic-bezier(.3,1.7,.5,1)}
+.evidenzia{animation:evidenzia 1.6s ease-out}
+@keyframes evidenzia{0%,30%{box-shadow:0 0 0 5px var(--c)}100%{box-shadow:0 0 0 0 rgba(0,0,0,0)}}
+@media screen and (max-width:760px){
+  .albero{--g:22px;flex-direction:column;align-items:stretch;overflow:visible}
+  .al-radice{max-width:none;flex-direction:row;flex-wrap:wrap;align-items:center;gap:4px 10px}
+  .al-radice .ico{margin:0}
+  .al-rami{margin-left:18px}
+  .al-rami::before,.al-foglie::before{display:none}
+  .al-rami > li{flex-direction:column;align-items:stretch}
+  .al-rami > li::after{top:calc(6px + 1.45em)}
+  .al-rami > li:first-child::before{top:0}
+  .al-rami > li:last-child::before{bottom:auto;height:calc(6px + 1.45em)}
+  .al-rami > li:only-child::before{display:block}
+  .al-nodo{width:auto}
+  .al-foglie{margin-left:14px;padding-left:var(--g)}
+  .al-foglie > li::after{top:calc(3px + 1.35em)}
+  .al-foglie > li:first-child::before{top:0}
+  .al-foglie > li:last-child::before{bottom:auto;height:calc(3px + 1.35em)}
+  .al-foglie > li:only-child::before{display:block}
+  .al-foglia{width:100%}
+}
+.pagina .albero{--g:18px;--al-linea:#555;overflow:visible;margin:4px 0;padding:2px 0}
+.pagina .al-radice{background:#fff;color:#000;border:2px solid #000;box-shadow:none;max-width:36mm;padding:5px 8px;font-size:9pt}
+.pagina .al-radice b{color:#000;font-size:9.5pt}
+.pagina .al-radice .ico{color:#000}
+.pagina .al-conta{background:none;border-color:#000}
+.pagina .al-nodo{width:46mm;box-shadow:none;padding:3px 6px;font-size:8.5pt;border-width:1.5px}
+.pagina .al-nodo .ico{color:#000}
+.pagina .al-nodo.fatto{background:#fff;border-color:#000}
+.pagina .al-foglia{width:84mm;font-size:8pt;padding:1px 6px;border-width:1px;border-left-width:5px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pagina .al-foglia .mat{font-size:7pt}
+.pagina .al-testo b,.pagina .al-testo small{display:inline}
+.pagina .al-testo b::after{content:" · "}
+.pagina .al-rami > li{padding-top:3px;padding-bottom:3px}
+.pagina .al-foglie > li{padding-top:1px;padding-bottom:1px}
+.pagina .al-foglie > li::after{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pagina .al-sezione{break-inside:avoid;page-break-inside:avoid;margin:2px 0 8px}
+.pagina .al-sezione h3{margin:4px 0 0}
+.st-albero{break-inside:auto;page-break-inside:auto}
+
 /* ---------- stampa ---------- */
 #stampa{display:none}
 .pagina{font-family:var(--font);color:#000;font-size:10.5pt;line-height:1.45}
@@ -633,6 +713,7 @@ html.fermo .btn:hover,html.fermo .chip:hover,html.fermo .tessera:hover,html.ferm
 <symbol id="i-lampo" viewBox="0 0 24 24"><path d="M13 2.5 L4.5 14 H11 L10 21.5 L19.5 9.5 H13 Z"/></symbol>
 <symbol id="i-stella" viewBox="0 0 24 24"><path d="M12 3 L14.7 8.6 L20.8 9.4 L16.3 13.6 L17.5 19.6 L12 16.6 L6.5 19.6 L7.7 13.6 L3.2 9.4 L9.3 8.6 Z"/></symbol>
 <symbol id="i-aa" viewBox="0 0 24 24"><path d="M2.5 19 L7.5 5 L12.5 19 M4.4 14 H10.6 M14.5 19 L18 10 L21.5 19 M15.7 16 H20.3"/></symbol>
+<symbol id="i-albero" viewBox="0 0 24 24"><rect x="2.5" y="9.5" width="6" height="5" rx="1.2"/><rect x="15.5" y="3" width="6" height="5" rx="1.2"/><rect x="15.5" y="9.5" width="6" height="5" rx="1.2"/><rect x="15.5" y="16" width="6" height="5" rx="1.2"/><path d="M8.5 12 H12 M12 5.5 V18.5 M12 5.5 H15.5 M12 12 H15.5 M12 18.5 H15.5"/></symbol>
 <symbol id="i-camera" viewBox="0 0 24 24"><path d="M3 8.5 A2 2 0 0 1 5 6.5 H7.5 L9 4 H15 L16.5 6.5 H19 A2 2 0 0 1 21 8.5 V18 A2 2 0 0 1 19 20 H5 A2 2 0 0 1 3 18 Z"/><circle cx="12" cy="13" r="3.8"/></symbol>
 <symbol id="i-immagine" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.8"/><path d="M3 17 L9 12 L13 15.5 L16 13 L21 17"/></symbol>
 <symbol id="i-calendario" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10 H20.5 M8 3 V7 M16 3 V7"/></symbol>
@@ -917,7 +998,7 @@ const LIVELLI = ["Apprendista","Apprendista","Aiuto meccanico","Aiuto meccanico"
 const CHIAVE = "bicilab.dati.v1", CHIAVE_PREF = "bicilab.pref.v1";
 let D, P, memoriaOk = true;
 const ui = {vista:"scelta", officinaId:null, schedaId:null, clienteId:null, passo:1, edu:false, eduTab:"officine",
-  modale:null, focus:null, cercaCli:"", cercaC:"", cercaS:"", filtroS:"aperte", tabScheda:"scheda", studioVista:"lavoro",
+  modale:null, focus:null, cercaCli:"", cercaC:"", cercaS:"", filtroS:"aperte", tabScheda:"scheda", studioVista:"albero", studioGlobale:"materie",
   materia:null, formCliente:false, wizCliente:null, msg:null, errCli:null, bozzaCli:null, modCliente:false};
 
 function impostazioniBase(){
@@ -1611,23 +1692,25 @@ function cardStudio(it, conLavoro){
   const corpo = it.parole ?
     '<p>' + h(it.p) + '</p><ul class="parole">' + it.parole.map(p => '<li><span class="it">' + h(p[0]) + '</span>' + ico("dx") + '<span class="tr">' + h(p[LINGUE[it.lingua].i]) + '</span>' + btnVoce(p[LINGUE[it.lingua].i], LINGUE[it.lingua].v, "Ascolta in " + LINGUE[it.lingua].n) + '</li>').join("") + '</ul>' :
     '<p>' + h(it.p) + '</p>';
-  return '<article class="studio" style="--c:' + m.c + '"><header>' + badgeMat(it.m) + '<span>' + h(m.n) + '</span></header>' +
+  return '<article class="studio" id="card-' + h(it.key) + '" tabindex="-1" style="--c:' + m.c + '"><header>' + badgeMat(it.m) + '<span>' + h(m.n) + '</span></header>' +
     (conLavoro ? '<p class="da-lavoro">Dal lavoro: ' + h(conLavoro) + '</p>' : "") + '<h4>' + h(it.t) + '</h4>' + corpo +
     '<p class="prova"><b>Prova a:</b> ' + h(it.a) + '</p>' + (it.parole ? "" : btnVoce(it.t + ". " + it.p + " Prova a: " + it.a)) + (it.q ? vQuiz(it) : "") + '</article>';
 }
 function vStudioScheda(s){
   const blocchi = blocchiStudio(s); const materie = materieDiScheda(s);
   let corpo;
-  if(ui.studioVista === "materia"){
+  if(ui.studioVista === "albero"){
+    corpo = '<p>Lo schema mostra i lavori di questa scheda (i rami) e le materie collegate (le foglie). Tocca una materia per leggere che cosa studi.</p>' + alberoScheda(s, "card");
+  } else if(ui.studioVista === "materia"){
     corpo = materie.map(m => { const items = []; blocchi.forEach(b => b.items.forEach(it => { if(it.m === m) items.push([it, b.nome]); }));
       return '<h3 style="display:flex;gap:.5em;align-items:center">' + badgeMat(m) + ' ' + h(mat(m).n) + '</h3>' + items.map(x => cardStudio(x[0], x[1])).join(""); }).join("");
   } else {
-    corpo = blocchi.map(b => '<h3>' + ico(b.id === "base" ? "scheda" : "chiave") + ' ' + h(b.nome) + '</h3>' + b.items.map(it => cardStudio(it)).join("")).join("");
+    corpo = blocchi.map(b => '<h3>' + ico(icoBlocco(b.id)) + ' ' + h(b.nome) + '</h3>' + b.items.map(it => cardStudio(it)).join("")).join("");
   }
   return '<p>' + ico("libro") + ' <b>Con questa bici studi ' + materie.length + ' materie:</b> ' + btnVoce("Cosa studio. Ogni lavoro di questa scheda si collega a una materia di scuola. Leggi le schede e mettiti alla prova.") + '</p>' +
     '<div class="chips-mat">' + materie.map(m => badgeMat(m) + '<span class="sr">' + h(mat(m).n) + '</span>').join("") + '</div>' +
     (s.lavori.length ? "" : '<p class="vuoto">Scegli i lavori della scheda: per ogni lavoro qui compaiono le materie collegate.</p>') +
-    '<div class="chips" role="group" aria-label="Come ordinare"><button class="chip" id="sv-lavoro" data-act="studioVista" data-v="lavoro" aria-pressed="' + (ui.studioVista === "lavoro") + '">Per lavoro</button><button class="chip" id="sv-materia" data-act="studioVista" data-v="materia" aria-pressed="' + (ui.studioVista === "materia") + '">Per materia</button></div>' + corpo;
+    '<div class="chips" role="group" aria-label="Come vedere"><button class="chip" id="sv-albero" data-act="studioVista" data-v="albero" aria-pressed="' + (ui.studioVista === "albero") + '">' + ico("albero") + ' Schema ad albero</button><button class="chip" id="sv-lavoro" data-act="studioVista" data-v="lavoro" aria-pressed="' + (ui.studioVista === "lavoro") + '">Per lavoro</button><button class="chip" id="sv-materia" data-act="studioVista" data-v="materia" aria-pressed="' + (ui.studioVista === "materia") + '">Per materia</button></div>' + corpo;
 }
 function lavoriFatti(o){ const set = new Set(); o.schede.filter(s => s.stato !== "bozza").forEach(s => s.lavori.forEach(l => set.add(l.id))); if(o.schede.some(s => s.foto && s.foto.length)) set.add("foto"); return set; }
 function vStudio(){
@@ -1637,9 +1720,13 @@ function vStudio(){
   return '<main class="contenitore" id="main"><h1 id="titolo" tabindex="-1">' + ico("libro") + ' Cosa studio</h1>' +
     '<p>Ogni lavoro in officina si collega a una materia di scuola. Scegli una materia e scopri che cosa c\'entra con le bici. ' + btnVoce("Cosa studio. Ogni lavoro in officina si collega a una materia di scuola. Scegli una materia e scopri che cosa c'entra con le bici.") + '</p>' +
     '<div class="carta"><p style="margin:0"><b>Le vostre schede hanno toccato ' + toccate.length + ' materie su ' + ORDINE_MATERIE.length + '.</b> Risposte giuste: ' + giuste + '.</p></div>' +
+    '<div class="chips" role="group" aria-label="Come vedere"><button class="chip" id="sg-materie" data-act="studioGlobale" data-v="materie" aria-pressed="' + (ui.studioGlobale !== "albero") + '">' + ico("libro") + ' Le materie</button>' +
+    '<button class="chip" id="sg-albero" data-act="studioGlobale" data-v="albero" aria-pressed="' + (ui.studioGlobale === "albero") + '">' + ico("albero") + ' Schema ad albero</button></div>' +
+    (ui.studioGlobale === "albero" ?
+      '<p>Ogni lavoro dell\'officina (i rami) e le materie che fa studiare (le foglie). Tocca una materia per aprirla.</p><div class="azioni-riga"><button class="btn" data-act="stampaSchema">' + ico("stampa") + ' Stampa lo schema</button></div>' + alberiGlobali("materia") :
     '<div class="griglia-mat">' + ORDINE_MATERIE.map(m => { const n = tutti.filter(it => it.m === m).length; const x = mat(m); const t = toccate.includes(m);
       return '<button class="card-mat" style="--c:' + x.c + '" data-act="apriMateria" data-m="' + m + '">' + badgeMat(m) + '<b>' + h(x.n) + '</b><small>' + n + ' argomenti</small><span class="segno ' + (t ? "si" : "no") + '">' + (t ? ico("ok") + " Già incontrata" : ico("meno") + " Non ancora") + '</span></button>'; }).join("") +
-    '</div></main>';
+    '</div>') + '</main>';
 }
 function vMateria(){
   const m = ui.materia; const x = mat(m); const o = off(); const fatti = lavoriFatti(o);
@@ -1896,7 +1983,8 @@ function paginaStudio(s){
     blocchi.forEach(b => b.items.forEach(it => { if(it.m === m) corpo += item(it, b.nome); }));
   });
   return '<section class="pagina">' + testaStampa(s, "Cosa studio") + '<div class="st-cart"><span class="foro"></span><b>' + materie.length + ' materie</b>' + materie.map(m => mat(m).n).join(", ") + '</div></header>' +
-    '<p>Ogni lavoro di questa scheda si collega a una materia di scuola. Leggi, fai la prova e rispondi alla domanda.</p>' + corpo +
+    '<p>Ogni lavoro di questa scheda si collega a una materia di scuola. Leggi, fai la prova e rispondi alla domanda.</p>' +
+    '<div class="st-box st-albero"><h3>Schema: i lavori e le materie collegate</h3>' + alberoScheda(s, "stampa") + '</div>' + corpo +
     '<div class="st-box"><h3>Che cosa ho imparato oggi</h3><div class="st-righe"></div><div class="st-righe"></div><div class="st-righe"></div></div>' + piedeStampa() + '</section>';
 }
 
@@ -2045,6 +2133,7 @@ function dopoRender(){
   if(ui.pop){ const el = document.getElementById(ui.pop); if(el && vivo) el.classList.add("pop"); ui.pop = null; }
   if(ui.scuoti){ ui.scuoti.forEach(id => { const el = document.getElementById(id); if(el && vivo) el.classList.add("scuoti"); }); ui.scuoti = null; }
   if(ui.contaSu){ ui.contaSu = false; if(vivo) contaSu(); }
+  if(ui.alberoEntra){ ui.alberoEntra = false; if(vivo) document.querySelectorAll("#main .albero").forEach(a => a.classList.add("al-entra")); }
   aggiornaSfondo();
   caricaFotoVisibili();
   if(ui.vista === "edu" && ui.eduTab === "dati") infoFoto();
@@ -2273,6 +2362,40 @@ async function infoFoto(){
   }catch(e){} finally { infoFotoInCorso = false; }
 }
 
+/* ---------------- SCHEMA AD ALBERO: LAVORI E MATERIE ---------------- */
+function icoBlocco(id){ if(id === "base") return "scheda"; if(id === "foto") return "camera"; const d = LAV[id]; const c = d && CATEGORIE.find(x => x.id === d.cat); return c ? c.ico : "chiave"; }
+function foglia(it, modo){
+  const m = mat(it.m); const o = off(); const ok = modo === "card" && o && o.quiz[it.key] && o.quiz[it.key].ok;
+  const dentro = badgeMat(it.m) + '<span class="al-testo"><b>' + h(m.n) + '</b><small>' + h(it.parole ? "Le parole del mestiere" : it.t) + '</small></span>' +
+    (ok ? '<span class="al-ok">' + ico("ok") + '<span class="sr">domanda giusta</span></span>' : "");
+  if(modo === "card") return '<button class="al-foglia" data-act="vaiCard" data-k="' + h(it.key) + '">' + dentro + '</button>';
+  if(modo === "materia") return '<button class="al-foglia" data-act="apriMateria" data-m="' + it.m + '">' + dentro + '</button>';
+  return '<span class="al-foglia">' + dentro + '</span>';
+}
+function albero(radice, rami, modo, etichetta){
+  return '<div class="albero" role="group" aria-label="' + h(etichetta) + '"><div class="al-radice">' + radice + '</div><ul class="al-rami">' + rami.map(r =>
+    '<li><div class="al-nodo' + (r.fatto ? " fatto" : "") + '">' + ico(r.ico) + '<span>' + h(r.nome) + (r.fatto ? '<small>' + ico("ok") + ' già fatto in officina</small>' : "") + '</span></div>' +
+    '<ul class="al-foglie">' + r.items.map(it => '<li style="--c:' + mat(it.m).c + '">' + foglia(it, modo) + '</li>').join("") + '</ul></li>').join("") + '</ul></div>';
+}
+function alberoScheda(s, modo){
+  const c = trovaCliente(s.clienteId); const n = materieDiScheda(s).length;
+  return albero(ico("bici") + '<b>Scheda n. ' + h(s.numero) + '</b><span>' + h(nomeCliente(c)) + '</span><span class="al-conta">' + n + ' materie</span>',
+    blocchiStudio(s).map(b => ({nome:b.nome, ico:icoBlocco(b.id), items:b.items})), modo, "Schema dei lavori della scheda e delle materie collegate");
+}
+function alberiGlobali(modo){
+  const o = off(); const fatti = o ? lavoriFatti(o) : new Set();
+  const sezioni = [{n:"In ogni scheda", ico:"scheda", defs:[BASE, FOTO_STUDIO]}].concat(CATEGORIE.map(c => ({n:c.n, ico:c.ico, defs:LAVORI.filter(l => l.cat === c.id)})));
+  return sezioni.map(sz => '<section class="al-sezione"><h3>' + ico(sz.ico) + ' ' + h(sz.n) + '</h3>' +
+    albero(ico(sz.ico) + '<b>' + h(sz.n) + '</b><span class="al-conta">' + sz.defs.length + (sz.defs.length === 1 ? " lavoro" : " lavori") + '</span>',
+      sz.defs.map(d => ({nome:d.id === "foto" ? d.nome + " (quando ci sono foto)" : d.nome, ico:icoBlocco(d.id), items:itemsDi(d), fatto:modo !== "stampa" && d.id !== "base" && fatti.has(d.id)})), modo, "Schema: " + sz.n) + '</section>').join("");
+}
+function stampaSchema(){
+  $("#stampa").innerHTML = '<section class="pagina"><header class="st-testa"><div><div class="st-off">BiciLab · ' + h(D.impostazioni.nomeAttivita) + '</div><div class="st-tit">Interventi e discipline collegate</div>' +
+    '<div>Schema ad albero: ogni lavoro dell\'officina e le materie della scuola secondaria di primo grado che fa studiare.</div></div></header>' +
+    alberiGlobali("stampa") + piedeStampa() + '</section>';
+  setTimeout(() => { try{ window.print(); }catch(e){ toast("La stampa non parte qui. Apri il file direttamente nel browser."); } }, 80);
+}
+
 /* ---------------- MODIFICHE AI DATI ---------------- */
 function aggiungiLavoro(s, id){
   const def = LAV[id]; if(!def || s.lavori.some(l => l.id === id)) return;
@@ -2375,7 +2498,7 @@ const A = {
   salvaModifiche: () => { const s = trovaScheda(ui.schedaId); toccaScheda(s); vai("scheda", {tabScheda:"scheda"}); toast("Modifiche salvate."); },
 
   apriScheda: el => vai("scheda", {schedaId:el.dataset.id, tabScheda:"scheda"}),
-  tabScheda: el => { ui.tabScheda = el.dataset.t; ui.focus = "tab-" + el.dataset.t; ui.transPannello = true; render(); },
+  tabScheda: el => { ui.tabScheda = el.dataset.t; ui.focus = "tab-" + el.dataset.t; ui.transPannello = true; ui.alberoEntra = el.dataset.t === "studio" && ui.studioVista === "albero"; render(); },
   modificaScheda: () => { ui.passo = 1; ui.formCliente = false; ui.cercaCli = ""; vai("wizard"); },
   avanzaStato: () => {
     const s = trovaScheda(ui.schedaId);
@@ -2393,7 +2516,14 @@ const A = {
   stampa: el => stampa(trovaScheda(ui.schedaId), el.dataset.c),
 
   filtroS: el => { ui.filtroS = el.dataset.f; ui.focus = el.id; ui.pop = el.id; render(); },
-  studioVista: el => { ui.studioVista = el.dataset.v; ui.focus = el.id; ui.pop = el.id; render(); },
+  studioVista: el => { ui.studioVista = el.dataset.v; ui.focus = el.id; ui.pop = el.id; ui.alberoEntra = el.dataset.v === "albero"; render(); },
+  studioGlobale: el => { ui.studioGlobale = el.dataset.v; ui.focus = el.id; ui.pop = el.id; ui.alberoEntra = el.dataset.v === "albero"; render(); },
+  vaiCard: el => {
+    const k = el.dataset.k; ui.studioVista = "lavoro"; render();
+    const c = document.getElementById("card-" + k);
+    if(c){ c.focus({preventScroll:true}); c.scrollIntoView({behavior:P.movimento ? "smooth" : "auto", block:"start"}); if(P.movimento) c.classList.add("evidenzia"); }
+  },
+  stampaSchema: () => stampaSchema(),
   apriMateria: el => vai("materia", {materia:el.dataset.m}),
   rispondi: el => {
     const o = off(); const k = el.dataset.k; const i = +el.dataset.i;
