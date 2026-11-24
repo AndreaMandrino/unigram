@@ -6,9 +6,12 @@ BiciLab è il gestionale didattico dell'officina bici del Maker Lab (Oratorio Do
 
 ## 1. Come si apre
 
-- **Modo consigliato:** scarica `index.html` sul computer (o sul Chromebook) e aprilo con Chrome, Edge o Firefox. Così il salvataggio e la stampa funzionano sempre.
-- **OneCompiler:** puoi incollare il file nell'editor HTML. Se nella pagina di OneCompiler i dati non restano salvati o la stampa non parte, usa il file scaricato. Quando i dati non si salvano, l'app lo segnala nella prima schermata.
-- Funziona anche sul telefono, ma per la stampa e per lavorare in gruppo è meglio un PC o un tablet.
+BiciLab funziona in due modi, con lo stesso file `index.html`.
+
+- **Versione online (più postazioni insieme):** BiciLab è pubblicato come app web Google Apps Script sull'account della scuola. Tutte le postazioni lavorano sugli stessi dati, salvati in un foglio Google e in una cartella di Drive della scuola. Le modifiche arrivano alle altre postazioni in pochi secondi, e tu vedi le officine in tempo reale. I ragazzi entrano con il **codice del laboratorio**, tu con il **PIN**. Come pubblicarlo: `apps-script/ISTRUZIONI.md`.
+- **Versione offline (una postazione per gruppo):** scarica `index.html` e aprilo con Chrome, Edge o Firefox, oppure incollalo in OneCompiler. I dati restano in quel browser. Per riunire i dati usa le copie (sezione «I dati»).
+
+Nella versione online, in alto a destra, c'è l'indicatore «Salvato online / Salvo... / Senza rete: salvo qui». Senza rete la postazione continua a lavorare e invia tutto quando la rete torna.
 
 ## 2. Primo avvio
 
@@ -148,24 +151,29 @@ Le leve di pressione (scarsità, paura di perdere) sono volutamente leggere: nie
 
 ## 11. I dati
 
-- I dati restano **solo nel browser** del dispositivo dove si usa l'app. Nessun dato esce dal dispositivo.
+- **Versione online:** i dati sono nel foglio Google «BiciLab – dati» e le foto nella cartella «BiciLab – foto», nel Drive dell'account che ha pubblicato l'app. Ogni postazione tiene anche una copia di lavoro, che serve quando manca la rete.
+- **Versione offline:** i dati restano **solo nel browser** del dispositivo dove si usa l'app. Nessun dato esce dal dispositivo.
 - Per i clienti scrivete solo nome e cognome (o un personaggio inventato) e un numero di telefono inventato.
 - Le foto sono salvate nel database del browser (IndexedDB), che ha molto spazio. In **Dati** vedi quante foto ci sono e quanto spazio usano. Se lo spazio finisce, «Elimina le foto delle bici consegnate» libera spazio e lascia le schede.
 - Le copie salvate («Salva una copia dell'officina» e «Salva una copia di tutto») contengono anche le foto: il file diventa più grande, circa 0,2–0,3 MB per foto.
 - **Più dispositivi:** ogni gruppo, dal banco di lavoro, preme «Salva una copia dell'officina» e ti passa il file. Tu lo carichi in **Dati → Caricare una copia**.
 - **Copia di sicurezza:** a fine incontro, in **Dati**, premi «Salva una copia di tutto».
 - **Fine del corso:** in **Dati** premi «Cancella tutte le officine». Impostazioni e listino restano.
-- Il PIN evita solo i clic per errore: non protegge davvero i dati. Chi apre il file può leggere tutto quello che c'è nel browser. Un file HTML da solo non può separare in modo sicuro educatori e ragazzi.
+- **Versione offline:** il PIN evita solo i clic per errore e non protegge davvero i dati. Chi apre il file può leggere tutto quello che c'è nel browser, perché un file HTML da solo non può separare in modo sicuro educatori e ragazzi.
+- **Versione online:** il codice e il PIN sono controllati dal server. Senza codice non si entra; senza PIN non si entra nell'area educatore, non si cambiano impostazioni e listino e non si eliminano officine. Dopo 10 PIN sbagliati l'area educatore si blocca per 10 minuti.
 
 ## 12. Che cosa ho verificato e che cosa devi verificare tu
 
 Verificato in Chrome (computer e telefono): tutti i passi della scheda, il correttore con risposte giuste e sbagliate (anche con sconto e IVA), le domande di «Cosa studio», il percorso, l'area educatore con PIN, imprevisti e copie dei dati, la stampa, il salvataggio dopo la ricarica della pagina, nessuna chiamata a servizi esterni. Per le foto: caricamento di una o più foto, foto del problema, fotocamera dentro l'app con una webcam simulata, didascalie, «prima e dopo», stampa, copia con le foto e ripristino su un altro browser, cancellazione delle foto insieme alla scheda.
+
+Versione online: provata con il vero `Codice.gs` su un ambiente Google simulato, con due postazioni e l'educatore insieme. Ho verificato: codice giusto e sbagliato, PIN, officine e schede viste dalle altre postazioni, modifiche contemporanee sulla stessa scheda (si uniscono), numeri delle schede senza doppioni, imprevisti, listino protetto, foto su Drive, lavoro senza rete e invio al ritorno della rete, cambio del codice. Non ho potuto provarla sui server veri di Google: fai una prova con due postazioni prima dell'attività.
 
 Da provare sui vostri dispositivi:
 
 - la lettura ad alta voce: dipende dalle voci installate (Windows, ChromeOS, Android);
 - il salvataggio e la stampa dentro OneCompiler;
 - la stampa reale su carta A4 della stampante dell'oratorio;
+- nella versione online: che il dominio della scuola permetta l'accesso «Chiunque» (vedi `apps-script/ISTRUZIONI.md`), la stampa e la fotocamera del PC dentro la pagina di Google;
 - la fotocamera vera: su tablet e telefono (fotocamera del sistema) e sui PC o Chromebook della scuola (permesso del browser per la webcam).
 
 ## Elenco dei collegamenti tra lavori e materie

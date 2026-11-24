@@ -623,6 +623,16 @@ button.al-foglia:active{transform:scale(.97)}
 .pagina .al-sezione h3{margin:4px 0 0}
 .st-albero{break-inside:auto;page-break-inside:auto}
 
+/* ---------- versione online ---------- */
+.sinc{display:inline-flex;align-items:center;gap:.35em;font-size:.78rem;font-weight:700;border-radius:999px;padding:.25em .75em;border:1px solid rgba(255,255,255,.4);color:#FFF6E8;white-space:nowrap;align-self:center}
+.sinc .ico{width:1.05em;height:1.05em}
+.sinc-ok{color:#B9F0BE;border-color:rgba(185,240,190,.55)}
+.sinc-offline{color:#FFD38A;border-color:#FFD38A;background:rgba(255,211,138,.14)}
+.sinc-salvo .ico,.sinc-collego .ico{animation:gira 1.4s linear infinite}
+@media (max-width:759px){.sinc span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}.sinc{padding:.4em .5em}}
+.campo-codice{text-transform:uppercase;letter-spacing:.25em;font-weight:700;font-size:1.3rem;max-width:16rem}
+.codice-lab{font-size:2rem;font-weight:700;letter-spacing:.3em;background:var(--pannello-2);border:2px dashed var(--ink);border-radius:12px;display:inline-block;padding:.1em .6em;margin:.2em 0}
+
 /* ---------- stampa ---------- */
 #stampa{display:none}
 .pagina{font-family:var(--font);color:#000;font-size:10.5pt;line-height:1.45}
@@ -1017,11 +1027,13 @@ function normalizzaOfficina(o){
   o.abilVisti = +o.abilVisti || 0;
   o.simbolo = o.simbolo || "ruota";
   o.colore = o.colore || "#C2410C";
-  o.schede.forEach(s => {
-    s.bici = s.bici || {}; s.controllo = s.controllo || {}; s.lavori = s.lavori || []; s.ricambi = s.ricambi || [];
-    s.stato = s.stato || "bozza"; s.foto = Array.isArray(s.foto) ? s.foto : [];
-  });
+  o.schede.forEach(normalizzaScheda);
   return o;
+}
+function normalizzaScheda(s){
+  s.bici = s.bici || {}; s.controllo = s.controllo || {}; s.lavori = s.lavori || []; s.ricambi = s.ricambi || [];
+  s.stato = s.stato || "bozza"; s.foto = Array.isArray(s.foto) ? s.foto : [];
+  return s;
 }
 function normalizza(){
   if(!D || typeof D !== "object") D = datiVuoti();
@@ -1041,7 +1053,8 @@ function carica(){
 function salva(){
   const o = off(); if(o) o.aggiornata = new Date().toISOString();
   try{ localStorage.setItem(CHIAVE, JSON.stringify(D)); }
-  catch(e){ if(memoriaOk){ memoriaOk = false; toast("Attenzione: i dati non si salvano. Prima di chiudere, salva una copia dall'area educatore."); } }
+  catch(e){ if(memoriaOk && !NUVOLA){ memoriaOk = false; toast("Attenzione: i dati non si salvano. Prima di chiudere, salva una copia dall'area educatore."); } }
+  if(NUVOLA) programmaInvio();
 }
 function salvaPref(){ try{ localStorage.setItem(CHIAVE_PREF, JSON.stringify(P)); }catch(e){} applicaPref(); }
 function applicaPref(){
@@ -1292,7 +1305,10 @@ function render(){
   const att = document.activeElement; const id = att && att.id; let s1 = null, s2 = null;
   try{ if(att && (att.tagName === "INPUT" || att.tagName === "TEXTAREA")){ s1 = att.selectionStart; s2 = att.selectionEnd; } }catch(e){}
   let html;
-  if(ui.vista === "edu" && ui.edu) html = testataEdu() + vEdu();
+  ui.inSospeso = false;
+  if(NUVOLA && ui.vista === "accesso") html = testataMin() + vAccesso();
+  else if(NUVOLA && ui.vista === "collego") html = testataMin() + vCollego();
+  else if(ui.vista === "edu" && ui.edu) html = testataEdu() + vEdu();
   else if(!off()){ ui.vista = "scelta"; html = testataMin() + vScelta(); }
   else html = testata() + navigazione() + vistaOfficina();
   $("#app").innerHTML = html;
@@ -1312,7 +1328,7 @@ function vai(vista, extra){
 /* ---------- testate e navigazione ---------- */
 function testataMin(){
   return '<header class="testata"><div class="testata-in"><span class="marchio"><span class="marchio-ico">' + ico("bici") + '</span><span>BiciLab</span></span><span style="flex:1"></span>' +
-    '<div class="testata-azioni"><button class="btn-testa" data-act="apriPref">' + ico("aa") + '<span>Leggibilità</span></button></div></div></header>';
+    '<div class="testata-azioni">' + pillSinc() + '<button class="btn-testa" data-act="apriPref">' + ico("aa") + '<span>Leggibilità</span></button></div></div></header>';
 }
 function testata(){
   const o = off(); const n = nAbil(o);
@@ -1320,14 +1336,14 @@ function testata(){
     '<button class="marchio" data-act="vai" data-v="banco" aria-label="BiciLab: torna al banco di lavoro"><span class="marchio-ico">' + ico("bici") + '</span><span>BiciLab</span></button>' +
     '<div class="off-info"><span class="off-simbolo" style="--c:' + o.colore + '">' + ico(o.simbolo) + '</span><span><b>Officina «' + h(o.nome) + '»</b>' +
     '<button class="livello" data-act="vai" data-v="abil">' + ico("medaglia") + ' ' + LIVELLI[n] + ' · ' + n + '/7</button></span></div>' +
-    '<div class="testata-azioni"><button class="btn-testa" data-act="apriPref">' + ico("aa") + '<span>Leggibilità</span></button>' +
+    '<div class="testata-azioni">' + pillSinc() + '<button class="btn-testa" data-act="apriPref">' + ico("aa") + '<span>Leggibilità</span></button>' +
     '<button class="btn-testa" data-act="cambiaOfficina">' + ico("entra") + '<span>Cambia officina</span></button></div>' +
     '</div></header>' +
     (ui.edu ? '<div class="fascia-edu"><div class="fascia-edu-in">' + ico("lucchetto") + ' Sei nell\'officina come educatore. <button class="btn btn-piccolo" data-act="vaiEdu">Torna all\'area educatore</button><button class="link" data-act="eduEsci">Esci dall\'area educatore</button></div></div>' : "");
 }
 function testataEdu(){
   return '<header class="testata"><div class="testata-in"><span class="marchio"><span class="marchio-ico">' + ico("lucchetto") + '</span><span>BiciLab · Area educatore</span></span><span style="flex:1"></span>' +
-    '<div class="testata-azioni"><button class="btn-testa" data-act="apriPref">' + ico("aa") + '<span>Leggibilità</span></button>' +
+    '<div class="testata-azioni">' + pillSinc() + '<button class="btn-testa" data-act="apriPref">' + ico("aa") + '<span>Leggibilità</span></button>' +
     '<button class="btn-testa" data-act="eduEsci">' + ico("entra") + '<span>Esci</span></button></div></div></header>';
 }
 function navigazione(){
@@ -1803,7 +1819,10 @@ function eduOfficine(){
 }
 function eduImpostazioni(){
   const I = D.impostazioni;
-  return '<form class="carta" data-submit="salvaImpostazioni">' +
+  return (NUVOLA ? '<section class="carta codice-box"><h3 style="margin-top:0">' + ico("lucchetto") + ' Codice del laboratorio</h3><p>I ragazzi scrivono questo codice per entrare da ogni postazione:</p>' +
+      '<p class="codice-lab">' + h(ui.codiceLab || "—") + '</p><div class="azioni-riga"><button class="btn" data-act="cambiaCodice">' + ico("regola") + ' Cambia il codice</button></div>' +
+      '<p class="aiuto">Cambialo a fine corso o se il codice è finito in mani sbagliate.</p></section>' : "") +
+    '<form class="carta" data-submit="salvaImpostazioni">' +
     '<label class="etichetta" for="imp-tariffa">Tariffa della manodopera (€ all\'ora)</label><input class="campo" id="imp-tariffa" name="tariffa" inputmode="decimal" value="' + h(num(I.tariffa)) + '" style="max-width:10rem">' +
     '<p class="aiuto">Con 36 € all\'ora, 5 minuti costano 3 €: i conti vengono senza troppi decimali.</p>' +
     '<label class="interruttore"><input type="checkbox" name="sconti"' + (I.sconti ? " checked" : "") + '> I ragazzi possono fare sconti</label>' +
@@ -1815,10 +1834,14 @@ function eduImpostazioni(){
     '<label class="etichetta" for="imp-nome">Nome dell\'attività (in fondo alle stampe)</label><input class="campo" id="imp-nome" name="nomeAttivita" value="' + h(I.nomeAttivita) + '">' +
     '<label class="etichetta" for="imp-pin">Nuovo PIN dell\'area educatore</label><input class="campo" id="imp-pin" name="pin" inputmode="numeric" autocomplete="off" placeholder="Lascia vuoto per non cambiarlo" style="max-width:14rem">' +
     '<div class="azioni-riga"><button class="btn btn-primario btn-grande" type="submit">' + ico("ok") + ' Salva le impostazioni</button></div></form>' +
-    '<p class="nota">' + ico("avviso") + ' Il PIN evita solo i clic per errore. Non protegge davvero i dati: chi apre il file può leggere tutto.</p>';
+    (NUVOLA ? '<p class="nota">' + ico("lucchetto") + ' Nella versione online il PIN e il codice sono controllati dal server: senza PIN non si entra nell\'area educatore. Usa un PIN di almeno 6 cifre.</p>' :
+    '<p class="nota">' + ico("avviso") + ' Il PIN evita solo i clic per errore. Non protegge davvero i dati: chi apre il file può leggere tutto.</p>');
 }
 function eduDati(){
-  return '<section class="carta"><h3 style="margin-top:0">' + ico("giu") + ' Salvare una copia</h3><p>I dati restano solo in questo browser. Salva una copia a fine incontro, oppure per spostare i dati su un altro computer.</p>' +
+  return (NUVOLA ? '<section class="carta"><h3 style="margin-top:0">' + ico("su") + ' Dati online</h3><p>Le officine, i clienti e le schede sono nel foglio Google «BiciLab – dati». Le foto sono nella cartella «BiciLab – foto». Tutti e due sono nel Drive dell\'account che ha pubblicato l\'app.</p>' +
+      '<p id="info-online">Controllo i dati online...</p><div class="azioni-riga"><button class="btn" data-act="riordinaOnline">' + ico("regola") + ' Riordina le foto online</button></div>' +
+      '<p class="aiuto">«Riordina» toglie da Drive le foto che nessuna scheda usa più.</p></section>' : "") +
+    '<section class="carta"><h3 style="margin-top:0">' + ico("giu") + ' Salvare una copia</h3><p>' + (NUVOLA ? "Una copia in un file, per sicurezza o per un altro computer." : "I dati restano solo in questo browser. Salva una copia a fine incontro, oppure per spostare i dati su un altro computer.") + '</p>' +
     '<button class="btn btn-primario" data-act="esportaTutto">' + ico("giu") + ' Salva una copia di tutto</button></section>' +
     '<section class="carta"><h3 style="margin-top:0">' + ico("su") + ' Caricare una copia</h3><p>Carica un file di BiciLab. Le officine con lo stesso nome interno vengono sostituite, le altre si aggiungono.</p>' +
     '<label class="etichetta" for="file-import">Scegli il file</label><input class="campo" type="file" id="file-import" accept=".json,application/json" data-ch="fileImport">' +
@@ -1863,7 +1886,7 @@ function vModale(){
     }
     case "pin":
       c = '<h2 id="mod-tit">' + ico("lucchetto") + ' Area educatore</h2><form data-submit="eduPin"><label class="etichetta" for="pin">Scrivi il PIN</label><input class="campo" type="password" id="pin" name="pin" inputmode="numeric" autocomplete="off" autofocus style="max-width:12rem">' +
-        (m.err ? '<p class="errore" role="alert">PIN sbagliato. Riprova.</p>' : "") + '<div class="azioni-riga"><button class="btn btn-primario" type="submit">' + ico("entra") + ' Entra</button><button class="btn" type="button" data-act="chiudiModale">Annulla</button></div></form>';
+        (m.err ? '<p class="errore" role="alert">' + (m.bloccato ? "Troppi PIN sbagliati. Riprova tra 10 minuti." : m.rete ? "Non riesco a collegarmi. Controlla la rete e riprova." : m.noninstallato ? "BiciLab non è ancora pronto: esegui «installa» nell'editor di Apps Script." : "PIN sbagliato. Riprova.") + '</p>' : "") + '<div class="azioni-riga"><button class="btn btn-primario" type="submit">' + ico("entra") + ' Entra</button><button class="btn" type="button" data-act="chiudiModale">Annulla</button></div></form>';
       break;
     case "pref": {
       const b = (k, v, t, extra) => '<button class="chip" id="pref-' + k + '-' + v + '" data-act="pref" data-k="' + k + '" data-v="' + v + '" aria-pressed="' + (P[k] === v) + '">' + (extra || "") + t + '</button>';
@@ -2033,6 +2056,7 @@ function creaEsempio(){
     o.contatore++;
     const s = {id:uid(), numero:anno + "-" + String(o.contatore).padStart(3, "0"), clienteId:cli.id, creata:new Date().toISOString(), stato, bici, richiesta:rich, controllo:ctr, lavori:[], ricambi:[], scontoPct:0, tariffa:D.impostazioni.tariffa, ivaPct:D.impostazioni.iva ? D.impostazioni.ivaPct : 0, consegna:"", note:"", foto:[]};
     lav.forEach(id => aggiungiLavoro(s, id));
+    if(NUVOLA){ s.numero = "…"; s.numProvv = true; }
     o.schede.push(s); return s;
   };
   nuova(c1, {tipo:"Bici da città", colore:"Rosso", marca:"", ruota:"28"}, "La gomma dietro si sgonfia sempre e il freno davanti è morbido.", {gomme:"ko", freno_ant:"ko", freno_post:"ok", catena:"ok"}, ["foratura","freni_reg"], "preventivo");
@@ -2136,7 +2160,7 @@ function dopoRender(){
   if(ui.alberoEntra){ ui.alberoEntra = false; if(vivo) document.querySelectorAll("#main .albero").forEach(a => a.classList.add("al-entra")); }
   aggiornaSfondo();
   caricaFotoVisibili();
-  if(ui.vista === "edu" && ui.eduTab === "dati") infoFoto();
+  if(ui.vista === "edu" && ui.eduTab === "dati"){ infoFoto(); infoOnline(); }
 }
 function contaSu(){
   document.querySelectorAll("[data-conta]").forEach((el, i) => {
@@ -2182,6 +2206,308 @@ document.addEventListener("pointerdown", e => {
   onda(e.clientX, e.clientY, col);
 }, {passive:true});
 
+/* ---------------- VERSIONE ONLINE (Google Apps Script) ----------------
+   Se la pagina gira dentro un'app web Apps Script, i dati si salvano sul foglio Google della scuola
+   e si aggiornano tra le postazioni. Altrimenti BiciLab resta come prima: tutto nel browser.
+   Ogni elemento (officina, cliente, scheda, risposta, imprevisto...) si salva da solo:
+   se due postazioni cambiano lo stesso elemento, vale l'ultima modifica. */
+const NUVOLA = !!(window.google && google.script && google.script.run);
+const POLL_MS = window.BICILAB_POLL_MS || 8000;
+const sinc = {pronto:false, ruolo:null, ora:0, inVolo:false, interrogo:false, timer:0, poll:0, offline:false, stato:"collego", sincr:new Map()};
+let cred = {};
+function server(fn, ...args){
+  return new Promise((ok, ko) => { try{ google.script.run.withSuccessHandler(ok).withFailureHandler(ko)[fn](...args); }catch(e){ ko(e); } });
+}
+const msgErr = e => String((e && e.message) || e || "");
+const erroreAccesso = e => /ACCESSO|PIN|BLOCCATO|NON_INSTALLATO/.test(msgErr(e)) && !/PIN_FORMATO/.test(msgErr(e));
+function credenziali(){
+  try{ cred = JSON.parse(localStorage.getItem("bicilab.cred")) || {}; }catch(e){ cred = {}; }
+  try{ const p = sessionStorage.getItem("bicilab.pin"); if(p) cred.pin = p; else delete cred.pin; }catch(e){}
+}
+function salvaCred(){
+  try{ localStorage.setItem("bicilab.cred", JSON.stringify({codice:cred.codice || ""})); }catch(e){}
+  try{ if(cred.pin) sessionStorage.setItem("bicilab.pin", cred.pin); else sessionStorage.removeItem("bicilab.pin"); }catch(e){}
+}
+function caricaSincr(){ try{ const x = JSON.parse(localStorage.getItem("bicilab.sincr")); if(x){ sinc.sincr = new Map(x.m); sinc.ora = +x.ora || 0; } }catch(e){} }
+function salvaSincr(){ try{ localStorage.setItem("bicilab.sincr", JSON.stringify({ora:sinc.ora, m:[...sinc.sincr]})); }catch(e){} }
+function salvaLocale(){ try{ localStorage.setItem(CHIAVE, JSON.stringify(D)); }catch(e){} }
+
+/* Dai dati dell'app agli elementi da salvare, e ritorno */
+function entitaDi(){
+  const m = new Map();
+  const put = (tipo, id, oid, dati) => m.set(tipo + ":" + id, {tipo, id, oid:oid || "", json:JSON.stringify(dati)});
+  const imp = Object.assign({}, D.impostazioni); delete imp.pin;
+  put("imp", "impostazioni", "", imp);
+  put("lis", "listino", "", D.listino);
+  D.officine.forEach(o => {
+    put("off", o.id, o.id, {id:o.id, nome:o.nome, membri:o.membri || "", colore:o.colore, simbolo:o.simbolo, creata:o.creata || ""});
+    o.clienti.forEach(c => put("cli", c.id, o.id, c));
+    o.schede.forEach(s => put("sch", s.id, o.id, s));
+    Object.keys(o.quiz).forEach(k => put("quiz", o.id + "|" + k, o.id, Object.assign({k}, o.quiz[k])));
+    o.imprevisti.forEach(i => put("imprev", i.id, o.id, i));
+  });
+  return m;
+}
+function rimuoviEntita(e){
+  if(e.tipo === "off"){ D.officine = D.officine.filter(o => o.id !== e.id); if(ui.officinaId === e.id) ui.officinaId = null; return; }
+  const o = D.officine.find(x => x.id === e.oid); if(!o) return;
+  if(e.tipo === "cli") o.clienti = o.clienti.filter(x => x.id !== e.id);
+  else if(e.tipo === "sch") o.schede = o.schede.filter(x => x.id !== e.id);
+  else if(e.tipo === "quiz") delete o.quiz[e.id.slice(e.oid.length + 1)];
+  else if(e.tipo === "imprev") o.imprevisti = o.imprevisti.filter(x => x.id !== e.id);
+}
+function applicaEntita(e){
+  let d; try{ d = JSON.parse(e.json); }catch(x){ return false; }
+  if(e.tipo === "imp"){ D.impostazioni = Object.assign(impostazioniBase(), d); delete D.impostazioni.pin; return true; }
+  if(e.tipo === "lis"){ if(Array.isArray(d)) D.listino = d; return true; }
+  if(e.tipo === "off"){
+    const o = D.officine.find(x => x.id === e.id);
+    if(o) Object.assign(o, d); else D.officine.push(normalizzaOfficina(Object.assign({clienti:[], schede:[], quiz:{}, imprevisti:[], _remota:true}, d)));
+    return true;
+  }
+  const o = D.officine.find(x => x.id === e.oid); if(!o) return false;
+  const sost = (arr, obj) => { const i = arr.findIndex(x => x.id === obj.id); if(i >= 0) arr[i] = obj; else arr.push(obj); };
+  if(e.tipo === "cli") sost(o.clienti, d);
+  else if(e.tipo === "sch") sost(o.schede, normalizzaScheda(d));
+  else if(e.tipo === "quiz"){ const k = d.k; delete d.k; o.quiz[k] = d; }
+  else if(e.tipo === "imprev") sost(o.imprevisti, d);
+  if(e.agg){ const t = new Date(e.agg).toISOString(); if(!o.aggiornata || t > o.aggiornata) o.aggiornata = t; }
+  return true;
+}
+/* Unione a tre vie: base = ultima versione comune, mio = versione di questa postazione, loro = versione del server.
+   Si uniscono le modifiche su campi diversi; gli elenchi con id (foto, lavori) si uniscono elemento per elemento.
+   Se lo stesso campo cambia in tutte e due, vince la modifica più recente (questa postazione). */
+const uguali = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+const oggetto = x => x !== null && typeof x === "object" && !Array.isArray(x);
+const conId = x => Array.isArray(x) && x.every(e => oggetto(e) && typeof e.id === "string" && e.id);
+function unisci(base, mio, loro){
+  if(uguali(mio, base)) return loro;
+  if(uguali(loro, base) || uguali(mio, loro)) return mio;
+  if(oggetto(mio) && oggetto(loro)){
+    const b = oggetto(base) ? base : {}; const out = {}; const chiavi = [];
+    [mio, loro, b].forEach(o => Object.keys(o).forEach(k => { if(!chiavi.includes(k)) chiavi.push(k); }));
+    chiavi.forEach(k => { const v = unisci(b[k], mio[k], loro[k]); if(v !== undefined) out[k] = v; });
+    return out;
+  }
+  if(conId(mio) && conId(loro) && (base === undefined || conId(base))){
+    const b = new Map((base || []).map(e => [e.id, e])); const m = new Map(mio.map(e => [e.id, e])); const visti = new Set(); const out = [];
+    loro.forEach(x => { visti.add(x.id); const bb = b.get(x.id), mm = m.get(x.id);
+      if(mm === undefined){ if(bb !== undefined && uguali(x, bb)) return; out.push(x); return; }
+      out.push(unisci(bb, mm, x)); });
+    mio.forEach(mm => { if(visti.has(mm.id)) return; const bb = b.get(mm.id); if(bb !== undefined && uguali(mm, bb)) return; out.push(mm); });
+    return out;
+  }
+  return mio;
+}
+const impostaEntita = (e, obj) => applicaEntita({tipo:e.tipo, id:e.id, oid:e.oid, json:JSON.stringify(obj)});
+/* Applica gli elementi arrivati dal server. sinc.sincr tiene, per ogni elemento, l'ultima versione comune. */
+function applicaRemote(lista, completo){
+  const att = entitaDi(); let cambiato = false;
+  const ordine = {imp:0, lis:1, off:2, cli:3, sch:4, quiz:5, imprev:6};
+  lista.slice().sort((a, b) => (ordine[a.tipo] ?? 9) - (ordine[b.tipo] ?? 9)).forEach(e => {
+    const k = e.tipo + ":" + e.id; const loc = att.get(k); const base = sinc.sincr.get(k);
+    if(!loc && base !== undefined && !e.del) return;
+    if(e.del){
+      if(loc && (base === undefined || loc.json === base)){ rimuoviEntita(e); cambiato = true; }
+      sinc.sincr.delete(k); return;
+    }
+    if(loc && loc.json === e.json){ sinc.sincr.set(k, e.json); return; }
+    if(loc && base !== undefined && loc.json !== base){
+      let unita; try{ unita = unisci(JSON.parse(base), JSON.parse(loc.json), JSON.parse(e.json)); }catch(x){ return; }
+      if(impostaEntita(e, unita)) cambiato = true;
+      sinc.sincr.set(k, e.json); return;
+    }
+    if(applicaEntita(e)){ cambiato = true; sinc.sincr.set(k, e.json); }
+  });
+  if(completo){
+    const remote = new Set(lista.map(e => e.tipo + ":" + e.id));
+    const att2 = entitaDi();
+    att2.forEach((loc, k) => { const base = sinc.sincr.get(k); if(!remote.has(k) && base !== undefined && loc.json === base){ rimuoviEntita(loc); sinc.sincr.delete(k); cambiato = true; } });
+    [...sinc.sincr.keys()].forEach(k => { if(!remote.has(k) && !att2.has(k)) sinc.sincr.delete(k); });
+  }
+  D.officine.forEach(o => { if(o._remota){ delete o._remota; o.abilVisti = nAbil(o); } });
+  return cambiato;
+}
+function calcolaOps(){
+  const att = entitaDi(); const ops = [];
+  att.forEach((e, k) => {
+    if(sinc.ruolo !== "edu" && (e.tipo === "imp" || e.tipo === "lis")) return;
+    const base = sinc.sincr.get(k);
+    if(base === e.json) return;
+    const op = {op:"put", tipo:e.tipo, id:e.id, oid:e.oid, json:e.json, base:base === undefined ? null : base};
+    if(e.tipo === "sch" && e.json.indexOf('"numProvv":true') >= 0){
+      const o = D.officine.find(x => x.id === e.oid); const anno = String(new Date().getFullYear());
+      op.numMin = o ? Math.max(0, ...o.schede.map(s => String(s.numero || "").startsWith(anno + "-") ? parseInt(s.numero.slice(5), 10) || 0 : 0)) : 0;
+    }
+    ops.push(op);
+  });
+  sinc.sincr.forEach((b, k) => { if(!att.has(k)){ const i = k.indexOf(":"); ops.push({op:"del", tipo:k.slice(0, i), id:k.slice(i + 1)}); } });
+  return ops;
+}
+function programmaInvio(){
+  if(!NUVOLA) return;
+  clearTimeout(sinc.timer); sinc.timer = setTimeout(invia, 700);
+  if(sinc.pronto && !sinc.offline) statoSinc("salvo");
+}
+async function invia(){
+  if(!NUVOLA || !sinc.pronto || sinc.inVolo) return;
+  const ops = calcolaOps();
+  if(!ops.length){ if(!sinc.offline) statoSinc("ok"); return; }
+  sinc.inVolo = true; if(!sinc.offline) statoSinc("salvo");
+  let ricarica = false, cambiato = false;
+  try{
+    const r = await server("salvaOps", cred, ops);
+    const esiti = {}; (r.risultati || []).forEach(x => { esiti[x.k] = x; });
+    const ora = entitaDi();
+    ops.forEach(o => {
+      const k = o.tipo + ":" + o.id; const x = esiti[k];
+      if(x && x.errore){ sinc.sincr.set(k, o.json || ""); ricarica = true; return; }
+      if(o.op === "del"){ sinc.sincr.delete(k); return; }
+      if(x && x.json){
+        /* il server ha unito o completato (per esempio il numero della scheda) */
+        const loc = ora.get(k);
+        if(loc){
+          if(loc.json === o.json) impostaEntita(o, JSON.parse(x.json));
+          else { try{ impostaEntita(o, unisci(JSON.parse(o.json), JSON.parse(loc.json), JSON.parse(x.json))); }catch(e){} }
+          cambiato = true;
+        }
+        sinc.sincr.set(k, x.json);
+      } else sinc.sincr.set(k, o.json);
+    });
+    salvaLocale(); salvaSincr();
+    sinc.offline = false; statoSinc("ok");
+    if(cambiato) renderRemoto();
+    if(ricarica){ toast("Alcune modifiche non sono state salvate: servono i permessi dell'educatore."); sinc.inVolo = false; await caricaTutto(); }
+  }catch(e){ gestisciErrore(e); }
+  finally{ sinc.inVolo = false; }
+  if(!sinc.offline && calcolaOps().length) programmaInvio();
+}
+async function caricaTutto(){
+  const r = await server("carica", cred);
+  sinc.ruolo = r.ruolo; sinc.ora = r.ora; sinc.offline = false; sinc.pronto = true;
+  if(r.codice) ui.codiceLab = r.codice;
+  controllaRuolo(r.ruolo);
+  const c = applicaRemote(r.entita || [], true);
+  salvaLocale(); salvaSincr();
+  if(c) renderRemoto();
+  statoSinc("ok"); programmaInvio(); inviaFoto();
+}
+async function interroga(){
+  if(!sinc.pronto || sinc.inVolo || sinc.interrogo) return;
+  sinc.interrogo = true;
+  try{
+    if(sinc.offline){ await caricaTutto(); return; }
+    const r = await server("cambiamenti", cred, sinc.ora - 15000);
+    sinc.ora = r.ora; controllaRuolo(r.ruolo);
+    const c = r.entita && r.entita.length ? applicaRemote(r.entita, false) : false;
+    salvaSincr(); if(c){ salvaLocale(); renderRemoto(); }
+    if(calcolaOps().length) programmaInvio(); else statoSinc("ok");
+  }catch(e){ gestisciErrore(e); }
+  finally{ sinc.interrogo = false; }
+}
+function avviaPoll(){
+  clearTimeout(sinc.poll);
+  const giro = async () => { await interroga(); sinc.poll = setTimeout(giro, document.visibilityState === "hidden" ? POLL_MS * 4 : POLL_MS); };
+  sinc.poll = setTimeout(giro, POLL_MS);
+}
+/* Il PIN non è più valido (cambiato altrove): la postazione torna in modalità ragazzi */
+function controllaRuolo(r){
+  if(cred.pin && r !== "edu"){ delete cred.pin; salvaCred(); ui.edu = false; if(ui.vista === "edu") ui.vista = "scelta"; toast("Il PIN dell'educatore è cambiato: entra di nuovo nell'area educatore."); render(); }
+  sinc.ruolo = r;
+}
+function gestisciErrore(e){
+  const m = msgErr(e);
+  if(erroreAccesso(e)){
+    clearTimeout(sinc.poll); sinc.pronto = false;
+    if(/PIN/.test(m)) delete cred.pin;
+    if(/ACCESSO/.test(m) || (/PIN/.test(m) && !cred.codice)) cred.codice = "";
+    salvaCred(); ui.edu = false; ui.modale = null; ui.officinaId = null;
+    ui.errAccesso = /NON_INSTALLATO/.test(m) ? "BiciLab non è ancora pronto: l'educatore deve eseguire «installa» (vedi le istruzioni)." :
+      /BLOCCATO/.test(m) ? "Troppi PIN sbagliati. Riprova tra 10 minuti." :
+      /PIN/.test(m) ? "Il PIN non è più valido. Entra di nuovo." : "Il codice non è giusto o è cambiato. Chiedi il codice all'educatore.";
+    ui.vista = "accesso"; render(); return;
+  }
+  sinc.offline = true; statoSinc("offline");
+}
+function staScrivendo(){
+  const a = document.activeElement;
+  return !!a && (a.tagName === "TEXTAREA" || a.tagName === "SELECT" || (a.tagName === "INPUT" && !/^(button|checkbox|radio|file|submit)$/.test(a.type)));
+}
+/* Aggiorna lo schermo per i dati arrivati da altre postazioni, ma non mentre si scrive */
+function renderRemoto(){
+  if((ui.modale && ui.modale.tipo !== "pref") || staScrivendo() || $("#camera")){ ui.inSospeso = true; return; }
+  render();
+}
+document.addEventListener("focusout", () => setTimeout(() => { if(ui.inSospeso && !ui.modale && !staScrivendo() && !$("#camera")) render(); }, 80));
+document.addEventListener("visibilitychange", () => { if(NUVOLA && sinc.pronto && document.visibilityState === "visible") interroga(); });
+
+const STATI_SINC = {collego:["regola","Mi collego"], ok:["ok","Salvato online"], salvo:["su","Salvo..."], offline:["avviso","Senza rete: salvo qui"]};
+function pillSinc(){
+  if(!NUVOLA || ui.vista === "accesso") return "";
+  const s = STATI_SINC[sinc.stato] || STATI_SINC.collego;
+  return '<span class="sinc sinc-' + (sinc.stato || "collego") + '" id="stato-sinc" role="status" title="' + s[1] + '">' + ico(s[0]) + '<span>' + s[1] + '</span></span>';
+}
+function statoSinc(s){ if(sinc.stato === s) return; sinc.stato = s; const el = $("#stato-sinc"); if(el) el.outerHTML = pillSinc(); }
+
+/* Foto online: si salvano qui e partono verso Drive appena c'è rete */
+const fotoDaInviare = new Set((() => { try{ return JSON.parse(localStorage.getItem("bicilab.fotoInvio")) || []; }catch(e){ return []; } })());
+function salvaCodaFoto(){ try{ localStorage.setItem("bicilab.fotoInvio", JSON.stringify([...fotoDaInviare])); }catch(e){} }
+let invioFotoInCorso = false;
+async function inviaFoto(){
+  if(!NUVOLA || !sinc.pronto || invioFotoInCorso) return;
+  invioFotoInCorso = true;
+  try{
+    for(const id of [...fotoDaInviare]){
+      const b = await fotoGetLocale(id).catch(() => null);
+      if(b){ const u = await blobInDataUrl(b); await server("fotoCarica", cred, id, u.slice(u.indexOf(",") + 1), b.type || "image/jpeg"); }
+      fotoDaInviare.delete(id); salvaCodaFoto();
+    }
+  }catch(e){ if(!erroreAccesso(e)){ sinc.offline = true; statoSinc("offline"); } }
+  finally{ invioFotoInCorso = false; }
+}
+
+/* Schermate di entrata */
+function vAccesso(){
+  return '<main class="contenitore" id="main"><section class="eroe eroe-casa" style="--c:#C2410C"><div class="eroe-testo"><span class="eroe-etich">' + ico("lucchetto") + ' Entrata</span>' +
+    '<h1 id="titolo" tabindex="-1">BiciLab</h1><p>Per entrare scrivi il codice del laboratorio. Te lo dà l\'educatore.</p></div>' +
+    '<div class="eroe-disegno" aria-hidden="true">' + disegnoOfficina() + '</div></section>' +
+    '<form class="carta" data-submit="accesso" style="max-width:520px"><label class="etichetta" for="codice-lab" style="margin-top:0">Codice del laboratorio</label>' +
+    '<input class="campo campo-codice" id="codice-lab" name="codice" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="12"' + (ui.errAccesso ? ' aria-invalid="true" aria-describedby="err-accesso"' : "") + '>' +
+    (ui.errAccesso ? '<p class="errore" id="err-accesso" role="alert">' + h(ui.errAccesso) + '</p>' : "") +
+    '<div class="azioni-riga"><button class="btn btn-primario btn-grande" type="submit">' + ico("entra") + ' Entra</button></div></form>' +
+    '<p class="nota">' + ico("lucchetto") + ' Sei un educatore? <button class="link" data-act="eduApri">Entra con il PIN</button></p></main>';
+}
+function vCollego(){
+  return '<main class="contenitore" id="main"><section class="eroe eroe-casa" style="--c:#C2410C"><div class="eroe-testo"><span class="eroe-etich">' + ico("regola") + ' Un momento</span>' +
+    '<h1 id="titolo" tabindex="-1">BiciLab</h1><p>Mi collego all\'officina online...</p></div><div class="eroe-disegno" aria-hidden="true">' + disegnoOfficina() + '</div></section></main>';
+}
+function avviaNuvola(){
+  credenziali(); caricaSincr();
+  if(!cred.codice && !cred.pin){ ui.vista = "accesso"; render(); return; }
+  if(cred.pin){ ui.edu = true; ui.vista = "edu"; }
+  else ui.vista = D.officine.length ? "scelta" : "collego";
+  if(!D.officine.length) ui.vista = "collego";
+  render();
+  caricaTutto().then(() => { if(ui.vista === "collego") ui.vista = ui.edu ? "edu" : "scelta"; render(); avviaPoll(); })
+    .catch(e => { gestisciErrore(e); if(!erroreAccesso(e)){ sinc.pronto = true; sinc.offline = true; if(ui.vista === "collego") ui.vista = ui.edu ? "edu" : "scelta"; render(); avviaPoll(); } });
+}
+/* Aspetta che le modifiche siano partite, poi esegue fn */
+async function dopoInvio(fn){
+  clearTimeout(sinc.timer);
+  for(let i = 0; i < 40 && sinc.inVolo; i++) await new Promise(r => setTimeout(r, 250));
+  await invia();
+  try{ await fn(); }catch(e){}
+}
+
+let infoOnlineInCorso = false;
+async function infoOnline(){
+  if(!NUVOLA || infoOnlineInCorso || !$("#info-online")) return; infoOnlineInCorso = true;
+  try{ const r = await server("educatore", cred, "info"); const el = $("#info-online");
+    if(el) el.innerHTML = "Foto su Drive: <b>" + r.foto + "</b>. " + '<a href="' + h(r.foglio) + '" target="_blank" rel="noopener">Apri il foglio dei dati</a> · <a href="' + h(r.cartella) + '" target="_blank" rel="noopener">Apri la cartella delle foto</a>';
+  }catch(e){ const el = $("#info-online"); if(el) el.textContent = "Non riesco a leggere i dati online adesso."; }
+  finally{ infoOnlineInCorso = false; }
+}
+
 /* ---------------- FOTO ----------------
    Le foto vengono ridotte (lato lungo 1200 px, JPEG) e salvate nel database del browser (IndexedDB).
    Se IndexedDB non c'è, si usa il salvataggio normale del browser, che è più piccolo. */
@@ -2204,9 +2530,20 @@ function apriDbFoto(){
 function opFoto(db, modo, fn){
   return new Promise((ok, ko) => { const tr = db.transaction("foto", modo); const rq = fn(tr.objectStore("foto")); tr.oncomplete = () => ok(rq ? rq.result : undefined); tr.onerror = () => ko(tr.error); tr.onabort = () => ko(tr.error || new Error("annullato")); });
 }
-async function fotoPut(id, blob){ const db = await apriDbFoto(); if(db) return opFoto(db, "readwrite", st => st.put(blob, id)); localStorage.setItem(LSF + id, await blobInDataUrl(blob)); }
-async function fotoGet(id){ const db = await apriDbFoto(); if(db) return opFoto(db, "readonly", st => st.get(id)); const u = localStorage.getItem(LSF + id); return u ? dataUrlInBlob(u) : null; }
-async function fotoDel(id){ const db = await apriDbFoto(); if(db) return opFoto(db, "readwrite", st => st.delete(id)); localStorage.removeItem(LSF + id); }
+async function fotoPutLocale(id, blob){ const db = await apriDbFoto(); if(db) return opFoto(db, "readwrite", st => st.put(blob, id)); localStorage.setItem(LSF + id, await blobInDataUrl(blob)); }
+async function fotoGetLocale(id){ const db = await apriDbFoto(); if(db) return opFoto(db, "readonly", st => st.get(id)); const u = localStorage.getItem(LSF + id); return u ? dataUrlInBlob(u) : null; }
+async function fotoDelLocale(id){ const db = await apriDbFoto(); if(db) return opFoto(db, "readwrite", st => st.delete(id)); localStorage.removeItem(LSF + id); }
+async function fotoPut(id, blob){ await fotoPutLocale(id, blob); if(NUVOLA){ fotoDaInviare.add(id); salvaCodaFoto(); inviaFoto(); } }
+async function fotoGet(id){
+  const b = await fotoGetLocale(id).catch(() => null);
+  if(b || !NUVOLA || !sinc.pronto) return b;
+  const r = await server("fotoLeggi", cred, id).catch(() => null);
+  if(!r || !r.b64) return null;
+  const nb = dataUrlInBlob("data:" + (r.mime || "image/jpeg") + ";base64," + r.b64);
+  fotoPutLocale(id, nb).catch(() => {});
+  return nb;
+}
+async function fotoDel(id){ await fotoDelLocale(id); }
 async function fotoChiavi(){ const db = await apriDbFoto(); if(db) return opFoto(db, "readonly", st => st.getAllKeys()); return Object.keys(localStorage).filter(k => k.startsWith(LSF)).map(k => k.slice(LSF.length)); }
 function blobInDataUrl(b){ return new Promise((ok, ko) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = () => ko(r.error); r.readAsDataURL(b); }); }
 function dataUrlInBlob(u){
@@ -2341,7 +2678,7 @@ async function scattaDaCamera(){
 async function pulisciFoto(){
   try{
     const usati = new Set(); D.officine.forEach(o => o.schede.forEach(s => (s.foto || []).forEach(f => usati.add(f.id))));
-    for(const k of (await fotoChiavi()) || []) if(!usati.has(k)){ await fotoDel(k); dimenticaFoto(k); }
+    for(const k of (await fotoChiavi()) || []) if(!usati.has(k) && !fotoDaInviare.has(k)){ await fotoDelLocale(k); dimenticaFoto(k); }
   }catch(e){}
 }
 const contaFoto = lista => lista.reduce((a, o) => a + o.schede.reduce((b, s) => b + (s.foto ? s.foto.length : 0), 0), 0);
@@ -2407,6 +2744,7 @@ function creaScheda(clienteId){
   const o = off(); o.contatore++;
   const s = {id:uid(), numero:new Date().getFullYear() + "-" + String(o.contatore).padStart(3, "0"), clienteId, creata:new Date().toISOString(), aggiornata:new Date().toISOString(), stato:"bozza",
     bici:{tipo:"", marca:"", colore:"", ruota:"", telaio:""}, richiesta:"", controllo:{}, lavori:[], ricambi:[], scontoPct:0, tariffa:+D.impostazioni.tariffa, ivaPct:D.impostazioni.iva ? +D.impostazioni.ivaPct : 0, consegna:"", note:"", foto:[]};
+  if(NUVOLA){ s.numero = "…"; s.numProvv = true; }
   o.schede.push(s); salva(); return s;
 }
 function toccaScheda(s){ s.aggiornata = new Date().toISOString(); salva(); }
@@ -2540,7 +2878,11 @@ const A = {
 
   eduApri: () => { if(ui.edu) vai("edu"); else { ui.modale = {tipo:"pin"}; render(); } },
   vaiEdu: () => vai("edu"),
-  eduEsci: () => { ui.edu = false; ui.officinaId = null; vai("scelta"); },
+  eduEsci: () => {
+    ui.edu = false; ui.officinaId = null;
+    if(NUVOLA){ delete cred.pin; salvaCred(); sinc.ruolo = cred.codice ? "ragazzi" : null; if(!cred.codice){ clearTimeout(sinc.poll); sinc.pronto = false; ui.errAccesso = null; vai("accesso"); return; } }
+    vai("scelta");
+  },
   eduTab: el => { ui.eduTab = el.dataset.t; render(); },
   eduEntra: el => { ui.officinaId = el.dataset.id; vai("banco"); },
   eduImprevisto: el => { ui.modale = {tipo:"imprevisto", id:el.dataset.id}; render(); },
@@ -2548,8 +2890,10 @@ const A = {
   esempio: () => { creaEsempio(); render(); toast("Ho creato l'«Officina di prova» con clienti inventati."); },
   esportaTutto: async () => { if(contaFoto(D.officine)) toast("Preparo la copia con le foto..."); const foto = await fotoDiOfficine(D.officine); scarica("bicilab-copia-" + oggi() + ".json", JSON.stringify(Object.assign({}, D, {foto}), null, 1)); },
   importaTesto: () => { const t = $("#testo-import").value.trim(); if(!t){ toast("Incolla prima il testo della copia."); return; } importa(t); },
-  azzera: () => chiedi("Cancellare tutte le officine?", "Si cancellano tutte le officine, i clienti e le schede di questo browser. Prima puoi salvare una copia.", "Sì, cancella tutto", () => { D.officine = []; ui.officinaId = null; salva(); pulisciFoto(); vai("edu"); toast("Officine cancellate."); }, true),
-  eliminaFotoConsegnate: () => chiedi("Eliminare le foto delle bici consegnate?", "Si cancellano le foto delle schede consegnate in tutte le officine. Le schede restano.", "Sì, elimina quelle foto", () => { D.officine.forEach(o => o.schede.forEach(s => { if(s.stato === "consegnata") s.foto = []; })); salva(); pulisciFoto(); render(); toast("Foto delle bici consegnate eliminate."); }, true),
+  azzera: () => chiedi("Cancellare tutte le officine?", "Si cancellano tutte le officine, i clienti e le schede di questo browser. Prima puoi salvare una copia.", "Sì, cancella tutto", () => { D.officine = []; ui.officinaId = null; salva(); pulisciFoto(); if(NUVOLA) dopoInvio(() => server("educatore", cred, "pulisci")); vai("edu"); toast("Officine cancellate."); }, true),
+  eliminaFotoConsegnate: () => chiedi("Eliminare le foto delle bici consegnate?", "Si cancellano le foto delle schede consegnate in tutte le officine. Le schede restano.", "Sì, elimina quelle foto", () => { D.officine.forEach(o => o.schede.forEach(s => { if(s.stato === "consegnata") s.foto = []; })); salva(); pulisciFoto(); if(NUVOLA) dopoInvio(() => server("educatore", cred, "pulisci")); render(); toast("Foto delle bici consegnate eliminate."); }, true),
+  riordinaOnline: () => { toast("Riordino le foto online..."); dopoInvio(async () => { const r = await server("educatore", cred, "pulisci"); toast("Fatto: " + r.fotoTolte + " foto non usate tolte da Drive."); render(); }); },
+  cambiaCodice: () => chiedi("Cambiare il codice del laboratorio?", "Tutte le postazioni dei ragazzi dovranno scrivere il nuovo codice.", "Sì, cambia il codice", () => { server("educatore", cred, "codice").then(r => { ui.codiceLab = r.codice; render(); toast("Nuovo codice: " + r.codice + "."); }).catch(e => toast("Non riesco a cambiare il codice. Controlla la rete.")); render(); }),
   scattaFoto: el => {
     const dest = {oid:ui.officinaId, sid:ui.schedaId, m:el.dataset.m, p:el.dataset.p || ""};
     if(el.dataset.cam && !TOCCO && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) apriCamera(dest);
@@ -2560,7 +2904,7 @@ const A = {
   fotoMomento: el => { const f = fotoAperta(); if(f){ f.momento = el.dataset.v; salva(); ui.focus = el.id; ui.pop = el.id; render(); } },
   fotoElimina: () => {
     const m = ui.modale; const s = trovaScheda(m.sid);
-    chiedi("Eliminare questa foto?", "La foto viene cancellata da questo dispositivo.", "Sì, elimina la foto", () => { s.foto = s.foto.filter(f => f.id !== m.fid); toccaScheda(s); pulisciFoto(); render(); toast("Foto eliminata."); }, true);
+    chiedi("Eliminare questa foto?", "La foto viene cancellata da questo dispositivo.", "Sì, elimina la foto", () => { s.foto = s.foto.filter(f => f.id !== m.fid); toccaScheda(s); pulisciFoto(); if(NUVOLA){ const id = m.fid; dopoInvio(() => server("fotoElimina", cred, [id])); } render(); toast("Foto eliminata."); }, true);
   },
   camScatta: () => scattaDaCamera(),
   camChiudi: () => { chiudiCamera(); render(); },
@@ -2572,6 +2916,12 @@ const A = {
 
 /* ---------------- MODULI (invio) ---------------- */
 const S = {
+  accesso: f => {
+    const c = f.codice.value.trim().toUpperCase();
+    if(!c){ ui.errAccesso = "Scrivi il codice del laboratorio."; render(); return; }
+    cred.codice = c; delete cred.pin; salvaCred(); ui.errAccesso = null; ui.vista = "collego"; render();
+    caricaTutto().then(() => { ui.vista = "scelta"; render(); avviaPoll(); }).catch(gestisciErrore);
+  },
   salvaOfficina: f => {
     const nome = f.nome.value.trim();
     if(!nome){ ui.modale = {tipo:"officina", err:{nome:"Scrivi il nome dell'officina."}, membri:f.membri.value}; render(); $("#off-nome").focus(); return; }
@@ -2605,13 +2955,27 @@ const S = {
     if(isNaN(p) || p < 0){ toast("Scrivi il prezzo con un numero, per esempio 2,50."); f.prezzo.focus(); return; }
     s.ricambi.push({rid:null, nome, prezzo:r2(p), qta:1, origine:null, recupero:true}); toccaScheda(s); render();
   },
-  eduPin: f => { if(f.pin.value === String(D.impostazioni.pin)){ ui.edu = true; ui.modale = null; ui.eduTab = "officine"; vai("edu"); } else { ui.modale = {tipo:"pin", err:true}; render(); } },
+  eduPin: f => {
+    if(NUVOLA){
+      const pin = f.pin.value.trim();
+      server("educatore", Object.assign({}, cred, {pin}), "verifica").then(r => {
+        cred.pin = pin; salvaCred(); ui.codiceLab = r.codice; sinc.ruolo = "edu"; ui.edu = true; ui.modale = null; ui.eduTab = "officine"; ui.errAccesso = null;
+        if(!sinc.pronto){ ui.vista = "collego"; render(); caricaTutto().then(() => { vai("edu"); avviaPoll(); }).catch(gestisciErrore); }
+        else vai("edu");
+      }).catch(e => { const m = msgErr(e); ui.modale = {tipo:"pin", err:true, bloccato:/BLOCCATO/.test(m), rete:!/PIN|PERMESSO|ACCESSO|BLOCCATO|NON_INSTALLATO/.test(m), noninstallato:/NON_INSTALLATO/.test(m)}; render(); });
+      return;
+    }
+    if(f.pin.value === String(D.impostazioni.pin)){ ui.edu = true; ui.modale = null; ui.eduTab = "officine"; vai("edu"); } else { ui.modale = {tipo:"pin", err:true}; render(); } },
   salvaImpostazioni: f => {
     const I = D.impostazioni; const t = leggiNumero(f.tariffa.value); const iv = leggiNumero(f.ivaPct.value);
     if(isNaN(t) || t < 0){ toast("Scrivi la tariffa con un numero."); f.tariffa.focus(); return; }
     I.tariffa = r2(t); I.iva = f.iva.checked; I.ivaPct = isNaN(iv) ? 22 : iv; I.sconti = f.sconti.checked; I.contoComputer = f.contoComputer.checked;
     I.lingua2 = f.lingua2.value; I.nomeAttivita = f.nomeAttivita.value.trim();
-    if(f.pin.value.trim()) I.pin = f.pin.value.trim();
+    const nuovoPin = f.pin.value.trim();
+    if(nuovoPin && NUVOLA){
+      if(!/^\d{4,12}$/.test(nuovoPin)){ toast("Il PIN deve avere da 4 a 12 cifre."); f.pin.focus(); return; }
+      server("educatore", cred, "pin", nuovoPin).then(() => { cred.pin = nuovoPin; salvaCred(); toast("PIN cambiato."); }).catch(() => toast("Non riesco a cambiare il PIN. Controlla la rete."));
+    } else if(nuovoPin) I.pin = nuovoPin;
     salva(); render(); toast("Impostazioni salvate.");
   },
   inviaImprevisto: f => {
@@ -2667,7 +3031,8 @@ document.addEventListener("keydown", e => {
 });
 window.addEventListener("afterprint", () => { $("#stampa").innerHTML = ""; });
 
-carica(); applicaPref(); render();
+carica(); applicaPref();
+if(NUVOLA) avviaNuvola(); else render();
 </script>
 </body>
 </html>
