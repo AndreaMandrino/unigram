@@ -511,6 +511,38 @@ legend{font-weight:700;margin-bottom:.4em;padding:0}
 html.fermo *,html.fermo *::before,html.fermo *::after{animation:none!important;transition:none!important}
 html.fermo .btn:hover,html.fermo .chip:hover,html.fermo .tessera:hover,html.fermo .card-off:hover,html.fermo .card-mat:hover,html.fermo .lavoro:hover,html.fermo .scelta:hover,html.fermo .opz:hover,html.fermo .tg:hover{transform:none}
 
+/* ---------- foto ---------- */
+.foto-griglia{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin:10px 0}
+.foto-griglia.piccola{grid-template-columns:repeat(auto-fill,minmax(96px,1fr));margin:0;flex:1 1 100%}
+.foto{position:relative;display:block;width:100%;padding:0;border:2px solid var(--linea-forte);border-radius:12px;overflow:hidden;background:var(--pannello-2);aspect-ratio:4/3;cursor:zoom-in;transition:transform .15s,box-shadow .15s}
+.foto:hover{transform:translateY(-2px) rotate(-.6deg);box-shadow:0 5px 0 var(--linea)}
+.foto:active{transform:scale(.97)}
+.foto img{width:100%;height:100%;object-fit:cover;display:block}
+.foto-etich{position:absolute;left:6px;right:6px;bottom:6px;background:rgba(35,33,30,.8);color:#fff;font-size:.72rem;font-weight:700;border-radius:8px;padding:.1em .5em;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.foto.mancante::before{content:"Foto non trovata";position:absolute;inset:0;display:grid;place-items:center;font-size:.8rem;color:var(--ink-2)}
+.ctr-foto{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--ko-chiaro);border:2px dashed var(--ko);border-radius:12px;padding:8px 10px}
+.vis-foto{margin:0 0 10px;background:#1B1916;border-radius:14px;padding:6px;min-height:120px;display:grid;place-items:center}
+.vis-foto img{display:block;max-width:100%;max-height:52vh;border-radius:10px}
+.prima-dopo{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin:6px 0 14px;max-width:640px}
+.prima-dopo figure{margin:0}
+.prima-dopo figcaption{font-weight:700;text-align:center;margin-top:4px}
+.pd-freccia .ico{width:2em;height:2em;color:var(--arancio)}
+.cart-main{display:flex;align-items:center;gap:12px;min-width:0}
+.cart-foto{width:3.4rem;height:3.4rem;border-radius:10px;object-fit:cover;flex:none;border:2px solid var(--linea);background:var(--pannello-2)}
+#camera{position:fixed;inset:0;z-index:90;background:rgba(20,18,16,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:16px;color:#fff;text-align:center}
+#camera video{width:min(96vw,880px);max-height:64vh;border-radius:16px;background:#000;object-fit:contain}
+#camera .cam-msg{font-weight:700;max-width:40em;margin:0}
+#camera .cam-conta{color:#F6C445;font-weight:700;min-height:1.6em;margin:0}
+#camera :focus-visible{outline-color:#FFD54A}
+.flash{position:fixed;inset:0;background:#fff;pointer-events:none;animation:flash .4s ease-out forwards}
+@keyframes flash{from{opacity:.9}to{opacity:0}}
+.st-foto{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:4px}
+.st-foto.st-pd{grid-template-columns:1fr 1fr}
+.st-foto figure{margin:0;break-inside:avoid;page-break-inside:avoid}
+.st-foto img{width:100%;height:36mm;object-fit:cover;border:1px solid #000;border-radius:4px;display:block}
+.st-pd img{height:52mm}
+.st-foto figcaption{font-size:8pt;margin-top:1px}
+
 /* ---------- stampa ---------- */
 #stampa{display:none}
 .pagina{font-family:var(--font);color:#000;font-size:10.5pt;line-height:1.45}
@@ -530,8 +562,8 @@ html.fermo .btn:hover,html.fermo .chip:hover,html.fermo .tessera:hover,html.ferm
 .st-ctr li{display:flex;gap:5px;align-items:center;break-inside:avoid}
 .st-lav{margin:0;padding-left:18px}
 .st-lav li{display:flex;justify-content:space-between;gap:10px}
-.st-riga{display:grid;grid-template-columns:1fr 50mm 26mm;gap:6px;padding:2px 0;border-bottom:1px dotted #555}
-.st-riga .v{text-align:right;font-weight:700}
+.st-riga{display:grid;grid-template-columns:1fr 50mm 32mm;gap:6px;padding:2px 0;border-bottom:1px dotted #555}
+.st-riga .v{text-align:right;font-weight:700;white-space:nowrap}
 .st-riga .m{text-align:right}
 .st-riga.tot{border-top:2px solid #000;border-bottom:0;font-size:12pt;margin-top:3px}
 .st-vuoto{display:inline-block;min-width:22mm;border-bottom:1px solid #000;height:1em}
@@ -601,6 +633,8 @@ html.fermo .btn:hover,html.fermo .chip:hover,html.fermo .tessera:hover,html.ferm
 <symbol id="i-lampo" viewBox="0 0 24 24"><path d="M13 2.5 L4.5 14 H11 L10 21.5 L19.5 9.5 H13 Z"/></symbol>
 <symbol id="i-stella" viewBox="0 0 24 24"><path d="M12 3 L14.7 8.6 L20.8 9.4 L16.3 13.6 L17.5 19.6 L12 16.6 L6.5 19.6 L7.7 13.6 L3.2 9.4 L9.3 8.6 Z"/></symbol>
 <symbol id="i-aa" viewBox="0 0 24 24"><path d="M2.5 19 L7.5 5 L12.5 19 M4.4 14 H10.6 M14.5 19 L18 10 L21.5 19 M15.7 16 H20.3"/></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><path d="M3 8.5 A2 2 0 0 1 5 6.5 H7.5 L9 4 H15 L16.5 6.5 H19 A2 2 0 0 1 21 8.5 V18 A2 2 0 0 1 19 20 H5 A2 2 0 0 1 3 18 Z"/><circle cx="12" cy="13" r="3.8"/></symbol>
+<symbol id="i-immagine" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.8"/><path d="M3 17 L9 12 L13 15.5 L16 13 L21 17"/></symbol>
 <symbol id="i-calendario" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10 H20.5 M8 3 V7 M16 3 V7"/></symbol>
 </defs>
 </svg>
@@ -612,6 +646,7 @@ html.fermo .btn:hover,html.fermo .chip:hover,html.fermo .tessera:hover,html.ferm
 <div id="effetti" aria-hidden="true"></div>
 <div id="annuncio" class="sr" aria-live="polite"></div>
 <div id="stampa" aria-hidden="true"></div>
+<input type="file" id="input-foto" accept="image/*" hidden data-ch="fotoScelte">
 
 <script>
 'use strict';
@@ -833,6 +868,11 @@ const BASE = {id:"base", nome:"Ogni lavoro in officina", parole:["cliente","prev
  {m:"TEC", t:"Organizzare il lavoro e lavorare sicuri", p:"Prima di lavorare il meccanico prepara gli attrezzi, decide l'ordine dei lavori e usa guanti e occhiali quando serve. Alla fine rimette tutto a posto.", a:"Scrivi l'elenco degli attrezzi che servono per questa scheda.", q:{d:"Quando usi i guanti?", o:["Quando tocchi olio, sgrassatore o pezzi taglienti","Mai","Solo d'inverno"], i:"I guanti proteggono le mani dallo sporco e dai tagli."}}
 ]};
 
+const FOTO_STUDIO = {id:"foto", nome:"Fotografare la bici", parole:[], studio:[
+ {m:"ART", t:"Fotografare per documentare", p:"Una foto di documentazione deve mostrare bene l'oggetto. Per la bici intera: fotografala di lato, con la luce che arriva da dietro chi scatta. Per un difetto: avvicinati e inquadra solo quel pezzo.", a:"Fai due foto della stessa bici: una in controluce (la luce dietro la bici) e una con la luce alle tue spalle. Quale si vede meglio?", q:{d:"Da dove deve arrivare la luce per una foto chiara?", o:["Da dietro chi fotografa","Da dietro la bici (controluce)","Non importa"], i:"In controluce l'oggetto diventa scuro."}},
+ {m:"ITA", t:"Scrivere la didascalia", p:"La didascalia spiega in poche parole che cosa si vede nella foto: quale parte, che problema, se è prima o dopo il lavoro.", a:"Scrivi la didascalia di ogni foto della scheda. Usa al massimo 10 parole.", q:{d:"Che cosa deve dire una didascalia?", o:["Che cosa si vede nella foto","Il nome di chi ha scattato","Niente: la foto basta"], i:"Pensa a chi guarda la foto e non conosce la bici."}},
+ {m:"CIV", t:"Foto e privacy", p:"La foto di una persona è un suo dato personale: per fotografarla o pubblicarla serve il suo permesso (per un ragazzo, quello dei genitori). In officina fotografiamo solo le bici.", a:"Prima di scattare, controlla che nella foto non ci siano persone, nomi o indirizzi.", q:{d:"Che cosa serve per pubblicare la foto di una persona?", o:["Il suo permesso","Niente","Che la foto sia bella"], i:"Pensa a che cosa vorresti tu per una tua foto."}}
+]};
 const LAV = Object.fromEntries(LAVORI.map(l => [l.id, l]));
 
 const TIPI_BICI = ["Bici da città","Mountain bike","Bici da corsa","BMX","Bici da bambino","Pieghevole","Bici elettrica"];
@@ -898,7 +938,7 @@ function normalizzaOfficina(o){
   o.colore = o.colore || "#C2410C";
   o.schede.forEach(s => {
     s.bici = s.bici || {}; s.controllo = s.controllo || {}; s.lavori = s.lavori || []; s.ricambi = s.ricambi || [];
-    s.stato = s.stato || "bozza";
+    s.stato = s.stato || "bozza"; s.foto = Array.isArray(s.foto) ? s.foto : [];
   });
   return o;
 }
@@ -1151,6 +1191,7 @@ function itemsDi(def){
 function blocchiStudio(s){
   const b = [{id:"base", nome:BASE.nome, items:itemsDi(BASE)}];
   s.lavori.forEach(l => { const def = LAV[l.id]; if(def && !b.some(x => x.id === def.id)) b.push({id:def.id, nome:def.nome, items:itemsDi(def)}); });
+  if(s.foto && s.foto.length) b.push({id:"foto", nome:FOTO_STUDIO.nome, items:itemsDi(FOTO_STUDIO)});
   return b;
 }
 function materieDiScheda(s){
@@ -1159,7 +1200,7 @@ function materieDiScheda(s){
 }
 function tuttiGliItems(){
   const out = [];
-  [BASE].concat(LAVORI).forEach(def => itemsDi(def).forEach(it => out.push({...it, lavoro:def.id, lavoroNome:def.nome})));
+  [BASE].concat(LAVORI, [FOTO_STUDIO]).forEach(def => itemsDi(def).forEach(it => out.push({...it, lavoro:def.id, lavoroNome:def.nome})));
   return out;
 }
 
@@ -1302,7 +1343,7 @@ function cartellino(s){
   const c = trovaCliente(s.clienteId);
   const tot = contoVisibile(s) ? euro(calcola(s).totale) : (s.lavori.length ? "Conto da fare" : "");
   return '<button class="cartellino" data-act="apriScheda" data-id="' + s.id + '"><span class="cart-num">N. ' + h(s.numero) + '</span>' +
-    '<span class="cart-main"><b>' + h(nomeCliente(c)) + '</b><small>' + h(descrBici(s.bici) || "Bici da descrivere") + '</small></span>' +
+    '<span class="cart-main">' + (fotoCopertina(s) ? imgFoto(fotoCopertina(s).id, "", "cart-foto") : "") + '<span><b>' + h(nomeCliente(c)) + '</b><small>' + h(descrBici(s.bici) || "Bici da descrivere") + '</small></span></span>' +
     '<span class="cart-dx">' + statoChip(s.stato) + (tot ? '<span class="cart-tot">' + tot + '</span>' : "") + '</span></button>';
 }
 
@@ -1403,7 +1444,9 @@ function wBici(s){
     '<div><label class="etichetta" for="bici-telaio">Numero del telaio</label><input class="campo" id="bici-telaio" data-in="bici" data-k="telaio" value="' + h(b.telaio) + '" autocomplete="off" placeholder="Spesso è sotto i pedali"></div></div>' +
     '<fieldset><legend>Colore</legend><div class="chips">' + COLORI.map((c, i) => '<button class="chip" id="col-' + i + '" data-act="biciColore" data-v="' + c[0] + '" aria-pressed="' + (b.colore === c[0]) + '"><span class="campione" style="background:' + c[1] + '"></span>' + c[0] + '</button>').join("") + '</div></fieldset>' +
     '<fieldset><legend>Misura delle ruote (pollici)</legend><div class="chips">' + RUOTE.map((r, i) => '<button class="chip" id="ruo-' + i + '" data-act="biciRuota" data-v="' + r + '" aria-pressed="' + (b.ruota === r) + '">' + r + '</button>').join("") + '</div>' +
-    '<p class="aiuto">La misura è scritta sul fianco della gomma.</p></fieldset></section>' + barraAzioni();
+    '<p class="aiuto">La misura è scritta sul fianco della gomma.</p></fieldset>' +
+    '<section class="carta foto-box"><h3 style="margin-top:0">' + ico("camera") + ' Foto della bici all\'arrivo</h3><p class="aiuto">Fotografa la bici intera, di lato. Fotografa solo la bici, senza persone.</p>' +
+    galleriaFoto(s, f => f.momento === "arrivo") + '<div class="azioni-riga">' + pulsantiFoto("arrivo", "") + '</div></section></section>' + barraAzioni();
 }
 function wControllo(s){
   const fatti = CONTROLLI.filter(c => s.controllo[c.id]).length;
@@ -1412,7 +1455,8 @@ function wControllo(s){
     '<label class="etichetta" for="richiesta">La richiesta del cliente</label><textarea class="campo" id="richiesta" data-in="richiesta" placeholder="Per esempio: la gomma dietro si sgonfia sempre.">' + h(s.richiesta) + '</textarea>' +
     '<h2>' + ico("cerca") + ' Il controllo della bici ' + btnVoce("Controlla ogni parte della bici. Per ogni parte scegli: va bene, da sistemare, oppure non c'è.") + '</h2>' +
     '<p><span class="contatore">Hai controllato ' + fatti + ' parti su ' + CONTROLLI.length + '</span></p>' +
-    CONTROLLI.map(c => '<div class="ctr-riga" role="group" aria-label="' + h(c.n) + '"><span class="ctr-nome">' + ico(c.ico) + h(c.n) + '</span><span class="ctr-btn">' + btn(c, "ok", "Va bene", "ok") + btn(c, "ko", "Da sistemare", "no") + btn(c, "na", "Non c'è", "meno") + '</span></div>').join("") +
+    CONTROLLI.map(c => '<div class="ctr-riga" role="group" aria-label="' + h(c.n) + '"><span class="ctr-nome">' + ico(c.ico) + h(c.n) + '</span><span class="ctr-btn">' + btn(c, "ok", "Va bene", "ok") + btn(c, "ko", "Da sistemare", "no") + btn(c, "na", "Non c'è", "meno") + '</span>' +
+      (s.controllo[c.id] === "ko" ? '<div class="ctr-foto">' + galleriaFoto(s, f => f.parte === c.id, true) + pulsantiFoto("arrivo", c.id, true, "Fotografa il problema") + '</div>' : "") + '</div>').join("") +
     (fatti < CONTROLLI.length && fatti > 0 ? '<div class="azioni-riga"><button class="btn" data-act="restoOk">' + ico("ok") + ' Tutte le altre parti vanno bene</button></div>' : "") +
     '</section>' + barraAzioni();
 }
@@ -1538,6 +1582,7 @@ function vDettaglio(s){
     '<section class="carta"><h3 style="margin-top:0">' + ico("bici") + ' Bicicletta</h3><dl class="dl"><div><dt>Tipo</dt><dd>' + (h(b.tipo) || "—") + '</dd></div><div><dt>Marca</dt><dd>' + (h(b.marca) || "—") + '</dd></div><div><dt>Colore</dt><dd>' + (h(b.colore) || "—") + '</dd></div><div><dt>Ruote</dt><dd>' + (b.ruota ? h(b.ruota) + (b.ruota !== "Non so" ? " pollici" : "") : "—") + '</dd></div>' + (b.telaio ? '<div><dt>Telaio n.</dt><dd>' + h(b.telaio) + '</dd></div>' : "") + '</dl></section></div>' +
     '<section class="carta"><h3 style="margin-top:0">Richiesta del cliente</h3><p>' + (h(s.richiesta) || "Non scritta.") + '</p></section>' +
     '<section class="carta"><h3 style="margin-top:0">' + ico("cerca") + ' Controllo della bici (' + ctr.length + '/' + CONTROLLI.length + ')</h3>' + (ctr.length ? '<ul class="lista-controllo">' + ctr.map(x => { const v = s.controllo[x.id]; return '<li class="v-' + v + '-t">' + ico(lab[v][0]) + '<span><b>' + h(x.n) + ':</b> ' + lab[v][1] + '</span></li>'; }).join("") + '</ul>' : '<p>Controllo non ancora fatto.</p>') + '</section>' +
+    sezioneFoto(s) +
     '<section class="carta"><h3 style="margin-top:0">' + ico("chiave") + ' Lavori</h3>' + (lavorando ? '<p>Quando finite un lavoro, premete «Fatto».</p>' : "") +
     (s.lavori.length ? '<ul class="lavori-fatti">' + s.lavori.map((l, i) => '<li><span>' + (l.fatto ? ico("ok", "v-ok-t") : ico("chiave")) + ' <b>' + h(LAV[l.id] ? LAV[l.id].nome : l.nome) + '</b> · ' + l.min + ' min</span>' +
       (lavorando ? '<button class="btn btn-piccolo' + (l.fatto ? "" : " btn-primario") + '" id="fatto-' + i + '" data-act="lavoroFatto" data-i="' + i + '" aria-pressed="' + !!l.fatto + '">' + (l.fatto ? ico("ok") + " Fatto" : "Segna come fatto") + '</button>' : (l.fatto ? '<span class="segno si">' + ico("ok") + ' Fatto</span>' : "")) + '</li>').join("") + '</ul>' : '<p>Nessun lavoro scelto.</p>') + '</section>' +
@@ -1584,7 +1629,7 @@ function vStudioScheda(s){
     (s.lavori.length ? "" : '<p class="vuoto">Scegli i lavori della scheda: per ogni lavoro qui compaiono le materie collegate.</p>') +
     '<div class="chips" role="group" aria-label="Come ordinare"><button class="chip" id="sv-lavoro" data-act="studioVista" data-v="lavoro" aria-pressed="' + (ui.studioVista === "lavoro") + '">Per lavoro</button><button class="chip" id="sv-materia" data-act="studioVista" data-v="materia" aria-pressed="' + (ui.studioVista === "materia") + '">Per materia</button></div>' + corpo;
 }
-function lavoriFatti(o){ const set = new Set(); o.schede.filter(s => s.stato !== "bozza").forEach(s => s.lavori.forEach(l => set.add(l.id))); return set; }
+function lavoriFatti(o){ const set = new Set(); o.schede.filter(s => s.stato !== "bozza").forEach(s => s.lavori.forEach(l => set.add(l.id))); if(o.schede.some(s => s.foto && s.foto.length)) set.add("foto"); return set; }
 function vStudio(){
   const o = off(); const tutti = tuttiGliItems(); const fatti = lavoriFatti(o);
   const toccate = ORDINE_MATERIE.filter(m => tutti.some(it => it.m === m && (it.lavoro === "base" ? o.schede.some(s => s.stato !== "bozza") : fatti.has(it.lavoro))));
@@ -1660,7 +1705,7 @@ function eduOfficine(){
       const imp = o.imprevisti.find(i => !i.risolto); const ult = o.imprevisti.filter(i => i.risolto).slice(-1)[0];
       return '<article class="edu-card"><header><span class="tondo" style="--c:' + o.colore + '">' + ico(o.simbolo) + '</span><div style="flex:1;min-width:12em"><b>' + h(o.nome) + '</b><br><small>' + (h(o.membri) || "Nessun nome") + '</small></div><span class="contatore">' + LIVELLI[n] + ' · ' + n + '/7</span></header>' +
         '<div style="margin:8px 0">' + barra(n, 7, "edu-" + o.id) + '</div>' +
-        '<div class="edu-stat"><span>' + ico("persona") + ' Clienti: <b>' + o.clienti.length + '</b></span><span>' + ico("scheda") + ' Schede: <b>' + o.schede.length + '</b> (in officina ' + aperte + ', consegnate ' + cons + ')</span><span>' + ico("libro") + ' Domande: <b>' + giuste + '</b> giuste su ' + date + '</span><span>' + ico("calendario") + ' Ultima attività: <b>' + (dataIT(o.aggiornata || o.creata) || "—") + '</b></span></div>' +
+        '<div class="edu-stat"><span>' + ico("persona") + ' Clienti: <b>' + o.clienti.length + '</b></span><span>' + ico("camera") + ' Foto: <b>' + o.schede.reduce((a, s) => a + (s.foto ? s.foto.length : 0), 0) + '</b></span><span>' + ico("scheda") + ' Schede: <b>' + o.schede.length + '</b> (in officina ' + aperte + ', consegnate ' + cons + ')</span><span>' + ico("libro") + ' Domande: <b>' + giuste + '</b> giuste su ' + date + '</span><span>' + ico("calendario") + ' Ultima attività: <b>' + (dataIT(o.aggiornata || o.creata) || "—") + '</b></span></div>' +
         (imp ? '<p class="esito esito-info">' + ico("lampo") + '<span>Imprevisto in corso: ' + h(imp.testo) + '</span></p>' : "") +
         (ult ? '<p class="nota">Ultimo imprevisto risolto il ' + dataIT(ult.risolto) + (ult.risposta ? ': «' + h(ult.risposta) + '»' : "") + '</p>' : "") +
         '<div class="azioni-riga"><button class="btn btn-primario" data-act="eduEntra" data-id="' + o.id + '">' + ico("entra") + ' Entra nell\'officina</button>' +
@@ -1693,6 +1738,9 @@ function eduDati(){
     '<label class="etichetta" for="testo-import">Oppure incolla qui il testo della copia</label><textarea class="campo" id="testo-import" style="font-family:monospace;font-size:.8rem"></textarea>' +
     '<label class="interruttore"><input type="checkbox" id="imp-sost"> Sostituisci anche impostazioni e listino</label>' +
     '<button class="btn" data-act="importaTesto">' + ico("su") + ' Carica il testo incollato</button></section>' +
+    '<section class="carta"><h3 style="margin-top:0">' + ico("camera") + ' Foto</h3><p id="info-foto">Conto le foto salvate...</p>' +
+    '<p>Le copie salvate da qui contengono anche le foto. Se lo spazio finisce, puoi eliminare le foto delle bici già consegnate.</p>' +
+    '<button class="btn btn-pericolo" data-act="eliminaFotoConsegnate">' + ico("cestino") + ' Elimina le foto delle bici consegnate</button></section>' +
     '<section class="carta"><h3 style="margin-top:0">' + ico("cestino") + ' Fine del corso</h3><p>Cancella tutte le officine, i clienti e le schede di questo browser. Impostazioni e listino restano.</p>' +
     '<button class="btn btn-pericolo" data-act="azzera">' + ico("cestino") + ' Cancella tutte le officine</button></section>';
 }
@@ -1702,7 +1750,8 @@ function eduGuida(){
     '<li>Arriva un cliente: «Nuova scheda intervento». Sei passi: cliente, bici, controllo, lavori, preventivo, salvataggio.</li>' +
     '<li>Nel preventivo i ragazzi fanno il conto. Il correttore dice che cosa non va e dà un indizio. Dopo 3 errori sulla stessa riga si possono vedere i passaggi.</li>' +
     '<li>Ogni scheda ha la sua «Cosa studio»: per ogni lavoro, i collegamenti con le materie della scuola media e una domanda con correttore.</li>' +
-    '<li>La stampa produce la scheda intervento con il preventivo (e il cartellino da appendere alla bici) e la scheda «Cosa studio».</li>' +
+    '<li>Le foto: all\'arrivo (passo «Bici»), il problema (passo «Controllo») e la bici riparata (nella scheda). Solo la bici, senza persone. Le foto restano su questo dispositivo e sono incluse nelle copie.</li>' +
+    '<li>La stampa produce la scheda intervento con il preventivo e le foto (e il cartellino da appendere alla bici) e la scheda «Cosa studio».</li>' +
     '<li>Dalla scheda «Officine» entri in ogni officina, vedi i progressi e mandi un imprevisto. I ragazzi lo vedono sul banco di lavoro.</li>' +
     '<li>I dati restano nel browser. Se i gruppi usano computer diversi, ogni gruppo salva una copia e tu la carichi da «Dati».</li></ol>' +
     '<p class="nota">Il PIN iniziale è indicato nella nota per l\'educatore. Cambialo subito in «Impostazioni».</p></section>';
@@ -1764,19 +1813,37 @@ function vModale(){
         '<div class="azioni-riga"><button class="btn btn-primario btn-grande" type="submit">' + ico("ok") + ' Sì, abbiamo risolto</button><button class="btn" type="button" data-act="chiudiModale">Non ancora</button></div></form>';
       break;
     case "testo":
+      if(m.testo.length > 400000){
+        c = '<h2 id="mod-tit">' + ico("giu") + ' Copia di sicurezza</h2><p>Il file «' + h(m.nome) + '» è pronto: lo trovi nella cartella dei download.</p><p>Contiene anche le foto (circa ' + Math.round(m.testo.length / 1048576 * 10) / 10 + ' MB). Se il file non c\'è, apri BiciLab direttamente nel browser e riprova.</p>' +
+          '<div class="azioni-riga"><button class="btn btn-primario" data-act="chiudiModale" autofocus>Chiudi</button></div>';
+        break;
+      }
       c = '<h2 id="mod-tit">' + ico("giu") + ' Copia di sicurezza</h2><p>Il file «' + h(m.nome) + '» è pronto: lo trovi nella cartella dei download. Se non c\'è, copia questo testo e incollalo in un file di testo.</p>' +
         '<textarea class="campo esporta" id="testo-esporta" readonly>' + h(m.testo) + '</textarea><div class="azioni-riga"><button class="btn" data-act="copiaTesto">Copia il testo</button><button class="btn btn-primario" data-act="chiudiModale" autofocus>Chiudi</button></div>';
       break;
+    case "foto": {
+      const s = trovaScheda(m.sid); const lista = s ? s.foto : []; const i = lista.findIndex(f => f.id === m.fid); const f = lista[i];
+      if(!f){ ui.modale = null; return ""; }
+      c = '<h2 id="mod-tit">' + ico("camera") + ' Foto ' + (i + 1) + ' di ' + lista.length + '</h2>' +
+        '<figure class="vis-foto">' + imgFoto(f.id, f.nota || "Foto della bici") + '</figure>' +
+        (lista.length > 1 ? '<div class="azioni-riga" style="justify-content:space-between"><button class="btn btn-piccolo" data-act="fotoNav" data-d="-1">' + ico("sx") + ' Foto prima</button><button class="btn btn-piccolo" data-act="fotoNav" data-d="1">Foto dopo ' + ico("dx") + '</button></div>' : "") +
+        '<fieldset><legend>Quando è stata scattata?</legend><div class="chips">' + Object.keys(MOMENTI).map(k => '<button class="chip" id="fm-' + k + '" data-act="fotoMomento" data-v="' + k + '" aria-pressed="' + (f.momento === k) + '">' + MOMENTI[k] + '</button>').join("") + '</div></fieldset>' +
+        '<div class="due-col"><div><label class="etichetta" for="foto-parte">Parte della bici</label><select class="campo" id="foto-parte" data-ch="fotoParte"><option value="">La bici intera</option>' + CONTROLLI.map(x => '<option value="' + x.id + '"' + (f.parte === x.id ? " selected" : "") + '>' + h(x.n) + '</option>').join("") + '</select></div>' +
+        '<div><label class="etichetta" for="foto-nota">Didascalia: che cosa si vede?</label><input class="campo" id="foto-nota" data-in="fotoNota" value="' + h(f.nota) + '" autocomplete="off" placeholder="Per esempio: pattino consumato"></div></div>' +
+        '<div class="azioni-riga" style="justify-content:space-between"><button class="btn btn-pericolo" data-act="fotoElimina">' + ico("cestino") + ' Elimina la foto</button><button class="btn btn-primario btn-grande" data-act="chiudiModale" autofocus>' + ico("ok") + ' Fatto</button></div>';
+      break;
+    }
   }
   return '<div class="velo" data-act="chiudiVelo"><div class="finestra" role="dialog" aria-modal="true" aria-labelledby="mod-tit">' + c + '</div></div>';
 }
 function chiedi(titolo, testo, si, ok, pericolo){ ui.modale = {tipo:"conferma", titolo, testo, si, ok, pericolo}; render(); }
 
 /* ---------- stampa ---------- */
-function stampa(s, cosa){
-  const html = (cosa !== "studio" ? paginaScheda(s) : "") + (cosa !== "scheda" ? paginaStudio(s) : "");
-  $("#stampa").innerHTML = html;
+async function stampa(s, cosa){
   ui.modale = null; render();
+  if(cosa !== "studio" && s.foto.length) await Promise.all(s.foto.map(f => urlDi(f.id).catch(() => null)));
+  $("#stampa").innerHTML = (cosa !== "studio" ? paginaScheda(s) : "") + (cosa !== "scheda" ? paginaStudio(s) : "");
+  await Promise.all([...document.querySelectorAll("#stampa img")].map(i => i.decode ? i.decode().catch(() => {}) : null));
   setTimeout(() => { try{ window.print(); }catch(e){ toast("La stampa non parte qui. Apri il file direttamente nel browser."); } }, 80);
 }
 function testaStampa(s, titolo){
@@ -1803,6 +1870,7 @@ function paginaScheda(s){
     '<div class="st-box"><h3>Lavori da fare</h3>' + (s.lavori.length ? '<ol class="st-lav">' + s.lavori.map(l => '<li><span>' + h(LAV[l.id] ? LAV[l.id].nome : l.nome) + ' (' + l.min + ' min)</span><span>' + (l.fatto ? "✓ fatto" : "☐ fatto") + '</span></li>').join("") + '</ol>' : "—") + '</div>' +
     '<div class="st-box"><h3>Preventivo</h3>' + righe + '<p style="margin:4px 0 0;font-size:8.5pt">' + (k.ivaPct ? "Prezzi dei ricambi senza IVA." : "Prezzi IVA compresa.") + (vis ? "" : " Completa il conto a mano.") + '</p></div>' +
     (s.note ? '<div class="st-box"><h3>Note del meccanico</h3>' + h(s.note) + '</div>' : "") +
+    fotoStampa(s) +
     '<div class="st-firme"><div>Firma del cliente per accettazione</div><div>Firma del meccanico</div></div>' + piedeStampa() + '</section>';
 }
 function paginaStudio(s){
@@ -1852,11 +1920,17 @@ function importaOggetto(obj, sostituisci){
   if(sostituisci && Array.isArray(obj.listino)) D.listino = obj.listino;
   salva(); return n;
 }
-function importa(testo){
-  try{
-    const n = importaOggetto(JSON.parse(testo), !!($("#imp-sost") && $("#imp-sost").checked));
-    toast(n === 1 ? "Ho caricato 1 officina." : "Ho caricato " + n + " officine."); render();
-  }catch(e){ toast("Non riesco a leggere il file. Controlla che sia una copia di BiciLab."); }
+async function importa(testo){
+  let obj, n;
+  try{ obj = JSON.parse(testo); n = importaOggetto(obj, !!($("#imp-sost") && $("#imp-sost").checked)); }
+  catch(e){ toast("Non riesco a leggere il file. Controlla che sia una copia di BiciLab."); return; }
+  let nf = 0;
+  if(obj.foto && typeof obj.foto === "object"){
+    toast("Carico le foto...");
+    for(const [id, u] of Object.entries(obj.foto)){ try{ await fotoPut(id, dataUrlInBlob(u)); if(urlFoto[id]){ URL.revokeObjectURL(urlFoto[id]); delete urlFoto[id]; } nf++; }catch(e){} }
+  }
+  pulisciFoto();
+  toast((n === 1 ? "Ho caricato 1 officina" : "Ho caricato " + n + " officine") + (nf ? " e " + nf + " foto." : ".")); render();
 }
 
 /* ---------- officina di esempio (dati inventati) ---------- */
@@ -1869,7 +1943,7 @@ function creaEsempio(){
   const anno = new Date().getFullYear();
   const nuova = (cli, bici, rich, ctr, lav, stato) => {
     o.contatore++;
-    const s = {id:uid(), numero:anno + "-" + String(o.contatore).padStart(3, "0"), clienteId:cli.id, creata:new Date().toISOString(), stato, bici, richiesta:rich, controllo:ctr, lavori:[], ricambi:[], scontoPct:0, tariffa:D.impostazioni.tariffa, ivaPct:D.impostazioni.iva ? D.impostazioni.ivaPct : 0, consegna:"", note:""};
+    const s = {id:uid(), numero:anno + "-" + String(o.contatore).padStart(3, "0"), clienteId:cli.id, creata:new Date().toISOString(), stato, bici, richiesta:rich, controllo:ctr, lavori:[], ricambi:[], scontoPct:0, tariffa:D.impostazioni.tariffa, ivaPct:D.impostazioni.iva ? D.impostazioni.ivaPct : 0, consegna:"", note:"", foto:[]};
     lav.forEach(id => aggiungiLavoro(s, id));
     o.schede.push(s); return s;
   };
@@ -1972,6 +2046,8 @@ function dopoRender(){
   if(ui.scuoti){ ui.scuoti.forEach(id => { const el = document.getElementById(id); if(el && vivo) el.classList.add("scuoti"); }); ui.scuoti = null; }
   if(ui.contaSu){ ui.contaSu = false; if(vivo) contaSu(); }
   aggiornaSfondo();
+  caricaFotoVisibili();
+  if(ui.vista === "edu" && ui.eduTab === "dati") infoFoto();
 }
 function contaSu(){
   document.querySelectorAll("[data-conta]").forEach((el, i) => {
@@ -2017,6 +2093,186 @@ document.addEventListener("pointerdown", e => {
   onda(e.clientX, e.clientY, col);
 }, {passive:true});
 
+/* ---------------- FOTO ----------------
+   Le foto vengono ridotte (lato lungo 1200 px, JPEG) e salvate nel database del browser (IndexedDB).
+   Se IndexedDB non c'è, si usa il salvataggio normale del browser, che è più piccolo. */
+const MOMENTI = {arrivo:"All'arrivo", lavoro:"Durante il lavoro", consegna:"Alla consegna"};
+const TOCCO = !!(window.matchMedia && matchMedia("(pointer: coarse)").matches);
+const MAX_FOTO = 24, LSF = "bicilab.foto.";
+const urlFoto = {}, promFoto = {};
+let dbFoto = null, fotoInLS = false;
+function apriDbFoto(){
+  if(dbFoto) return dbFoto;
+  dbFoto = new Promise((ok, ko) => {
+    try{
+      const rq = indexedDB.open("bicilab-foto", 1);
+      rq.onupgradeneeded = () => rq.result.createObjectStore("foto");
+      rq.onsuccess = () => ok(rq.result); rq.onerror = () => ko(rq.error); rq.onblocked = () => ko(new Error("bloccato"));
+    }catch(e){ ko(e); }
+  }).catch(() => { fotoInLS = true; return null; });
+  return dbFoto;
+}
+function opFoto(db, modo, fn){
+  return new Promise((ok, ko) => { const tr = db.transaction("foto", modo); const rq = fn(tr.objectStore("foto")); tr.oncomplete = () => ok(rq ? rq.result : undefined); tr.onerror = () => ko(tr.error); tr.onabort = () => ko(tr.error || new Error("annullato")); });
+}
+async function fotoPut(id, blob){ const db = await apriDbFoto(); if(db) return opFoto(db, "readwrite", st => st.put(blob, id)); localStorage.setItem(LSF + id, await blobInDataUrl(blob)); }
+async function fotoGet(id){ const db = await apriDbFoto(); if(db) return opFoto(db, "readonly", st => st.get(id)); const u = localStorage.getItem(LSF + id); return u ? dataUrlInBlob(u) : null; }
+async function fotoDel(id){ const db = await apriDbFoto(); if(db) return opFoto(db, "readwrite", st => st.delete(id)); localStorage.removeItem(LSF + id); }
+async function fotoChiavi(){ const db = await apriDbFoto(); if(db) return opFoto(db, "readonly", st => st.getAllKeys()); return Object.keys(localStorage).filter(k => k.startsWith(LSF)).map(k => k.slice(LSF.length)); }
+function blobInDataUrl(b){ return new Promise((ok, ko) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = () => ko(r.error); r.readAsDataURL(b); }); }
+function dataUrlInBlob(u){
+  const i = u.indexOf(","); const mime = (u.slice(0, i).match(/data:([^;]+)/) || [])[1] || "image/jpeg";
+  const bin = atob(u.slice(i + 1)); const a = new Uint8Array(bin.length); for(let k = 0; k < bin.length; k++) a[k] = bin.charCodeAt(k);
+  return new Blob([a], {type:mime});
+}
+function urlDi(id){
+  if(urlFoto[id]) return Promise.resolve(urlFoto[id]);
+  if(!promFoto[id]) promFoto[id] = fotoGet(id).then(b => { if(!b) return null; urlFoto[id] = URL.createObjectURL(b); return urlFoto[id]; }).catch(() => null).finally(() => { delete promFoto[id]; });
+  return promFoto[id];
+}
+function dimenticaFoto(id){ if(urlFoto[id]){ URL.revokeObjectURL(urlFoto[id]); delete urlFoto[id]; } }
+function imgFoto(id, alt, cls){ return '<img data-foto="' + id + '" alt="' + h(alt) + '"' + (cls ? ' class="' + cls + '"' : "") + (urlFoto[id] ? ' src="' + urlFoto[id] + '"' : "") + '>'; }
+function caricaFotoVisibili(){
+  document.querySelectorAll("img[data-foto]:not([src])").forEach(img => {
+    urlDi(img.dataset.foto).then(u => { if(u) img.src = u; else { const b = img.closest(".foto"); if(b) b.classList.add("mancante"); } });
+  });
+}
+function fotoCopertina(s){ const l = s.foto || []; return l.find(f => f.momento === "arrivo" && !f.parte) || l.find(f => f.momento === "arrivo") || l[0] || null; }
+function fotoAperta(){ const m = ui.modale; if(!m || m.tipo !== "foto") return null; const s = trovaScheda(m.sid); return s ? s.foto.find(f => f.id === m.fid) : null; }
+function etichettaFoto(f){ const parte = CONTROLLI.find(c => c.id === f.parte); return f.nota || (parte ? parte.n : MOMENTI[f.momento]); }
+function btnFoto(f){ return '<button class="foto" id="ft-' + f.id + '" data-act="apriFoto" data-id="' + f.id + '" aria-label="Apri la foto: ' + h(etichettaFoto(f)) + '">' + imgFoto(f.id, "") + '<span class="foto-etich">' + h(etichettaFoto(f)) + '</span></button>'; }
+function galleriaFoto(s, filtro, piccola){ const l = s.foto.filter(filtro); return l.length ? '<div class="foto-griglia' + (piccola ? " piccola" : "") + '">' + l.map(btnFoto).join("") + '</div>' : ""; }
+function pulsantiFoto(m, p, piccolo, testoCam){
+  const cls = "btn" + (piccolo ? " btn-piccolo" : "");
+  return '<button class="' + cls + '" data-act="scattaFoto" data-m="' + m + '" data-p="' + (p || "") + '" data-cam="1">' + ico("camera") + ' ' + (testoCam || "Scatta una foto") + '</button>' +
+    '<button class="' + cls + '" data-act="scattaFoto" data-m="' + m + '" data-p="' + (p || "") + '">' + ico("immagine") + ' Carica una foto</button>';
+}
+function momentoDaStato(s){ return {lavorazione:"lavoro", pronta:"consegna", consegnata:"consegna"}[s.stato] || "arrivo"; }
+function primaDopo(s){
+  const a = s.foto.find(f => f.momento === "arrivo" && !f.parte) || s.foto.find(f => f.momento === "arrivo");
+  const c = s.foto.slice().reverse().find(f => f.momento === "consegna");
+  if(!a || !c) return "";
+  return '<div class="prima-dopo"><figure>' + btnFoto(a) + '<figcaption>Prima</figcaption></figure><span class="pd-freccia" aria-hidden="true">' + ico("dx") + '</span><figure>' + btnFoto(c) + '<figcaption>Dopo</figcaption></figure></div>';
+}
+function sezioneFoto(s){
+  const m = momentoDaStato(s);
+  const gruppi = Object.keys(MOMENTI).map(k => { const n = s.foto.filter(f => f.momento === k).length; return n ? '<h4>' + MOMENTI[k] + ' (' + n + ')</h4>' + galleriaFoto(s, f => f.momento === k) : ""; }).join("");
+  const consiglio = m === "consegna" && !s.foto.some(f => f.momento === "consegna") ? '<div class="esito esito-info">' + ico("camera") + '<span>Fotografate la bici riparata: così avete il prima e il dopo.</span></div>' : "";
+  return '<section class="carta"><h3 style="margin-top:0">' + ico("camera") + ' Foto della bici (' + s.foto.length + ')</h3>' + primaDopo(s) + (gruppi || '<p>Ancora nessuna foto.</p>') + consiglio +
+    '<p class="aiuto">Le nuove foto vanno in «' + MOMENTI[m] + '»: lo puoi cambiare aprendo la foto. Fotografate solo la bici, senza persone.</p><div class="azioni-riga">' + pulsantiFoto(m, "") + '</div></section>';
+}
+function fotoStampa(s){
+  if(!s.foto.length) return "";
+  const a = s.foto.find(f => f.momento === "arrivo" && !f.parte) || s.foto.find(f => f.momento === "arrivo");
+  const c = s.foto.slice().reverse().find(f => f.momento === "consegna");
+  const fig = (f, cap) => '<figure><img src="' + (urlFoto[f.id] || "") + '" alt=""><figcaption>' + h(cap) + '</figcaption></figure>';
+  const did = f => { const parte = CONTROLLI.find(x => x.id === f.parte); return [MOMENTI[f.momento], parte ? parte.n : "", f.nota].filter(Boolean).join(" · "); };
+  const pd = a && c; const altre = s.foto.filter(f => !(pd && (f === a || f === c)));
+  return '<div class="st-box"><h3>Foto della bici</h3>' +
+    (pd ? '<div class="st-foto st-pd">' + fig(a, "PRIMA · " + (a.nota || "all'arrivo")) + fig(c, "DOPO · " + (c.nota || "alla consegna")) + '</div>' : "") +
+    (altre.length ? '<div class="st-foto">' + altre.slice(0, 6).map(f => fig(f, did(f))).join("") + '</div>' : "") +
+    (altre.length > 6 ? '<p style="font-size:8.5pt;margin:2px 0 0">Altre ' + (altre.length - 6) + ' foto nella scheda digitale.</p>' : "") + '</div>';
+}
+function canvasBlob(c){
+  return new Promise(ok => { const q = .72; if(c.toBlob) c.toBlob(b => ok(b || dataUrlInBlob(c.toDataURL("image/jpeg", q))), "image/jpeg", q); else ok(dataUrlInBlob(c.toDataURL("image/jpeg", q))); });
+}
+async function preparaFoto(file){
+  const url = URL.createObjectURL(file);
+  try{
+    const img = await new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => ko(new Error("immagine")); i.src = url; });
+    const sc = Math.min(1, 1200 / Math.max(img.naturalWidth, img.naturalHeight));
+    const c = document.createElement("canvas"); c.width = Math.max(1, Math.round(img.naturalWidth * sc)); c.height = Math.max(1, Math.round(img.naturalHeight * sc));
+    c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+    return await canvasBlob(c);
+  } finally { URL.revokeObjectURL(url); }
+}
+async function salvaFotoBlob(b, dest){
+  const o = D.officine.find(x => x.id === dest.oid); const s = o && o.schede.find(x => x.id === dest.sid);
+  if(!s || !b) return false;
+  if(s.foto.length >= MAX_FOTO){ toast("Questa scheda ha già " + MAX_FOTO + " foto. Elimina una foto per aggiungerne un'altra."); return false; }
+  const id = "f" + uid();
+  try{ await fotoPut(id, b); }
+  catch(e){ toast("Lo spazio per le foto è finito. Elimina qualche foto oppure salva una copia e cancella le officine vecchie."); return false; }
+  urlFoto[id] = URL.createObjectURL(b);
+  s.foto.push({id, momento:dest.m || "arrivo", parte:dest.p || "", nota:"", data:new Date().toISOString()});
+  s.aggiornata = new Date().toISOString(); salva();
+  ui.pop = "ft-" + id; render();
+  if(navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+  return true;
+}
+async function aggiungiFoto(files, dest){
+  toast(files.length > 1 ? "Preparo " + files.length + " foto..." : "Preparo la foto...");
+  let n = 0;
+  for(const f of files){
+    if(f.type && !f.type.startsWith("image/")) continue;
+    try{ if(await salvaFotoBlob(await preparaFoto(f), dest)) n++; else break; }catch(e){}
+  }
+  if(n) toast(n === 1 ? "Foto aggiunta alla scheda." : n + " foto aggiunte alla scheda.");
+  else if(files.length) toast("Non riesco a leggere questa foto. Prova con un'altra foto.");
+}
+function apriSceltaFile(dest, cam){
+  const inp = $("#input-foto"); ui.fotoDest = dest;
+  if(cam){ inp.setAttribute("capture", "environment"); inp.removeAttribute("multiple"); } else { inp.removeAttribute("capture"); inp.setAttribute("multiple", ""); }
+  inp.value = ""; inp.click();
+}
+let flusso = null;
+async function apriCamera(dest){
+  chiudiCamera();
+  const box = document.createElement("div"); box.id = "camera";
+  box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true"); box.setAttribute("aria-label", "Fotocamera");
+  box.innerHTML = '<p class="cam-msg" id="cam-msg">Accendo la fotocamera...</p><video id="cam-video" playsinline muted></video>' +
+    '<div class="azioni-riga" id="cam-azioni"><button class="btn btn-primario btn-enorme" id="cam-scatta" data-act="camScatta" disabled>' + ico("camera") + ' Scatta</button><button class="btn btn-grande" id="cam-fatto" data-act="camChiudi">' + ico("ok") + ' Fatto</button></div>' +
+    '<p class="cam-conta" id="cam-conta" aria-live="polite"></p>';
+  document.body.appendChild(box); ui.camDest = dest; ui.camN = 0; $("#cam-fatto").focus();
+  try{
+    flusso = await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}, width:{ideal:1600}, height:{ideal:1200}}, audio:false});
+    if(!$("#camera")){ chiudiCamera(); return; }
+    const v = $("#cam-video"); v.srcObject = flusso; await v.play();
+    $("#cam-msg").textContent = "Inquadra la bici e premi «Scatta». Solo la bici, senza persone.";
+    $("#cam-scatta").disabled = false; $("#cam-scatta").focus();
+  }catch(e){
+    if(!$("#camera")) return;
+    $("#cam-msg").textContent = "Non riesco ad accendere la fotocamera. Puoi caricare una foto già scattata.";
+    const v = $("#cam-video"); if(v) v.remove();
+    $("#cam-azioni").innerHTML = '<button class="btn btn-primario btn-grande" id="cam-carica" data-act="camCarica">' + ico("immagine") + ' Carica una foto</button><button class="btn btn-grande" data-act="camChiudi">Chiudi</button>';
+    $("#cam-carica").focus();
+  }
+}
+function chiudiCamera(){ if(flusso){ flusso.getTracks().forEach(t => t.stop()); flusso = null; } const b = $("#camera"); if(b) b.remove(); }
+async function scattaDaCamera(){
+  const v = $("#cam-video"); if(!v || !v.videoWidth) return;
+  const sc = Math.min(1, 1200 / Math.max(v.videoWidth, v.videoHeight));
+  const c = document.createElement("canvas"); c.width = Math.round(v.videoWidth * sc); c.height = Math.round(v.videoHeight * sc);
+  c.getContext("2d").drawImage(v, 0, 0, c.width, c.height);
+  if(P.movimento){ const f = document.createElement("div"); f.className = "flash"; $("#camera").appendChild(f); f.addEventListener("animationend", () => f.remove()); }
+  if(await salvaFotoBlob(await canvasBlob(c), ui.camDest)){
+    ui.camN++; const el = $("#cam-conta"); if(el) el.textContent = ui.camN === 1 ? "1 foto aggiunta alla scheda." : ui.camN + " foto aggiunte alla scheda.";
+  }
+}
+async function pulisciFoto(){
+  try{
+    const usati = new Set(); D.officine.forEach(o => o.schede.forEach(s => (s.foto || []).forEach(f => usati.add(f.id))));
+    for(const k of (await fotoChiavi()) || []) if(!usati.has(k)){ await fotoDel(k); dimenticaFoto(k); }
+  }catch(e){}
+}
+const contaFoto = lista => lista.reduce((a, o) => a + o.schede.reduce((b, s) => b + (s.foto ? s.foto.length : 0), 0), 0);
+async function fotoDiOfficine(lista){
+  const out = {};
+  for(const o of lista) for(const s of o.schede) for(const f of (s.foto || [])){ try{ const b = await fotoGet(f.id); if(b) out[f.id] = await blobInDataUrl(b); }catch(e){} }
+  return out;
+}
+let infoFotoInCorso = false;
+async function infoFoto(){
+  if(infoFotoInCorso || !$("#info-foto")) return; infoFotoInCorso = true;
+  try{
+    const k = (await fotoChiavi()) || []; let t = "Foto salvate in questo browser: " + k.length + ".";
+    if(navigator.storage && navigator.storage.estimate){ const e = await navigator.storage.estimate();
+      if(e && e.usage != null) t += " Spazio usato: circa " + (Math.round(e.usage / 104857.6) / 10).toLocaleString("it-IT") + " MB" + (e.quota ? " su " + Math.round(e.quota / 1048576).toLocaleString("it-IT") + " MB disponibili." : "."); }
+    if(fotoInLS) t += " Attenzione: questo browser salva le foto in uno spazio piccolo. Usate poche foto.";
+    const el = $("#info-foto"); if(el) el.textContent = t;
+  }catch(e){} finally { infoFotoInCorso = false; }
+}
+
 /* ---------------- MODIFICHE AI DATI ---------------- */
 function aggiungiLavoro(s, id){
   const def = LAV[id]; if(!def || s.lavori.some(l => l.id === id)) return;
@@ -2027,7 +2283,7 @@ function togliLavoro(s, id){ s.lavori = s.lavori.filter(l => l.id !== id); s.ric
 function creaScheda(clienteId){
   const o = off(); o.contatore++;
   const s = {id:uid(), numero:new Date().getFullYear() + "-" + String(o.contatore).padStart(3, "0"), clienteId, creata:new Date().toISOString(), aggiornata:new Date().toISOString(), stato:"bozza",
-    bici:{tipo:"", marca:"", colore:"", ruota:"", telaio:""}, richiesta:"", controllo:{}, lavori:[], ricambi:[], scontoPct:0, tariffa:+D.impostazioni.tariffa, ivaPct:D.impostazioni.iva ? +D.impostazioni.ivaPct : 0, consegna:"", note:""};
+    bici:{tipo:"", marca:"", colore:"", ruota:"", telaio:""}, richiesta:"", controllo:{}, lavori:[], ricambi:[], scontoPct:0, tariffa:+D.impostazioni.tariffa, ivaPct:D.impostazioni.iva ? +D.impostazioni.ivaPct : 0, consegna:"", note:"", foto:[]};
   o.schede.push(s); salva(); return s;
 }
 function toccaScheda(s){ s.aggiornata = new Date().toISOString(); salva(); }
@@ -2132,7 +2388,7 @@ const A = {
   },
   indietroStato: () => { const s = trovaScheda(ui.schedaId); const i = IDX_STATO[s.stato]; if(i > 0){ s.stato = STATI[i - 1].id; toccaScheda(s); render(); controllaAbilitazioni(); } },
   lavoroFatto: el => { const s = trovaScheda(ui.schedaId); const l = s.lavori[+el.dataset.i]; l.fatto = !l.fatto; toccaScheda(s); ui.focus = el.id; ui.pop = el.id; render(); if(s.lavori.every(x => x.fatto)) toast("Tutti i lavori sono fatti: la bici può essere pronta."); },
-  eliminaScheda: () => { const s = trovaScheda(ui.schedaId); chiedi("Eliminare la scheda n. " + s.numero + "?", "La scheda viene cancellata. Non si può tornare indietro.", "Sì, elimina la scheda", () => { const o = off(); o.schede = o.schede.filter(x => x.id !== s.id); salva(); vai("schede"); }, true); },
+  eliminaScheda: () => { const s = trovaScheda(ui.schedaId); chiedi("Eliminare la scheda n. " + s.numero + "?", "La scheda viene cancellata. Non si può tornare indietro.", "Sì, elimina la scheda", () => { const o = off(); o.schede = o.schede.filter(x => x.id !== s.id); salva(); pulisciFoto(); vai("schede"); }, true); },
   apriStampa: () => { ui.modale = {tipo:"stampa"}; render(); },
   stampa: el => stampa(trovaScheda(ui.schedaId), el.dataset.c),
 
@@ -2150,7 +2406,7 @@ const A = {
     controllaAbilitazioni();
   },
   risolviImprevisto: el => { ui.modale = {tipo:"risolvi", id:el.dataset.id}; render(); },
-  esportaOfficina: el => { const o = D.officine.find(x => x.id === el.dataset.id); scarica("bicilab-officina-" + nomeFile(o.nome) + "-" + oggi() + ".json", JSON.stringify({versione:1, tipo:"officina", officina:o}, null, 1)); },
+  esportaOfficina: async el => { const o = D.officine.find(x => x.id === el.dataset.id); if(contaFoto([o])) toast("Preparo la copia con le foto..."); const foto = await fotoDiOfficine([o]); scarica("bicilab-officina-" + nomeFile(o.nome) + "-" + oggi() + ".json", JSON.stringify({versione:1, tipo:"officina", officina:o, foto}, null, 1)); },
 
   eduApri: () => { if(ui.edu) vai("edu"); else { ui.modale = {tipo:"pin"}; render(); } },
   vaiEdu: () => vai("edu"),
@@ -2158,11 +2414,27 @@ const A = {
   eduTab: el => { ui.eduTab = el.dataset.t; render(); },
   eduEntra: el => { ui.officinaId = el.dataset.id; vai("banco"); },
   eduImprevisto: el => { ui.modale = {tipo:"imprevisto", id:el.dataset.id}; render(); },
-  eduEliminaOff: el => { const o = D.officine.find(x => x.id === el.dataset.id); chiedi("Eliminare l'officina «" + o.nome + "»?", "Si cancellano anche i suoi clienti e le sue schede. Prima puoi salvarne una copia.", "Sì, elimina l'officina", () => { D.officine = D.officine.filter(x => x.id !== o.id); if(ui.officinaId === o.id) ui.officinaId = null; salva(); vai("edu"); }, true); },
+  eduEliminaOff: el => { const o = D.officine.find(x => x.id === el.dataset.id); chiedi("Eliminare l'officina «" + o.nome + "»?", "Si cancellano anche i suoi clienti e le sue schede. Prima puoi salvarne una copia.", "Sì, elimina l'officina", () => { D.officine = D.officine.filter(x => x.id !== o.id); if(ui.officinaId === o.id) ui.officinaId = null; salva(); pulisciFoto(); vai("edu"); }, true); },
   esempio: () => { creaEsempio(); render(); toast("Ho creato l'«Officina di prova» con clienti inventati."); },
-  esportaTutto: () => scarica("bicilab-copia-" + oggi() + ".json", JSON.stringify(D, null, 1)),
+  esportaTutto: async () => { if(contaFoto(D.officine)) toast("Preparo la copia con le foto..."); const foto = await fotoDiOfficine(D.officine); scarica("bicilab-copia-" + oggi() + ".json", JSON.stringify(Object.assign({}, D, {foto}), null, 1)); },
   importaTesto: () => { const t = $("#testo-import").value.trim(); if(!t){ toast("Incolla prima il testo della copia."); return; } importa(t); },
-  azzera: () => chiedi("Cancellare tutte le officine?", "Si cancellano tutte le officine, i clienti e le schede di questo browser. Prima puoi salvare una copia.", "Sì, cancella tutto", () => { D.officine = []; ui.officinaId = null; salva(); vai("edu"); toast("Officine cancellate."); }, true),
+  azzera: () => chiedi("Cancellare tutte le officine?", "Si cancellano tutte le officine, i clienti e le schede di questo browser. Prima puoi salvare una copia.", "Sì, cancella tutto", () => { D.officine = []; ui.officinaId = null; salva(); pulisciFoto(); vai("edu"); toast("Officine cancellate."); }, true),
+  eliminaFotoConsegnate: () => chiedi("Eliminare le foto delle bici consegnate?", "Si cancellano le foto delle schede consegnate in tutte le officine. Le schede restano.", "Sì, elimina quelle foto", () => { D.officine.forEach(o => o.schede.forEach(s => { if(s.stato === "consegnata") s.foto = []; })); salva(); pulisciFoto(); render(); toast("Foto delle bici consegnate eliminate."); }, true),
+  scattaFoto: el => {
+    const dest = {oid:ui.officinaId, sid:ui.schedaId, m:el.dataset.m, p:el.dataset.p || ""};
+    if(el.dataset.cam && !TOCCO && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) apriCamera(dest);
+    else apriSceltaFile(dest, !!el.dataset.cam);
+  },
+  apriFoto: el => { ui.modale = {tipo:"foto", sid:ui.schedaId, fid:el.dataset.id}; render(); },
+  fotoNav: el => { const s = trovaScheda(ui.modale.sid); const i = s.foto.findIndex(f => f.id === ui.modale.fid); const n = s.foto.length; ui.modale.fid = s.foto[(i + +el.dataset.d + n) % n].id; render(); },
+  fotoMomento: el => { const f = fotoAperta(); if(f){ f.momento = el.dataset.v; salva(); ui.focus = el.id; ui.pop = el.id; render(); } },
+  fotoElimina: () => {
+    const m = ui.modale; const s = trovaScheda(m.sid);
+    chiedi("Eliminare questa foto?", "La foto viene cancellata da questo dispositivo.", "Sì, elimina la foto", () => { s.foto = s.foto.filter(f => f.id !== m.fid); toccaScheda(s); pulisciFoto(); render(); toast("Foto eliminata."); }, true);
+  },
+  camScatta: () => scattaDaCamera(),
+  camChiudi: () => { chiudiCamera(); render(); },
+  camCarica: () => { const d = ui.camDest; chiudiCamera(); apriSceltaFile(d, false); },
   listinoAggiungi: () => { const id = "r" + uid(); D.listino.push({id, nome:"Nuovo ricambio", prezzo:1}); salva(); ui.focus = "ln-" + id; render(); },
   listinoElimina: el => { D.listino = D.listino.filter(x => x.id !== el.dataset.id); salva(); render(); },
   copiaTesto: () => { const t = $("#testo-esporta"); t.select(); let ok = false; try{ ok = document.execCommand("copy"); }catch(e){} if(navigator.clipboard) navigator.clipboard.writeText(t.value).then(() => toast("Testo copiato."), () => {}); else toast(ok ? "Testo copiato." : "Seleziona il testo e copialo."); }
@@ -2225,6 +2497,7 @@ const S = {
 
 /* ---------------- CAMPI (scrittura) ---------------- */
 const IN = {
+  fotoNota: el => { const f = fotoAperta(); if(f){ f.nota = el.value; salva(); } },
   cercaCli: el => { ui.cercaCli = el.value; render(); },
   cercaC: el => { ui.cercaC = el.value; render(); },
   cercaS: el => { ui.cercaS = el.value; render(); },
@@ -2237,6 +2510,8 @@ const IN = {
   listinoPrezzo: el => { const x = D.listino.find(r => r.id === el.dataset.id); const p = leggiNumero(el.value); if(x && !isNaN(p) && p >= 0){ x.prezzo = r2(p); salva(); } }
 };
 const CH = {
+  fotoParte: el => { const f = fotoAperta(); if(f){ f.parte = el.value; salva(); } },
+  fotoScelte: el => { const files = [...(el.files || [])]; if(files.length && ui.fotoDest) aggiungiFoto(files, ui.fotoDest); },
   sconto: el => { const s = trovaScheda(ui.schedaId); s.scontoPct = +el.value; toccaScheda(s); ui.focus = "sel-sconto"; render(); },
   prefToggle: el => { P[el.dataset.k] = el.checked; salvaPref(); render(); },
   fileImport: el => { const f = el.files && el.files[0]; if(!f) return; const r = new FileReader(); r.onload = () => importa(String(r.result)); r.onerror = () => toast("Non riesco a leggere il file."); r.readAsText(f); }
@@ -2251,7 +2526,15 @@ document.addEventListener("click", e => {
 document.addEventListener("submit", e => { const f = e.target.closest("form[data-submit]"); if(!f) return; e.preventDefault(); const fn = S[f.dataset.submit]; if(fn) fn(f); });
 document.addEventListener("input", e => { const el = e.target.closest("[data-in]"); if(el && IN[el.dataset.in]) IN[el.dataset.in](el); });
 document.addEventListener("change", e => { const el = e.target.closest("[data-ch]"); if(el && CH[el.dataset.ch]) CH[el.dataset.ch](el); });
-document.addEventListener("keydown", e => { if(e.key === "Escape" && ui.modale){ ui.modale = null; render(); } });
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape" && $("#camera")){ chiudiCamera(); render(); return; }
+  if(e.key === "Escape" && ui.modale){ ui.modale = null; render(); return; }
+  if(ui.modale && ui.modale.tipo === "foto" && (e.key === "ArrowLeft" || e.key === "ArrowRight") && !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)){
+    const s = trovaScheda(ui.modale.sid); if(!s || s.foto.length < 2) return;
+    const i = s.foto.findIndex(f => f.id === ui.modale.fid); const d = e.key === "ArrowLeft" ? -1 : 1;
+    ui.modale.fid = s.foto[(i + d + s.foto.length) % s.foto.length].id; render();
+  }
+});
 window.addEventListener("afterprint", () => { $("#stampa").innerHTML = ""; });
 
 carica(); applicaPref(); render();

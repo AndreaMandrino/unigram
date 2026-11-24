@@ -40,8 +40,8 @@ Cambiate i ruoli a ogni nuova bici. I clienti possono essere altri ragazzi, gli 
 **La scheda intervento in 6 passi.** Ogni passo ha un solo pulsante principale, «Avanti».
 
 1. **Cliente:** si sceglie un cliente o si registra un cliente nuovo.
-2. **Bici:** tipo, marca, colore, misura delle ruote, numero del telaio.
-3. **Controllo:** la richiesta del cliente e il controllo di 12 parti (va bene / da sistemare / non c'è).
+2. **Bici:** tipo, marca, colore, misura delle ruote, numero del telaio, foto della bici all'arrivo.
+3. **Controllo:** la richiesta del cliente e il controllo di 12 parti (va bene / da sistemare / non c'è). Per ogni parte «da sistemare» si può fotografare il problema.
 4. **Lavori:** 18 lavori in 6 gruppi. I lavori collegati alle parti «da sistemare» compaiono per primi. Ogni lavoro mostra le materie collegate. Si può aggiungere un lavoro diverso.
 5. **Preventivo:** ricambi (dal listino o di recupero), manodopera, sconto, conto.
 6. **Salva:** data di consegna. Il cliente accetta subito o decide dopo.
@@ -69,7 +69,7 @@ Ogni scheda ha la sua «Cosa studio». Contiene:
 
 I ragazzi possono leggerla per lavoro o per materia. Dal menu «Cosa studio» si apre la mappa delle 13 materie, con i lavori collegati e il dizionario dell'officina.
 
-In tutto ci sono 96 argomenti. Le materie toccate sono: Italiano, Inglese, Francese o Spagnolo, Storia, Geografia, Matematica, Scienze, Tecnologia, Musica, Arte e immagine, Educazione fisica, Religione cattolica, Educazione civica. L'elenco completo è in fondo a questa nota: puoi darlo ai docenti della scuola media per collegare l'attività alle loro lezioni.
+In tutto ci sono 99 argomenti. Le materie toccate sono: Italiano, Inglese, Francese o Spagnolo, Storia, Geografia, Matematica, Scienze, Tecnologia, Musica, Arte e immagine, Educazione fisica, Religione cattolica, Educazione civica. L'elenco completo è in fondo a questa nota: puoi darlo ai docenti della scuola media per collegare l'attività alle loro lezioni.
 
 ## 6. Le stampe
 
@@ -80,7 +80,23 @@ Dalla scheda premi **Stampa** e scegli che cosa stampare:
 
 Nella finestra di stampa puoi scegliere anche «Salva come PDF». La stampa rispetta le scelte di leggibilità del dispositivo (testo grande, maiuscolo, spaziatura). In fondo a ogni pagina c'è scritto: «Simulazione didattica: non è un documento fiscale».
 
-## 7. Entrare nelle stanze e seguire i progressi
+## 7. Le foto
+
+Le foto documentano la bici, come in un'officina vera.
+
+- **All'arrivo:** nel passo «Bici» si fotografa la bici intera, di lato.
+- **Il problema:** nel passo «Controllo», accanto a ogni parte «da sistemare», c'è «Fotografa il problema».
+- **Durante il lavoro e alla consegna:** nella scheda, riquadro «Foto della bici». Le nuove foto vanno automaticamente nel momento giusto, in base allo stato della scheda.
+- Quando ci sono la foto all'arrivo e quella alla consegna, compare il riquadro **«Prima e dopo»**. La prima foto della bici compare anche sul cartellino nell'elenco delle schede.
+- Toccando una foto si apre in grande: si scrive la didascalia, si sceglie il momento e la parte della bici, si elimina. Con le frecce della tastiera si passa da una foto all'altra.
+- **Come si scatta:** su tablet e telefono «Scatta una foto» apre la fotocamera del dispositivo. Su PC e Chromebook con webcam si apre la fotocamera dentro BiciLab. Al primo uso il browser chiede il permesso. «Carica una foto» prende una o più foto già salvate.
+- Le foto vengono ridotte (lato lungo 1200 pixel, circa 150–250 KB l'una) e restano solo sul dispositivo. Massimo 24 foto per scheda.
+- In stampa le foto vanno nella scheda intervento: prima e dopo in grande, le altre più piccole, con le didascalie.
+- Quando una scheda ha almeno una foto, la sua «Cosa studio» aggiunge tre argomenti: Arte e immagine (fotografare per documentare), Italiano (scrivere la didascalia), Educazione civica (foto e privacy).
+
+**Regola da dare ai ragazzi:** si fotografa solo la bici, senza persone, nomi o indirizzi. L'app lo ricorda accanto ai pulsanti.
+
+## 8. Entrare nelle stanze e seguire i progressi
 
 Nell'area educatore, scheda **Officine**, ogni officina mostra:
 
@@ -92,7 +108,7 @@ Con **«Entra nell'officina»** vedi l'officina come la vedono i ragazzi, con un
 
 **Imprevisti.** Con **«Manda un imprevisto»** scegli una situazione pronta (cliente insoddisfatto, ricambio finito, richiesta di sconto, cliente che parla inglese, controllo del Codice della strada...) oppure ne scrivi una tu. Il gruppo la vede sul banco di lavoro. Quando la risolve, scrive in poche parole che cosa ha fatto: tu leggi la risposta nella scheda dell'officina.
 
-## 8. Il percorso dei ragazzi
+## 9. Il percorso dei ragazzi
 
 Il percorso ha 7 prove in ordine. Ogni prova superata apre la successiva:
 
@@ -117,7 +133,7 @@ Livelli: Apprendista → Aiuto meccanico → Meccanico → Meccanico esperto →
 
 Le leve di pressione (scarsità, paura di perdere) sono volutamente leggere: niente tempi, niente punti persi, niente classifiche tra gruppi.
 
-## 9. Accessibilità (DSA e altri bisogni)
+## 10. Accessibilità (DSA e altri bisogni)
 
 - Font senza grazie, testo a 18 px, interlinea ampia, niente corsivo, sfondo crema invece del bianco.
 - Pulsante **«Leggibilità»** in alto: testo grande o molto grande, sfondo giallo o azzurro chiaro, lettere più distanziate, tutto in stampato maiuscolo. Le scelte valgono solo su quel dispositivo.
@@ -128,24 +144,27 @@ Le leve di pressione (scarsità, paura di perdere) sono volutamente leggere: nie
 - In **«Leggibilità»** si possono spegnere i disegni sullo sfondo e il movimento. Se nel computer o nel telefono è attiva l'opzione di sistema «riduci movimento», BiciLab parte già senza movimento.
 - Una sola azione principale per schermata, frasi brevi, messaggi di errore che dicono che cosa fare.
 
-## 10. I dati
+## 11. I dati
 
 - I dati restano **solo nel browser** del dispositivo dove si usa l'app. Nessun dato esce dal dispositivo.
 - Per i clienti scrivete solo nome e cognome (o un personaggio inventato) e un numero di telefono inventato.
+- Le foto sono salvate nel database del browser (IndexedDB), che ha molto spazio. In **Dati** vedi quante foto ci sono e quanto spazio usano. Se lo spazio finisce, «Elimina le foto delle bici consegnate» libera spazio e lascia le schede.
+- Le copie salvate («Salva una copia dell'officina» e «Salva una copia di tutto») contengono anche le foto: il file diventa più grande, circa 0,2–0,3 MB per foto.
 - **Più dispositivi:** ogni gruppo, dal banco di lavoro, preme «Salva una copia dell'officina» e ti passa il file. Tu lo carichi in **Dati → Caricare una copia**.
 - **Copia di sicurezza:** a fine incontro, in **Dati**, premi «Salva una copia di tutto».
 - **Fine del corso:** in **Dati** premi «Cancella tutte le officine». Impostazioni e listino restano.
 - Il PIN evita solo i clic per errore: non protegge davvero i dati. Chi apre il file può leggere tutto quello che c'è nel browser. Un file HTML da solo non può separare in modo sicuro educatori e ragazzi.
 
-## 11. Che cosa ho verificato e che cosa devi verificare tu
+## 12. Che cosa ho verificato e che cosa devi verificare tu
 
-Verificato in Chrome (computer e telefono): tutti i passi della scheda, il correttore con risposte giuste e sbagliate (anche con sconto e IVA), le domande di «Cosa studio», il percorso, l'area educatore con PIN, imprevisti e copie dei dati, la stampa, il salvataggio dopo la ricarica della pagina, nessuna chiamata a servizi esterni.
+Verificato in Chrome (computer e telefono): tutti i passi della scheda, il correttore con risposte giuste e sbagliate (anche con sconto e IVA), le domande di «Cosa studio», il percorso, l'area educatore con PIN, imprevisti e copie dei dati, la stampa, il salvataggio dopo la ricarica della pagina, nessuna chiamata a servizi esterni. Per le foto: caricamento di una o più foto, foto del problema, fotocamera dentro l'app con una webcam simulata, didascalie, «prima e dopo», stampa, copia con le foto e ripristino su un altro browser, cancellazione delle foto insieme alla scheda.
 
 Da provare sui vostri dispositivi:
 
 - la lettura ad alta voce: dipende dalle voci installate (Windows, ChromeOS, Android);
 - il salvataggio e la stampa dentro OneCompiler;
-- la stampa reale su carta A4 della stampante dell'oratorio.
+- la stampa reale su carta A4 della stampante dell'oratorio;
+- la fotocamera vera: su tablet e telefono (fotocamera del sistema) e sui PC o Chromebook della scuola (permesso del browser per la webcam).
 
 ## Elenco dei collegamenti tra lavori e materie
 
@@ -257,3 +276,9 @@ Da provare sui vostri dispositivi:
   - Tecnologia: Disegnare in scala
   - Educazione civica: Decorare in sicurezza
   - Inglese e seconda lingua: parole del mestiere
+
+### Foto della bici (quando la scheda ha almeno una foto)
+- **Fotografare la bici**
+  - Arte e immagine: Fotografare per documentare
+  - Italiano: Scrivere la didascalia
+  - Educazione civica: Foto e privacy
