@@ -19,13 +19,6 @@ const SOLO_EDUCATORE = {imp: true, lis: true};
 const MAX_CELLA = 49000;
 const MAX_ERRORI_PIN = 10;
 
-/* ---------- pagina ---------- */
-function doGet() {
-  return HtmlService.createHtmlOutputFromFile('Index')
-    .setTitle('BiciLab – Officina bici')
-    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
-}
-
 /* ---------- installazione (una volta sola, dall'editor) ---------- */
 function installa() {
   const prop = PropertiesService.getScriptProperties();
@@ -44,6 +37,22 @@ function installa() {
   Logger.log('BiciLab è pronto.');
   Logger.log('Codice del laboratorio per i ragazzi: ' + prop.getProperty('CODICE'));
   Logger.log('PIN dell\'educatore: ' + prop.getProperty('PIN') + ' (cambialo subito: Area educatore → Impostazioni).');
+}
+
+/* Controllo: scegli «controlla» e premi Esegui. Il registro dice se BiciLab è installato. */
+function controlla() {
+  const p = PropertiesService.getScriptProperties().getProperties();
+  Logger.log('Foglio dei dati: ' + (p.FOGLIO_ID ? 'OK' : 'MANCA'));
+  Logger.log('Cartella delle foto: ' + (p.CARTELLA_ID ? 'OK' : 'MANCA'));
+  Logger.log('Codice del laboratorio: ' + (p.CODICE || 'MANCA'));
+  Logger.log(p.FOGLIO_ID && p.CARTELLA_ID && p.CODICE ? 'BiciLab è installato. Ricarica la pagina dell\'app.' : 'BiciLab NON è installato: scegli «installa» e premi Esegui.');
+}
+
+/* ---------- pagina ---------- */
+function doGet() {
+  return HtmlService.createHtmlOutputFromFile('Index')
+    .setTitle('BiciLab – Officina bici')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
 }
 
 /* ---------- funzioni interne (il nome finisce con _ : non si possono chiamare dalla pagina) ---------- */

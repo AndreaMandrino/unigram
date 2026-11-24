@@ -25,7 +25,7 @@ Ti servono 15 minuti, l'account `@cnosfap.net` e i file di questa cartella:
 
 ## 2. Prepara il foglio e la cartella (una volta sola)
 
-1. In alto, nel menu a tendina delle funzioni, scegli **installa**.
+1. In alto, accanto a **Esegui** e **Debug**, c'è un menu a tendina con il nome di una funzione. Aprilo e scegli **installa**: deve essere scritto «installa», non «doGet» né altro.
 2. Premi **Esegui**.
 3. La prima volta Google chiede le autorizzazioni. Premi **Rivedi autorizzazioni**, scegli il tuo account e poi **Consenti**. BiciLab chiede di usare Fogli e Drive solo per creare e usare il suo foglio e la sua cartella.
 4. In basso compare il **Registro di esecuzione** con:
@@ -33,6 +33,8 @@ Ti servono 15 minuti, l'account `@cnosfap.net` e i file di questa cartella:
    - il **PIN** iniziale dell'educatore: **1234**.
 
 Nel tuo Drive adesso ci sono il foglio «BiciLab – dati» e la cartella «BiciLab – foto». Non spostarli e non rinominarli.
+
+**Per controllare:** scegli la funzione **controlla** e premi **Esegui**. Il registro deve dire «BiciLab è installato». Poi **ricarica** la pagina dell'app: un messaggio rimasto sullo schermo non sparisce da solo.
 
 ## 3. Pubblica l'app
 

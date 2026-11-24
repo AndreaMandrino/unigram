@@ -1886,7 +1886,7 @@ function vModale(){
     }
     case "pin":
       c = '<h2 id="mod-tit">' + ico("lucchetto") + ' Area educatore</h2><form data-submit="eduPin"><label class="etichetta" for="pin">Scrivi il PIN</label><input class="campo" type="password" id="pin" name="pin" inputmode="numeric" autocomplete="off" autofocus style="max-width:12rem">' +
-        (m.err ? '<p class="errore" role="alert">' + (m.bloccato ? "Troppi PIN sbagliati. Riprova tra 10 minuti." : m.rete ? "Non riesco a collegarmi. Controlla la rete e riprova." : m.noninstallato ? "BiciLab non è ancora pronto: esegui «installa» nell'editor di Apps Script." : "PIN sbagliato. Riprova.") + '</p>' : "") + '<div class="azioni-riga"><button class="btn btn-primario" type="submit">' + ico("entra") + ' Entra</button><button class="btn" type="button" data-act="chiudiModale">Annulla</button></div></form>';
+        (m.err ? '<p class="errore" role="alert">' + (m.bloccato ? "Troppi PIN sbagliati. Riprova tra 10 minuti." : m.rete ? "Non riesco a collegarmi. Controlla la rete e riprova." : m.noninstallato ? "BiciLab non è ancora installato. Nell'editor di Apps Script scegli la funzione «installa» e premi Esegui, poi ricarica questa pagina." : "PIN sbagliato. Riprova.") + '</p>' : "") + '<div class="azioni-riga"><button class="btn btn-primario" type="submit">' + ico("entra") + ' Entra</button><button class="btn" type="button" data-act="chiudiModale">Annulla</button></div></form>';
       break;
     case "pref": {
       const b = (k, v, t, extra) => '<button class="chip" id="pref-' + k + '-' + v + '" data-act="pref" data-k="' + k + '" data-v="' + v + '" aria-pressed="' + (P[k] === v) + '">' + (extra || "") + t + '</button>';
@@ -2422,7 +2422,7 @@ function gestisciErrore(e){
     if(/PIN/.test(m)) delete cred.pin;
     if(/ACCESSO/.test(m) || (/PIN/.test(m) && !cred.codice)) cred.codice = "";
     salvaCred(); ui.edu = false; ui.modale = null; ui.officinaId = null;
-    ui.errAccesso = /NON_INSTALLATO/.test(m) ? "BiciLab non è ancora pronto: l'educatore deve eseguire «installa» (vedi le istruzioni)." :
+    ui.errAccesso = /NON_INSTALLATO/.test(m) ? "BiciLab non è ancora installato. Nell'editor di Apps Script scegli la funzione «installa» e premi Esegui. Poi ricarica questa pagina e premi Entra." :
       /BLOCCATO/.test(m) ? "Troppi PIN sbagliati. Riprova tra 10 minuti." :
       /PIN/.test(m) ? "Il PIN non è più valido. Entra di nuovo." : "Il codice non è giusto o è cambiato. Chiedi il codice all'educatore.";
     ui.vista = "accesso"; render(); return;
