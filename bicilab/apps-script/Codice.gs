@@ -148,8 +148,19 @@ function cambiamenti(cred, dal) {
   dal = Number(dal) || 0;
   const ultimo = Number(CacheService.getScriptCache().get('ultimo') || 0);
   if (ultimo && ultimo <= dal) return {ruolo: ruolo, ora: ora, entita: []};
-  const entita = righe_(foglio_()).filter(function (r) { return r[0] && Number(r[4]) > dal; }).map(entita_);
-  return {ruolo: ruolo, ora: ora, entita: entita};
+  const sh = foglio_();
+  const n = sh.getLastRow();
+  if (n < 2) return {ruolo: ruolo, ora: ora, entita: []};
+  const date = sh.getRange(2, 5, n - 1, 1).getValues();
+  const cambiate = [];
+  date.forEach(function (r, i) { if (Number(r[0]) > dal) cambiate.push(i + 2); });
+  let righe;
+  if (cambiate.length > 25) {
+    righe = righe_(sh).filter(function (r) { return Number(r[4]) > dal; });
+  } else {
+    righe = cambiate.map(function (riga) { return sh.getRange(riga, 1, 1, COLONNE.length).getValues()[0]; });
+  }
+  return {ruolo: ruolo, ora: ora, entita: righe.filter(function (r) { return r[0]; }).map(entita_)};
 }
 
 function salvaOps(cred, ops) {
@@ -172,7 +183,7 @@ function salvaOps(cred, ops) {
       const op = ultime[k];
       const tipo = String(op.tipo), id = String(op.id), cancella = op.op === 'del';
       const oid = String(op.oid || (indice[k] ? indice[k].oid : ''));
-      if (!TIPI[tipo] || id.length > 200 || oid.length > 100) { risultati.push({k: k, errore: 'DATI'}); return; }
+      if (!TIPI[tipo] || !/^[A-Za-z0-9_|:.-]{1,200}$/.test(id) || !/^[A-Za-z0-9_-]{0,64}$/.test(oid)) { risultati.push({k: k, errore: 'DATI'}); return; }
       if ((SOLO_EDUCATORE[tipo] || (tipo === 'off' && cancella)) && ruolo !== 'edu') { risultati.push({k: k, errore: 'PERMESSO'}); return; }
       if (cancella && !indice[k]) return;
       let json = cancella ? '' : String(op.json || '');
