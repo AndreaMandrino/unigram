@@ -1,0 +1,1928 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BiciLab – Officina bici</title>
+<style>
+:root{
+  --carta:#FBF6EC; --pannello:#FFFDF8; --pannello-2:#F3EBDD; --linea:#DDD1BC; --linea-forte:#A39680;
+  --ink:#23211E; --ink-2:#4F4943; --arancio:#C2410C; --arancio-scuro:#9A3412; --arancio-chiaro:#FCE9DD;
+  --petrolio:#1F4E5F; --petrolio-chiaro:#E2EEF1; --ok:#2E7D32; --ok-chiaro:#E4F2E5; --ko:#B42318; --ko-chiaro:#FBE8E6;
+  --giallo-chiaro:#FFF3C8; --scuro:#2A2622;
+  --font: Verdana, "DejaVu Sans", "Noto Sans", Tahoma, "Segoe UI", Arial, sans-serif;
+}
+html[data-sfondo="giallo"]{--carta:#FFF7D1}
+html[data-sfondo="azzurro"]{--carta:#EAF3F8}
+html[data-sfondo="bianco"]{--carta:#FFFFFF}
+html{font-size:18px}
+html.t-grande{font-size:20px}
+html.t-mgrande{font-size:23px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--carta);color:var(--ink);font-family:var(--font);line-height:1.6;-webkit-text-size-adjust:100%}
+body.spazio{letter-spacing:.05em;word-spacing:.18em;line-height:1.85}
+body.maiuscolo, body.maiuscolo input, body.maiuscolo textarea, body.maiuscolo select{text-transform:uppercase}
+em,i{font-style:normal}
+h1{font-size:1.55rem;line-height:1.3;margin:.2em 0 .35em}
+h2{font-size:1.22rem;line-height:1.35;margin:1.5em 0 .6em;display:flex;align-items:center;gap:.45em;flex-wrap:wrap}
+h3{font-size:1.05rem;margin:1.1em 0 .45em}
+h4{font-size:1rem;margin:.3em 0}
+p{margin:.35em 0 .8em;max-width:70ch}
+button{font:inherit}
+.ico{width:1.3em;height:1.3em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none;vertical-align:-.25em}
+.ico-xl{width:2.2em;height:2.2em}
+:focus-visible{outline:4px solid #1F6FEB;outline-offset:2px}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- testata ---------- */
+.testata{background:var(--scuro);color:#FFF6E8;background-image:radial-gradient(rgba(255,255,255,.08) 1.4px,transparent 1.6px);background-size:15px 15px}
+.testata-in{max-width:1120px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap}
+.marchio{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.15rem;background:none;border:0;color:inherit;cursor:pointer;padding:4px}
+.marchio-ico{background:var(--arancio);border-radius:10px;width:2.4rem;height:2.4rem;display:grid;place-items:center;color:#fff}
+.off-info{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.off-simbolo{width:2.3rem;height:2.3rem;border-radius:50%;background:var(--c);display:grid;place-items:center;color:#fff;flex:none;border:2px solid rgba(255,255,255,.6)}
+.off-info b{display:block;line-height:1.25}
+.livello{white-space:nowrap;display:inline-flex;align-items:center;gap:.35em;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.35);color:#FFF6E8;border-radius:999px;padding:.1em .7em;font-size:.8rem;cursor:pointer;margin-top:2px}
+.testata-azioni{display:flex;gap:6px;flex-wrap:wrap}
+.btn-testa{display:inline-flex;align-items:center;gap:.4em;background:transparent;border:2px solid rgba(255,255,255,.4);color:#FFF6E8;border-radius:10px;padding:.35em .7em;cursor:pointer;font-weight:700;font-size:.85rem;min-height:2.6rem}
+.btn-testa:hover{background:rgba(255,255,255,.1)}
+.testata :focus-visible{outline-color:#FFD54A}
+.fascia-edu{background:var(--giallo-chiaro);border-bottom:2px solid #C9A227}
+.fascia-edu-in{max-width:1120px;margin:0 auto;padding:8px 16px;display:flex;gap:10px 16px;flex-wrap:wrap;align-items:center;font-weight:700}
+
+/* ---------- navigazione ---------- */
+.nav{background:var(--scuro)}
+.nav-in{max-width:1120px;margin:0 auto;display:flex;gap:4px;padding:0 16px}
+.nav button{display:flex;align-items:center;gap:.45em;padding:.65em 1em;background:none;border:0;color:#F3E9DA;font-weight:700;border-radius:12px 12px 0 0;cursor:pointer;font-size:.92rem}
+.nav button:hover{background:rgba(255,255,255,.08)}
+.nav button[aria-current="page"]{background:var(--carta);color:var(--ink)}
+.nav .nav-nuova{color:#fff;background:var(--arancio);border-radius:10px;margin:5px 0;padding:.45em .9em}
+.nav .nav-nuova:hover{background:var(--arancio-scuro)}
+.nav :focus-visible{outline-color:#FFD54A}
+
+/* ---------- impaginazione ---------- */
+.contenitore{max-width:1120px;margin:0 auto;padding:18px 16px 110px}
+.sotto{color:var(--ink-2)}
+.nota{color:var(--ink-2);font-size:.9rem}
+.vuoto{background:var(--pannello);border:2px dashed var(--linea-forte);border-radius:12px;padding:16px;color:var(--ink-2)}
+.carta{background:var(--pannello);border:2px solid var(--linea);border-radius:14px;padding:14px 18px;box-shadow:0 3px 0 var(--linea);margin:12px 0}
+.azioni-riga{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0}
+.due-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:760px){.due-col{grid-template-columns:1fr}}
+
+/* ---------- pulsanti ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;min-height:3rem;padding:.5em 1.05em;border-radius:12px;border:2px solid var(--ink);background:var(--pannello);color:var(--ink);font-weight:700;cursor:pointer;text-align:center;line-height:1.25;text-decoration:none}
+.btn:hover{background:var(--pannello-2)}
+.btn-primario{background:var(--arancio);border-color:var(--arancio);color:#fff}
+.btn-primario:hover{background:var(--arancio-scuro);border-color:var(--arancio-scuro)}
+.btn-grande{min-height:3.5rem;font-size:1.08rem;padding:.55em 1.35em}
+.btn-enorme{min-height:4.4rem;font-size:1.25rem;padding:.6em 1.8em;border-radius:16px}
+.btn-pericolo{border-color:var(--ko);color:var(--ko)}
+.btn-pericolo:hover{background:var(--ko-chiaro)}
+.btn-piccolo{min-height:2.5rem;padding:.3em .8em;font-size:.9rem}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+.link{background:none;border:0;padding:0;color:var(--petrolio);text-decoration:underline;text-underline-offset:3px;cursor:pointer;font-weight:700;display:inline-flex;align-items:center;gap:.3em}
+.link.pericolo{color:var(--ko)}
+.btn-voce{display:inline-flex;align-items:center;gap:.3em;border:2px solid var(--petrolio);color:var(--petrolio);background:var(--petrolio-chiaro);border-radius:999px;padding:.1em .7em;font-size:.8rem;font-weight:700;cursor:pointer;vertical-align:middle;min-height:2.1rem}
+.btn-voce .ico{width:1.1em;height:1.1em}
+
+/* ---------- campi ---------- */
+.etichetta{display:block;font-weight:700;margin:.9em 0 .3em}
+.campo{width:100%;min-height:3rem;padding:.5em .8em;border:2px solid var(--linea-forte);border-radius:10px;background:#fff;font:inherit;color:var(--ink)}
+.campo:focus{border-color:var(--petrolio)}
+textarea.campo{min-height:6rem;resize:vertical}
+select.campo{appearance:auto}
+.aiuto{font-size:.85rem;color:var(--ink-2);margin:.25em 0 0}
+.errore{color:var(--ko);font-weight:700;margin:.3em 0}
+.msg-passo{background:var(--ko-chiaro);border:2px solid var(--ko);border-radius:12px;padding:.7em 1em;font-weight:700;display:flex;gap:.5em;align-items:center}
+fieldset{border:0;padding:0;margin:1em 0}
+legend{font-weight:700;margin-bottom:.4em;padding:0}
+
+/* ---------- chips e scelte ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:2.8rem;padding:.35em .9em;border:2px solid var(--linea-forte);border-radius:999px;background:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:.45em;color:var(--ink)}
+.chip[aria-pressed="true"]{border-color:var(--arancio);background:var(--arancio-chiaro);font-weight:700;box-shadow:inset 0 0 0 2px var(--arancio)}
+.campione{width:1.15em;height:1.15em;border-radius:50%;border:2px solid rgba(0,0,0,.35);flex:none}
+.lista-scelta{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin:12px 0}
+.scelta{display:flex;align-items:center;gap:12px;text-align:left;padding:12px 14px;border:2px solid var(--linea-forte);border-radius:12px;background:var(--pannello);cursor:pointer;color:var(--ink);min-height:3.6rem}
+.scelta small{display:block;color:var(--ink-2)}
+.scelta span{flex:1}
+.scelta.scelto{border-color:var(--arancio);background:var(--arancio-chiaro);box-shadow:inset 0 0 0 2px var(--arancio)}
+.radio-card{position:relative}
+.radio-card input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.radio-card span.rc{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 14px;border:2px solid var(--linea-forte);border-radius:12px;background:#fff;min-width:5.5rem;font-size:.85rem;font-weight:700}
+.radio-card input:checked + span.rc{border-color:var(--arancio);background:var(--arancio-chiaro);box-shadow:inset 0 0 0 2px var(--arancio)}
+.radio-card input:focus-visible + span.rc{outline:4px solid #1F6FEB;outline-offset:2px}
+.radio-card .tondo{width:2.4rem;height:2.4rem;border-radius:50%;display:grid;place-items:center;color:#fff;background:var(--c)}
+
+/* ---------- officine ---------- */
+.benvenuto{padding:18px 0 4px}
+.benvenuto h1{font-size:2.1rem;display:flex;align-items:center;gap:.4em}
+.griglia-off{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.card-off{display:flex;gap:14px;align-items:center;text-align:left;padding:16px;border:2px solid var(--linea-forte);border-radius:16px;background:var(--pannello);cursor:pointer;color:var(--ink);box-shadow:0 4px 0 var(--linea)}
+.card-off:hover{border-color:var(--ink)}
+.card-off .tondo{width:3.2rem;height:3.2rem;border-radius:50%;display:grid;place-items:center;color:#fff;background:var(--c);flex:none}
+.card-off .tondo .ico{width:1.7em;height:1.7em}
+.card-off b{font-size:1.1rem;display:block}
+.card-off small{display:block;color:var(--ink-2)}
+
+/* ---------- cartellini (schede) ---------- */
+.lista-cart{display:grid;gap:10px}
+.cartellino{display:grid;grid-template-columns:7.2em 1fr auto;gap:2px 14px;align-items:center;width:100%;text-align:left;background:var(--pannello);border:2px solid var(--linea-forte);border-radius:12px;padding:12px 16px 12px 46px;position:relative;color:var(--ink);cursor:pointer;box-shadow:0 3px 0 var(--linea)}
+.cartellino:hover{border-color:var(--ink)}
+.cartellino::before{content:"";position:absolute;left:16px;top:50%;width:13px;height:13px;transform:translateY(-50%);border-radius:50%;background:var(--carta);border:2px solid var(--linea-forte)}
+.cart-num{font-weight:700;font-size:.95rem}
+.cart-main b{display:block}
+.cart-main small{color:var(--ink-2);display:block}
+.cart-dx{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.cart-tot{font-weight:700;font-size:.95rem}
+@media (max-width:640px){.cartellino{grid-template-columns:1fr}.cart-dx{align-items:flex-start;text-align:left;flex-direction:row;flex-wrap:wrap}}
+.stato{display:inline-flex;align-items:center;gap:.35em;padding:.12em .65em;border-radius:999px;font-size:.82rem;font-weight:700;border:2px solid currentColor;background:#fff;white-space:nowrap}
+.stato .ico{width:1.05em;height:1.05em}
+.stato[data-s="bozza"]{color:#57534E}
+.stato[data-s="preventivo"]{color:#8A3B0C}
+.stato[data-s="accettato"]{color:var(--petrolio)}
+.stato[data-s="lavorazione"]{color:var(--arancio)}
+.stato[data-s="pronta"]{color:var(--ok)}
+.stato[data-s="consegnata"]{color:#14532D;background:var(--ok-chiaro)}
+
+/* ---------- tessere e barre ---------- */
+.tessere{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.tessera{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:16px;border:2px solid var(--linea-forte);border-radius:14px;background:var(--pannello);cursor:pointer;text-align:left;color:var(--ink);box-shadow:0 3px 0 var(--linea)}
+.tessera:hover{border-color:var(--ink)}
+.tessera .ico{width:2em;height:2em;color:var(--arancio)}
+.tessera b{font-size:1.05rem}
+.tessera small{color:var(--ink-2)}
+.azione-centrale{margin:20px 0 8px}
+.barra{height:16px;border-radius:999px;background:var(--pannello-2);border:2px solid var(--linea-forte);overflow:hidden;max-width:520px}
+.barra > span{display:block;height:100%;background:var(--ok)}
+.imprevisto{display:flex;gap:14px;align-items:flex-start;background:var(--giallo-chiaro);border:3px solid #B7791F;border-radius:14px;padding:14px 16px;margin:14px 0}
+.imprevisto .ico{width:2em;height:2em;color:#8A5A00}
+.imprevisto p{margin:.2em 0 .6em}
+
+/* ---------- procedura guidata ---------- */
+.wiz-testa{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
+.stepper{list-style:none;display:flex;gap:4px;padding:0;margin:6px 0 10px}
+.stepper li{flex:1;min-width:0}
+.stepper .pe{width:100%;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;color:var(--ink-2);padding:4px 2px;cursor:default}
+.stepper button.pe{cursor:pointer}
+.stepper .num{width:2.2rem;height:2.2rem;border-radius:50%;display:grid;place-items:center;border:2px solid var(--linea-forte);background:var(--pannello);font-weight:700}
+.stepper .fatto .num{background:var(--petrolio);border-color:var(--petrolio);color:#fff}
+.stepper .attivo .num{background:var(--arancio);border-color:var(--arancio);color:#fff;transform:scale(1.12)}
+.stepper .attivo{color:var(--ink);font-weight:700}
+.stepper .lab{font-size:.78rem;text-align:center}
+.passo-testo{font-weight:700;color:var(--ink-2);margin:0}
+@media (max-width:640px){.stepper .lab{display:none}}
+.passo{margin-top:6px}
+.barra-azioni{position:sticky;bottom:0;display:flex;justify-content:space-between;gap:12px;padding:14px 0 16px;background:linear-gradient(rgba(0,0,0,0),var(--carta) 35%);margin-top:18px;z-index:5}
+.barra-azioni .spazio-vuoto{flex:1}
+.ctr-riga{display:grid;grid-template-columns:1fr auto;gap:8px 14px;align-items:center;padding:10px 0;border-bottom:2px dashed var(--linea)}
+.ctr-nome{font-weight:700;display:flex;align-items:center;gap:.5em}
+.ctr-btn{display:flex;gap:6px;flex-wrap:wrap}
+.tg{min-height:2.8rem;padding:.35em .75em;border:2px solid var(--linea-forte);border-radius:10px;background:#fff;font-weight:700;display:inline-flex;align-items:center;gap:.35em;cursor:pointer;color:var(--ink)}
+.tg[aria-pressed="true"].v-ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.tg[aria-pressed="true"].v-ko{background:var(--ko);border-color:var(--ko);color:#fff}
+.tg[aria-pressed="true"].v-na{background:#57534E;border-color:#57534E;color:#fff}
+@media (max-width:700px){.ctr-riga{grid-template-columns:1fr}}
+.contatore{display:inline-block;background:var(--petrolio-chiaro);color:var(--petrolio);border-radius:999px;padding:.15em .8em;font-weight:700;font-size:.9rem}
+.lavori-griglia{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.lavoro{border:2px solid var(--linea-forte);border-radius:12px;background:var(--pannello);padding:4px 4px 8px;display:flex;flex-direction:column}
+.lavoro.scelto{border-color:var(--arancio);background:var(--arancio-chiaro);box-shadow:inset 0 0 0 2px var(--arancio)}
+.lavoro.consigliato:not(.scelto){border-style:dashed;border-color:var(--arancio)}
+.lav-toggle{display:flex;gap:12px;align-items:flex-start;width:100%;background:none;border:0;text-align:left;padding:10px;cursor:pointer;color:inherit}
+.spunta{width:1.75rem;height:1.75rem;border:2px solid var(--ink);border-radius:7px;display:grid;place-items:center;flex:none;background:#fff;color:#fff}
+.scelto .spunta{background:var(--arancio);border-color:var(--arancio)}
+.lav-nome{font-weight:700;display:block}
+.lav-info{color:var(--ink-2);font-size:.88rem;display:flex;align-items:center;gap:.3em;margin-top:2px}
+.lav-materie{display:flex;flex-wrap:wrap;gap:4px;padding:0 10px 4px 52px}
+.minuti{display:flex;align-items:center;gap:8px;padding:6px 10px 0 10px;flex-wrap:wrap}
+.minuti b{min-width:4.2em;text-align:center}
+.tondo-btn{width:2.6rem;height:2.6rem;border-radius:50%;border:2px solid var(--ink);background:#fff;display:grid;place-items:center;cursor:pointer;color:var(--ink);padding:0}
+.etichetta-cat{display:flex;align-items:center;gap:.45em;font-weight:700;margin:1.3em 0 .5em;font-size:1.05rem}
+.etichetta-cat .ico{color:var(--arancio)}
+.riepilogo-lav{position:sticky;bottom:calc(3.5rem + 44px);background:var(--petrolio);color:#fff;border-radius:12px;padding:.6em 1em;font-weight:700;display:inline-flex;gap:.6em;align-items:center;margin-top:14px;z-index:4}
+
+/* ---------- materie ---------- */
+.mat{display:inline-flex;align-items:center;justify-content:center;min-width:3.1em;padding:.08em .5em;border-radius:7px;background:var(--c);color:#fff;font-weight:700;font-size:.75rem;letter-spacing:.04em;line-height:1.6}
+.studio{background:var(--pannello);border:2px solid var(--linea);border-left:10px solid var(--c);border-radius:12px;padding:12px 16px;margin:12px 0}
+.studio header{display:flex;align-items:center;gap:.6em;flex-wrap:wrap;font-weight:700;color:var(--ink-2);font-size:.9rem}
+.studio h4{margin:.35em 0 .3em;font-size:1.06rem}
+.studio .prova{background:var(--pannello-2);border-radius:10px;padding:.55em .85em}
+.studio .da-lavoro{font-size:.85rem;color:var(--ink-2);margin:0}
+.parole{display:grid;gap:6px;margin:.6em 0;padding:0;list-style:none}
+.parole li{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;background:#fff;border:1px solid var(--linea);border-radius:10px;padding:.4em .7em}
+.parole .it{min-width:9em}
+.parole .tr{font-weight:700}
+.quiz{border-top:2px dashed var(--linea);margin-top:12px;padding-top:10px}
+.quiz-opz{display:grid;gap:8px;margin:.5em 0}
+.opz{display:flex;align-items:center;gap:.6em;text-align:left;padding:.6em 1em;border:2px solid var(--linea-forte);border-radius:10px;background:#fff;cursor:pointer;min-height:3rem;color:var(--ink)}
+.opz[disabled]{cursor:default}
+.opz.giusta{border-color:var(--ok);background:var(--ok-chiaro);font-weight:700}
+.opz.sbagliata{border-color:var(--ko);background:var(--ko-chiaro)}
+.esito{display:flex;gap:.5em;align-items:flex-start;border-radius:10px;padding:.6em .9em;margin:.5em 0;font-weight:700}
+.esito .ico{margin-top:.15em}
+.esito-ok{background:var(--ok-chiaro);border:2px solid var(--ok);color:#1B4D1E}
+.esito-ko{background:var(--ko-chiaro);border:2px solid var(--ko);color:#7A1810}
+.esito-info{background:var(--petrolio-chiaro);border:2px solid var(--petrolio);color:var(--petrolio)}
+.griglia-mat{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.card-mat{display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left;padding:14px 16px;border:2px solid var(--linea-forte);border-top:10px solid var(--c);border-radius:12px;background:var(--pannello);cursor:pointer;color:var(--ink)}
+.card-mat:hover{border-color:var(--ink);border-top-color:var(--c)}
+.card-mat b{font-size:1.05rem}
+.card-mat small{color:var(--ink-2)}
+.segno{display:inline-flex;align-items:center;gap:.3em;font-size:.85rem;font-weight:700}
+.segno.si{color:var(--ok)}
+.segno.no{color:var(--ink-2)}
+.chips-mat{display:flex;flex-wrap:wrap;gap:6px;margin:.4em 0 .8em}
+
+/* ---------- schede ---------- */
+.scheda-testa{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;background:var(--pannello);border:2px solid var(--ink);border-radius:16px;padding:14px 18px 14px 52px;position:relative;margin:8px 0 12px}
+.scheda-testa::before{content:"";position:absolute;left:18px;top:50%;width:16px;height:16px;transform:translateY(-50%);border-radius:50%;background:var(--carta);border:2px solid var(--ink)}
+.scheda-testa h1{margin:0}
+.scheda-testa p{margin:0;color:var(--ink-2)}
+.etich{font-size:.8rem;font-weight:700;color:var(--ink-2);letter-spacing:.06em}
+.tracker{list-style:none;display:flex;flex-wrap:wrap;gap:6px;padding:0;margin:6px 0 4px}
+.tracker li{display:flex;align-items:center;gap:.35em;font-size:.82rem;padding:.25em .7em;border-radius:999px;border:2px solid var(--linea);color:var(--ink-2);background:var(--pannello)}
+.tracker li.fatto{border-color:var(--petrolio);color:var(--petrolio)}
+.tracker li.ora{border-color:var(--arancio);background:var(--arancio);color:#fff;font-weight:700}
+.tabs{display:flex;gap:6px;border-bottom:3px solid var(--ink);margin:18px 0 12px;flex-wrap:wrap}
+.tab{border:2px solid var(--ink);border-bottom:0;background:var(--pannello-2);padding:.55em 1.1em;border-radius:12px 12px 0 0;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:.45em;color:var(--ink);margin-bottom:-3px}
+.tab[aria-selected="true"]{background:var(--carta);border-bottom:3px solid var(--carta)}
+.info-griglia{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.info-griglia .carta{margin:0}
+.dl{margin:0}
+.dl div{display:flex;gap:.6em;flex-wrap:wrap;padding:.15em 0}
+.dl dt{color:var(--ink-2);min-width:6.5em}
+.dl dd{margin:0;font-weight:700}
+.lista-controllo{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:4px 14px}
+.lista-controllo li{display:flex;gap:.45em;align-items:center}
+.v-ok-t{color:var(--ok)} .v-ko-t{color:var(--ko)} .v-na-t{color:#57534E}
+.lavori-fatti{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.lavori-fatti li{display:flex;align-items:center;gap:12px;justify-content:space-between;background:#fff;border:2px solid var(--linea);border-radius:12px;padding:.5em .8em;flex-wrap:wrap}
+
+/* ---------- conto ---------- */
+.conto{border:2px solid var(--ink);border-radius:14px;background:#fff;padding:12px 16px}
+.riga-conto{display:grid;grid-template-columns:1fr auto 7.2em;gap:10px;padding:.42em 0;border-bottom:1px dashed var(--linea-forte);align-items:baseline}
+.riga-conto .val{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.riga-conto .mezzo{color:var(--ink-2);font-size:.9rem;text-align:right}
+.riga-conto.tit{font-weight:700;border-bottom:2px solid var(--ink);color:var(--ink-2);font-size:.85rem;letter-spacing:.05em}
+.riga-conto.totale{border-top:3px double var(--ink);border-bottom:0;font-size:1.18rem;margin-top:.3em}
+@media (max-width:560px){.riga-conto{grid-template-columns:1fr 6.2em}.riga-conto .mezzo{grid-column:1;text-align:left}.riga-conto .val{grid-column:2;grid-row:1/3}}
+.ricambio{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;background:#fff;border:2px solid var(--linea);border-radius:12px;padding:.5em .8em;margin:8px 0}
+.ricambio .nome{flex:1;min-width:10em;font-weight:700}
+.ricambio .qta{display:flex;align-items:center;gap:6px}
+.ricambio .qta b{min-width:2em;text-align:center}
+.conto-scelta{background:var(--giallo-chiaro);border:2px solid #C9A227;border-radius:12px;padding:12px 14px;margin-top:12px}
+.correttore{margin-top:12px;border-top:2px dashed var(--linea-forte);padding-top:10px}
+.campo-conto{padding:10px 12px;border-radius:12px;border:2px solid var(--linea);margin:8px 0;background:var(--pannello)}
+.campo-conto.ok{border-color:var(--ok);background:var(--ok-chiaro)}
+.campo-conto.ko{border-color:var(--ko);background:var(--ko-chiaro)}
+.campo-conto label{font-weight:700;display:block;margin-bottom:.3em}
+.input-euro{display:flex;align-items:center;gap:8px;max-width:16rem}
+.input-euro input{text-align:right;font-weight:700}
+.fb{margin-top:.4em;font-weight:700}
+.fb .ico{vertical-align:-.25em}
+.passaggi{background:#fff;border:2px solid var(--petrolio);border-radius:10px;padding:.5em .9em;margin:.5em 0 0;font-weight:400}
+.passaggi li{margin:.2em 0}
+
+/* ---------- percorso ---------- */
+.percorso{list-style:none;padding:0;margin:14px 0}
+.percorso li{position:relative;padding:0 0 24px 70px;min-height:56px}
+.percorso li::before{content:"";position:absolute;left:25px;top:52px;bottom:0;width:4px;background:repeating-linear-gradient(var(--linea-forte) 0 8px,rgba(0,0,0,0) 8px 14px)}
+.percorso li:last-child::before{display:none}
+.tappa-ico{position:absolute;left:0;top:0;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;border:3px solid var(--linea-forte);background:var(--pannello);font-weight:700;font-size:1.1rem}
+.percorso .superata .tappa-ico{background:var(--ok);border-color:var(--ok);color:#fff}
+.percorso .corrente .tappa-ico{background:var(--arancio);border-color:var(--arancio);color:#fff}
+.percorso .bloccata{color:var(--ink-2)}
+.percorso h3{margin:.2em 0 .1em}
+.percorso p{margin:.1em 0}
+
+/* ---------- area educatore ---------- */
+.edu-off{display:grid;gap:12px}
+.edu-card{background:var(--pannello);border:2px solid var(--linea-forte);border-radius:14px;padding:14px 16px}
+.edu-card header{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.edu-card .tondo{width:2.6rem;height:2.6rem;border-radius:50%;display:grid;place-items:center;color:#fff;background:var(--c)}
+.edu-stat{display:flex;flex-wrap:wrap;gap:6px 18px;margin:8px 0;font-size:.92rem}
+.listino-ed{display:grid;grid-template-columns:1fr 8em auto;gap:8px;align-items:center;margin:6px 0}
+@media (max-width:560px){.listino-ed{grid-template-columns:1fr 6.5em auto}}
+.riga-listino{display:flex;justify-content:space-between;gap:10px;padding:.5em 0;border-bottom:1px dashed var(--linea-forte)}
+.riga-listino b{font-variant-numeric:tabular-nums}
+.interruttore{display:flex;align-items:center;gap:.7em;font-weight:700;margin:.7em 0;cursor:pointer}
+.interruttore input{width:1.5rem;height:1.5rem;accent-color:var(--arancio)}
+
+/* ---------- finestre e avvisi ---------- */
+.velo{position:fixed;inset:0;background:rgba(35,33,30,.55);display:flex;align-items:flex-start;justify-content:center;padding:5vh 12px;z-index:50;overflow:auto}
+.finestra{background:var(--carta);border-radius:16px;max-width:640px;width:100%;padding:18px 22px 20px;border:3px solid var(--ink);box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.finestra h2{margin-top:.2em}
+.finestra textarea.esporta{width:100%;min-height:10rem;font-family:monospace;font-size:.75rem}
+.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%) translateY(20px);background:var(--scuro);color:#fff;padding:.8em 1.2em;border-radius:12px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;max-width:min(92vw,560px);z-index:60;box-shadow:0 6px 20px rgba(0,0,0,.25);text-align:center}
+.toast.vis{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media (max-width:759px){
+  .nav{position:fixed;bottom:0;left:0;right:0;z-index:20;border-top:3px solid var(--arancio)}
+  .nav-in{padding:0;gap:0}
+  .nav button{flex-direction:column;gap:2px;font-size:.68rem;padding:7px 2px 9px;border-radius:0;flex:1;line-height:1.2}
+  .nav button[aria-current="page"]{background:#433C35;color:#fff}
+  .nav .nav-nuova{margin:0;border-radius:0}
+  .nav .solo-largo{display:none}
+  .btn-testa span{display:none}
+  .testata-azioni{margin-left:auto}
+  .off-info{order:3;flex-basis:100%}
+  .tabs{border-bottom:0;gap:8px}
+  .tab{flex:1 1 100%;border-radius:12px;border-bottom:2px solid var(--ink);margin:0}
+  .tab[aria-selected="true"]{background:var(--ink);color:#fff;border-bottom:2px solid var(--ink)}
+  .tracker li:not(.ora) .tr-t{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .tracker li{padding:.25em .5em}
+  .btn-testa{padding:.35em .55em}
+  .testata-in{gap:8px}
+  h1{font-size:1.35rem}
+  .benvenuto h1{font-size:1.7rem}
+  .btn-enorme{width:100%}
+}
+
+/* ---------- stampa ---------- */
+#stampa{display:none}
+.pagina{font-family:var(--font);color:#000;font-size:10.5pt;line-height:1.45}
+.pagina h2{font-size:13pt;margin:0 0 4px;display:block}
+.pagina h3{font-size:11pt;margin:0 0 4px;text-transform:uppercase;letter-spacing:.06em}
+.st-testa{display:flex;justify-content:space-between;align-items:stretch;gap:12px;border-bottom:3px solid #000;padding-bottom:8px;margin-bottom:8px}
+.st-off{font-weight:700;font-size:12pt}
+.st-tit{font-size:15pt;font-weight:700;margin:2px 0}
+.st-cart{border:2px dashed #000;border-radius:10px;padding:6px 12px 6px 30px;position:relative;min-width:62mm;font-size:9.5pt}
+.st-cart .foro{position:absolute;left:9px;top:50%;width:11px;height:11px;border:2px solid #000;border-radius:50%;transform:translateY(-50%)}
+.st-cart .forbici{font-size:8pt;display:flex;align-items:center;gap:4px}
+.st-cart b{font-size:12pt;display:block}
+.st-box{border:1.5px solid #000;border-radius:8px;padding:6px 10px;margin:7px 0;break-inside:avoid;page-break-inside:avoid}
+.st-due{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.st-due .st-box{margin:0}
+.st-ctr{list-style:none;padding:0;margin:0;columns:2;column-gap:16px}
+.st-ctr li{display:flex;gap:5px;align-items:center;break-inside:avoid}
+.st-lav{margin:0;padding-left:18px}
+.st-lav li{display:flex;justify-content:space-between;gap:10px}
+.st-riga{display:grid;grid-template-columns:1fr 50mm 26mm;gap:6px;padding:2px 0;border-bottom:1px dotted #555}
+.st-riga .v{text-align:right;font-weight:700}
+.st-riga .m{text-align:right}
+.st-riga.tot{border-top:2px solid #000;border-bottom:0;font-size:12pt;margin-top:3px}
+.st-vuoto{display:inline-block;min-width:22mm;border-bottom:1px solid #000;height:1em}
+.st-firme{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
+.st-firme div{border-top:1px solid #000;padding-top:3px;font-size:9pt;margin-top:22px}
+.st-piede{margin-top:10px;font-size:8pt;border-top:1px solid #000;padding-top:4px;display:flex;justify-content:space-between;gap:8px}
+.st-item{border:1.5px solid #000;border-left:7px solid var(--c);border-radius:6px;padding:5px 9px;margin:6px 0;break-inside:avoid;page-break-inside:avoid}
+.st-item .mat{font-size:7.5pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.st-item p{margin:2px 0;max-width:none}
+.st-opz{list-style:none;padding:0;margin:2px 0 0}
+.st-opz li::before{content:"\2610  "}
+.st-parole{columns:2;margin:3px 0;padding-left:16px}
+.st-righe{border-bottom:1px solid #000;height:7mm}
+.st-dom{margin:2px 0;padding-left:20px}
+.st-dom li{margin:2px 0}
+.pagina .ico{width:1.1em;height:1.1em}
+@media print{
+  @page{size:A4;margin:11mm}
+  html,body{background:#fff!important;font-size:10.5pt}
+  body > *:not(#stampa):not(#sprite){display:none!important}
+  #stampa{display:block!important}
+  .pagina{break-after:page;page-break-after:always}
+  .pagina:last-child{break-after:auto;page-break-after:auto}
+  .mat,.st-item{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<svg id="sprite" xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
+<defs>
+<symbol id="i-bici" viewBox="0 0 24 24"><circle cx="5.5" cy="16.5" r="3.5"/><circle cx="18.5" cy="16.5" r="3.5"/><path d="M5.5 16.5 L9 9 H15.5 L11.5 16.5 Z M9 9 L11.5 16.5 M9 9 L8.3 6.5 M6.8 6.5 H10 M15.5 9 L18.5 16.5 M15.5 9 L14.9 6.3 H17.2"/></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21 C4 16.6 7.6 14 12 14 C16.4 14 20 16.6 20 21"/></symbol>
+<symbol id="i-gruppo" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20 C2.5 16 5.5 13.5 9 13.5 C12.5 13.5 15.5 16 15.5 20 M15.5 4.8 A3.5 3.5 0 0 1 15.5 11.2 M18 13.8 C20.2 14.6 21.5 16.8 21.5 20"/></symbol>
+<symbol id="i-scheda" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4 V2.8 H15 V4 M8.5 10 H15.5 M8.5 14 H15.5 M8.5 18 H12.5"/></symbol>
+<symbol id="i-piu" viewBox="0 0 24 24"><path d="M12 5 V19 M5 12 H19"/></symbol>
+<symbol id="i-meno" viewBox="0 0 24 24"><path d="M5 12 H19"/></symbol>
+<symbol id="i-libro" viewBox="0 0 24 24"><path d="M12 6.5 C10 5 7 4.5 3 5 V19 C7 18.5 10 19 12 20.5 C14 19 17 18.5 21 19 V5 C17 4.5 14 5 12 6.5 Z M12 6.5 V20.5"/></symbol>
+<symbol id="i-medaglia" viewBox="0 0 24 24"><circle cx="12" cy="15" r="5.5"/><path d="M8.6 10.7 L6 3 H10 L12 8.5 L14 3 H18 L15.4 10.7"/><path d="M12 12.4 L12.9 14.2 L14.8 14.4 L13.4 15.7 L13.8 17.6 L12 16.6 L10.2 17.6 L10.6 15.7 L9.2 14.4 L11.1 14.2 Z"/></symbol>
+<symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12.2 V4.5 A1.5 1.5 0 0 1 4.5 3 H12.2 L21 11.8 L11.8 21 Z"/><circle cx="7.6" cy="7.6" r="1.6"/></symbol>
+<symbol id="i-stampa" viewBox="0 0 24 24"><path d="M7 9 V3 H17 V9 M7 17.5 H5 A2 2 0 0 1 3 15.5 V11 A2 2 0 0 1 5 9 H19 A2 2 0 0 1 21 11 V15.5 A2 2 0 0 1 19 17.5 H17 M7 14 H17 V21 H7 Z"/></symbol>
+<symbol id="i-casa" viewBox="0 0 24 24"><path d="M3 11 L12 3.5 L21 11 M5.5 9 V20.5 H10 V15 H14 V20.5 H18.5 V9"/></symbol>
+<symbol id="i-sx" viewBox="0 0 24 24"><path d="M15 5 L8 12 L15 19"/></symbol>
+<symbol id="i-dx" viewBox="0 0 24 24"><path d="M9 5 L16 12 L9 19"/></symbol>
+<symbol id="i-ok" viewBox="0 0 24 24"><path d="M4.5 12.5 L9.5 17.5 L19.5 6.5"/></symbol>
+<symbol id="i-no" viewBox="0 0 24 24"><path d="M6 6 L18 18 M18 6 L6 18"/></symbol>
+<symbol id="i-cerca" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 L20.5 20.5"/></symbol>
+<symbol id="i-matita" viewBox="0 0 24 24"><path d="M4 20 L5 15.5 L15.5 5 A2.1 2.1 0 0 1 18.5 5 L19 5.5 A2.1 2.1 0 0 1 19 8.5 L8.5 19 Z M13.5 7 L17 10.5"/></symbol>
+<symbol id="i-cestino" viewBox="0 0 24 24"><path d="M4 7 H20 M9.5 7 V4 H14.5 V7 M6 7 L7 21 H17 L18 7 M10 11 V17 M14 11 V17"/></symbol>
+<symbol id="i-voce" viewBox="0 0 24 24"><path d="M4 9.5 H7.5 L12.5 5 V19 L7.5 14.5 H4 Z M16 8.5 A5 5 0 0 1 16 15.5 M18.8 5.8 A9 9 0 0 1 18.8 18.2"/></symbol>
+<symbol id="i-regola" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><circle cx="12" cy="12" r="6.6"/><path d="M12 2.5 V5.4 M12 18.6 V21.5 M2.5 12 H5.4 M18.6 12 H21.5 M5.3 5.3 L7.3 7.3 M16.7 16.7 L18.7 18.7 M5.3 18.7 L7.3 16.7 M16.7 7.3 L18.7 5.3"/></symbol>
+<symbol id="i-lucchetto" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10.5" rx="2"/><path d="M8 10.5 V7.5 A4 4 0 0 1 16 7.5 V10.5 M12 14.5 V17"/></symbol>
+<symbol id="i-entra" viewBox="0 0 24 24"><path d="M14 4 H19 A1 1 0 0 1 20 5 V19 A1 1 0 0 1 19 20 H14 M3.5 12 H14 M10 8 L14 12 L10 16"/></symbol>
+<symbol id="i-giu" viewBox="0 0 24 24"><path d="M12 3.5 V15 M7 10 L12 15 L17 10 M4 20 H20"/></symbol>
+<symbol id="i-su" viewBox="0 0 24 24"><path d="M12 15 V3.5 M7 8.5 L12 3.5 L17 8.5 M4 20 H20"/></symbol>
+<symbol id="i-avviso" viewBox="0 0 24 24"><path d="M12 3.5 L21.5 20 H2.5 Z M12 10 V14 M12 17 V17.2"/></symbol>
+<symbol id="i-ruota" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/><path d="M12 3 V10 M12 14 V21 M3 12 H10 M14 12 H21 M5.6 5.6 L10.6 10.6 M13.4 13.4 L18.4 18.4 M5.6 18.4 L10.6 13.4 M13.4 10.6 L18.4 5.6"/></symbol>
+<symbol id="i-chiave" viewBox="0 0 24 24"><path d="M14.7 6.3 A1 1 0 0 0 14.7 7.7 L16.3 9.3 A1 1 0 0 0 17.7 9.3 L21.2 5.8 A6 6 0 0 1 13.5 13.5 L6.6 20.4 A2.1 2.1 0 0 1 3.6 17.4 L10.5 10.5 A6 6 0 0 1 18.2 2.8 Z"/></symbol>
+<symbol id="i-stop" viewBox="0 0 24 24"><path d="M8.2 3 H15.8 L21 8.2 V15.8 L15.8 21 H8.2 L3 15.8 V8.2 Z M8 12 H16"/></symbol>
+<symbol id="i-catena" viewBox="0 0 24 24"><path d="M10 13.5 A4 4 0 0 0 15.7 13.5 L18.5 10.7 A4 4 0 0 0 12.8 5 L11.5 6.3 M14 10.5 A4 4 0 0 0 8.3 10.5 L5.5 13.3 A4 4 0 0 0 11.2 19 L12.5 17.7"/></symbol>
+<symbol id="i-luce" viewBox="0 0 24 24"><path d="M9 18 H15 M10 21 H14 M12 3 A6 6 0 0 0 8.5 13.9 C9.3 14.5 9.5 15.2 9.5 16 V18 H14.5 V16 C14.5 15.2 14.7 14.5 15.5 13.9 A6 6 0 0 0 12 3 Z"/></symbol>
+<symbol id="i-sella" viewBox="0 0 24 24"><path d="M3 8.2 C3 6.4 8.5 5.6 13 6 C17 6.4 21 7.6 21 9.6 C21 11.2 17 11.3 13.5 11.8 C10.5 12.2 8 12.3 6 11.4 C4 10.8 3 9.7 3 8.2 Z M12.5 12 V21 M9.5 21 H15.5"/></symbol>
+<symbol id="i-goccia" viewBox="0 0 24 24"><path d="M12 3 C12 3 5.5 10.5 5.5 15 A6.5 6.5 0 0 0 18.5 15 C18.5 10.5 12 3 12 3 Z"/></symbol>
+<symbol id="i-campanello" viewBox="0 0 24 24"><path d="M6 16.5 V11 A6 6 0 0 1 18 11 V16.5 L20 18.5 H4 Z M10 21 H14 M12 3 V5"/></symbol>
+<symbol id="i-orologio" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7 V12 L15.5 14.5"/></symbol>
+<symbol id="i-euro" viewBox="0 0 24 24"><path d="M17.5 6.5 A7 7 0 1 0 17.5 17.5 M4 10 H13 M4 14 H13"/></symbol>
+<symbol id="i-forbici" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.6"/><circle cx="6" cy="18" r="2.6"/><path d="M8.2 7.6 L20 18 M8.2 16.4 L20 6"/></symbol>
+<symbol id="i-lampo" viewBox="0 0 24 24"><path d="M13 2.5 L4.5 14 H11 L10 21.5 L19.5 9.5 H13 Z"/></symbol>
+<symbol id="i-stella" viewBox="0 0 24 24"><path d="M12 3 L14.7 8.6 L20.8 9.4 L16.3 13.6 L17.5 19.6 L12 16.6 L6.5 19.6 L7.7 13.6 L3.2 9.4 L9.3 8.6 Z"/></symbol>
+<symbol id="i-aa" viewBox="0 0 24 24"><path d="M2.5 19 L7.5 5 L12.5 19 M4.4 14 H10.6 M14.5 19 L18 10 L21.5 19 M15.7 16 H20.3"/></symbol>
+<symbol id="i-calendario" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10 H20.5 M8 3 V7 M16 3 V7"/></symbol>
+</defs>
+</svg>
+<noscript><p style="padding:20px;font-family:Verdana,sans-serif">BiciLab ha bisogno di JavaScript. Apri il file con Chrome, Edge o Firefox.</p></noscript>
+<div id="app"></div>
+<div id="modale"></div>
+<div id="avviso" class="toast" role="status" aria-live="polite"></div>
+<div id="stampa" aria-hidden="true"></div>
+
+<script>
+'use strict';
+/* =========================================================
+   BiciLab – gestionale didattico per l'officina bici
+   Un solo file, nessuna connessione: i dati restano nel browser.
+   ========================================================= */
+
+/* ---------------- DATI FISSI ---------------- */
+const MATERIE = {
+  ITA:{n:"Italiano", s:"ITA", c:"#B91C1C"},
+  ING:{n:"Inglese", s:"ING", c:"#1D4ED8"},
+  L2:{n:"Seconda lingua", s:"L2", c:"#4338CA"},
+  STO:{n:"Storia", s:"STO", c:"#92400E"},
+  GEO:{n:"Geografia", s:"GEO", c:"#4D7C0F"},
+  MAT:{n:"Matematica", s:"MAT", c:"#C2410C"},
+  SCI:{n:"Scienze", s:"SCI", c:"#0F766E"},
+  TEC:{n:"Tecnologia", s:"TEC", c:"#374151"},
+  MUS:{n:"Musica", s:"MUS", c:"#BE185D"},
+  ART:{n:"Arte e immagine", s:"ART", c:"#7E22CE"},
+  MOT:{n:"Educazione fisica", s:"EF", c:"#15803D"},
+  REL:{n:"Religione cattolica", s:"REL", c:"#854D0E"},
+  CIV:{n:"Educazione civica", s:"CIV", c:"#0E7490"}
+};
+const ORDINE_MATERIE = Object.keys(MATERIE);
+
+const LINGUE = {en:{n:"inglese", v:"en-GB", i:1}, fr:{n:"francese", v:"fr-FR", i:2}, es:{n:"spagnolo", v:"es-ES", i:3}};
+
+const VOC = {
+  foratura:["foratura","puncture","crevaison","pinchazo"],
+  camera:["camera d'aria","inner tube","chambre à air","cámara de aire"],
+  toppa:["toppa","patch","rustine","parche"],
+  pompa:["pompa","pump","pompe","bomba"],
+  valvola:["valvola","valve","valve","válvula"],
+  ruota:["ruota","wheel","roue","rueda"],
+  copertone:["copertone","tyre","pneu","neumático"],
+  cerchio:["cerchio","rim","jante","llanta"],
+  freno:["freno","brake","frein","freno"],
+  leva:["leva del freno","brake lever","levier de frein","maneta de freno"],
+  cavo:["cavo","cable","câble","cable"],
+  guaina:["guaina","cable housing","gaine","funda"],
+  pattino:["pattino del freno","brake pad","patin de frein","zapata de freno"],
+  catena:["catena","chain","chaîne","cadena"],
+  olio:["olio","oil","huile","aceite"],
+  ruggine:["ruggine","rust","rouille","óxido"],
+  corona:["corona","chainring","plateau","plato"],
+  pignone:["pignone","sprocket","pignon","piñón"],
+  cambio:["cambio","derailleur","dérailleur","cambio"],
+  raggio:["raggio","spoke","rayon","radio"],
+  mozzo:["mozzo","hub","moyeu","buje"],
+  luce_ant:["luce davanti","front light","feu avant","luz delantera"],
+  luce_post:["luce dietro","rear light","feu arrière","luz trasera"],
+  catadiottro:["catadiottro","reflector","catadioptre","catadióptrico"],
+  campanello:["campanello","bell","sonnette","timbre"],
+  manubrio:["manubrio","handlebar","guidon","manillar"],
+  sella:["sella","saddle","selle","sillín"],
+  telaio:["telaio","frame","cadre","cuadro"],
+  serie:["serie sterzo","headset","jeu de direction","juego de dirección"],
+  cuscinetto:["cuscinetto","bearing","roulement","rodamiento"],
+  pedale:["pedale","pedal","pédale","pedal"],
+  pedivella:["pedivella","crank","manivelle","biela"],
+  vite:["vite","screw","vis","tornillo"],
+  bici:["bicicletta","bicycle","vélo","bicicleta"],
+  adesivo:["adesivo","sticker","autocollant","pegatina"],
+  vernice:["vernice","paint","peinture","pintura"],
+  cliente:["cliente","customer","client","cliente"],
+  preventivo:["preventivo","quote","devis","presupuesto"],
+  officina:["officina","workshop","atelier","taller"],
+  chiave:["chiave inglese","spanner","clé","llave inglesa"]
+};
+
+const CATEGORIE = [
+  {id:"ruote", n:"Ruote e gomme", ico:"ruota"},
+  {id:"freni", n:"Freni", ico:"stop"},
+  {id:"trasm", n:"Catena e cambio", ico:"catena"},
+  {id:"sicur", n:"Luci e campanello", ico:"luce"},
+  {id:"comfort", n:"Sella, manubrio e pedali", ico:"sella"},
+  {id:"cura", n:"Cura della bici", ico:"goccia"}
+];
+
+const CONTROLLI = [
+  {id:"gomme", n:"Gomme e pressione", ico:"ruota", lav:["pressione","foratura","camera","copertone"]},
+  {id:"freno_ant", n:"Freno davanti", ico:"stop", lav:["freni_reg","pattini","cavo_freno"]},
+  {id:"freno_post", n:"Freno dietro", ico:"stop", lav:["freni_reg","pattini","cavo_freno"]},
+  {id:"catena", n:"Catena", ico:"catena", lav:["catena_lub","catena_sost"]},
+  {id:"cambio", n:"Cambio", ico:"regola", lav:["cambio"]},
+  {id:"ruote", n:"Ruote e raggi", ico:"ruota", lav:["raggi"]},
+  {id:"luci", n:"Luci e catadiottri", ico:"luce", lav:["luci"]},
+  {id:"campanello", n:"Campanello", ico:"campanello", lav:["campanello"]},
+  {id:"sella", n:"Sella", ico:"sella", lav:["sella"]},
+  {id:"manubrio", n:"Manubrio e sterzo", ico:"bici", lav:["manubrio"]},
+  {id:"pedali", n:"Pedali", ico:"bici", lav:["pedali"]},
+  {id:"telaio", n:"Telaio e pulizia", ico:"goccia", lav:["pulizia","decoro"]}
+];
+
+const LISTINO_BASE = [
+  {id:"camera", nome:"Camera d'aria", prezzo:6},
+  {id:"kit_toppe", nome:"Kit toppe e mastice", prezzo:4},
+  {id:"copertone", nome:"Copertone", prezzo:18},
+  {id:"pattini", nome:"Pattini dei freni (coppia)", prezzo:7},
+  {id:"cavo_freno", nome:"Cavo del freno", prezzo:3},
+  {id:"guaina", nome:"Guaina (1 metro)", prezzo:2.5},
+  {id:"cavo_cambio", nome:"Cavo del cambio", prezzo:3},
+  {id:"catena", nome:"Catena", prezzo:15},
+  {id:"lubrificante", nome:"Lubrificante per catena (dose)", prezzo:1.5},
+  {id:"sgrassatore", nome:"Sgrassatore (dose)", prezzo:1},
+  {id:"raggio", nome:"Raggio", prezzo:1},
+  {id:"fanale_ant", nome:"Luce davanti a LED", prezzo:10},
+  {id:"fanale_post", nome:"Luce dietro a LED", prezzo:8},
+  {id:"catadiottri", nome:"Kit catadiottri", prezzo:4},
+  {id:"campanello", nome:"Campanello", prezzo:5},
+  {id:"pedali", nome:"Pedali (coppia)", prezzo:14},
+  {id:"manopole", nome:"Manopole (coppia)", prezzo:8},
+  {id:"sella", nome:"Sella", prezzo:20},
+  {id:"pile", nome:"Pile (2 pezzi)", prezzo:2},
+  {id:"adesivi", nome:"Adesivi e nastro colorato", prezzo:3},
+  {id:"fascette", nome:"Fascette", prezzo:0.5}
+];
+
+/* Ogni lavoro: tempo, ricambi suggeriti, parole del mestiere e collegamenti con le materie.
+   Nella domanda (q) la prima risposta (o[0]) è quella giusta: l'app mescola l'ordine. */
+const LAVORI = [
+{id:"foratura", cat:"ruote", nome:"Riparare una foratura", min:20, ricambi:["kit_toppe"], parole:["foratura","camera","toppa","pompa","valvola"], studio:[
+ {m:"SCI", t:"L'aria spinge: la pressione", p:"La camera d'aria è piena d'aria. L'aria spinge in tutte le direzioni. Se c'è un buco, anche piccolo, l'aria esce e la gomma si sgonfia.", a:"Metti la camera d'aria gonfia in una bacinella d'acqua. Guarda dove escono le bolle: lì c'è il buco.", q:{d:"Perché metti la camera d'aria nell'acqua?", o:["Per vedere le bolle che escono dal buco","Per pulire la gomma","Per raffreddare l'aria"], i:"Pensa a che cosa fa l'aria quando esce sott'acqua."}},
+ {m:"TEC", t:"La toppa e il mastice", p:"La toppa si attacca con il mastice. Prima bisogna grattare la gomma con la carta vetrata: la superficie diventa ruvida e pulita e la toppa si attacca meglio.", a:"Scrivi in ordine le fasi della riparazione: trova il buco, gratta, metti il mastice, aspetta, metti la toppa, premi forte.", q:{d:"Che cosa fai prima di mettere il mastice?", o:["Gratti la gomma con la carta vetrata","Gonfi la camera d'aria al massimo","Metti subito la toppa"], i:"La superficie deve essere ruvida e pulita."}},
+ {m:"STO", t:"La gomma piena d'aria", p:"Nel 1888 lo scozzese John Boyd Dunlop, un veterinario, costruì e brevettò una gomma piena d'aria per il triciclo di suo figlio. Prima le ruote avevano gomma piena o ferro: si viaggiava con tanti scossoni.", a:"Metti il 1888 su una linea del tempo. Che cosa succedeva in Italia in quegli anni?", q:{d:"In che secolo Dunlop brevettò la gomma ad aria?", o:["Nell'Ottocento (XIX secolo)","Nel Novecento (XX secolo)","Nel Settecento (XVIII secolo)"], i:"Gli anni dal 1801 al 1900 formano l'Ottocento."}}
+]},
+{id:"camera", cat:"ruote", nome:"Sostituire la camera d'aria", min:15, ricambi:["camera"], parole:["camera","valvola","pompa","ruota"], studio:[
+ {m:"MAT", t:"Pollici e centimetri", p:"La misura delle ruote spesso è in pollici. 1 pollice è uguale a 2,54 centimetri. La camera d'aria nuova deve avere la stessa misura della ruota.", a:"Leggi la misura scritta sulla gomma. Trasforma i pollici in centimetri: moltiplica per 2,54.", q:{d:"Una ruota da 26 pollici quanti centimetri misura, circa?", o:["Circa 66 cm","Circa 26 cm","Circa 10 cm"], i:"Fai 26 × 2,54. Puoi usare la calcolatrice."}},
+ {m:"TEC", t:"Tre tipi di valvola", p:"Le valvole delle bici sono di tre tipi: americana (uguale a quella delle auto), francese (sottile, con un piccolo dado in cima) e italiana. La pompa deve avere la testina giusta per la valvola.", a:"Guarda la valvola della bici e scopri di che tipo è. Disegnala.", q:{d:"Quale valvola è uguale a quella delle auto?", o:["La valvola americana","La valvola francese","Nessuna valvola"], i:"Il suo nome ricorda un continente."}},
+ {m:"CIV", t:"Una camera d'aria rotta non è un rifiuto", p:"Una camera d'aria si può riparare tante volte. Quando non si può più riparare, la gomma si può riusare: si fanno elastici, cinghie, portafogli e borse.", a:"Progettate un oggetto utile da fare con una camera d'aria vecchia. Disegnatelo e scrivete come si usa.", q:{d:"Che cosa fai prima di buttare una camera d'aria bucata?", o:["Provo a ripararla o a riusarla","La brucio","La lascio in strada"], i:"Pensa a riparare e riusare."}}
+]},
+{id:"copertone", cat:"ruote", nome:"Sostituire il copertone", min:20, ricambi:["copertone"], parole:["copertone","ruota","cerchio"], studio:[
+ {m:"MAT", t:"Leggere la sigla della gomma", p:"Sul fianco del copertone c'è una sigla, per esempio 37-622. Il primo numero è la larghezza in millimetri. Il secondo numero è il diametro del cerchio in millimetri.", a:"Cerca la sigla su una gomma. Trasforma i millimetri in centimetri: dividi per 10.", q:{d:"Nella sigla 37-622, quanto è largo il copertone?", o:["3,7 cm","37 cm","62,2 cm"], i:"37 è in millimetri. 10 millimetri fanno 1 centimetro."}},
+ {m:"SCI", t:"Attrito e aderenza", p:"Il disegno della gomma si chiama battistrada. Aiuta la ruota a non scivolare: è l'attrito tra gomma e strada. Una gomma liscia e consumata scivola di più, soprattutto sul bagnato.", a:"Tocca il battistrada di una gomma nuova e di una gomma consumata. Che differenza senti?", q:{d:"Perché una gomma consumata è pericolosa?", o:["Ha meno aderenza e scivola di più","Diventa più pesante","Fa andare più piano la catena"], i:"Pensa all'attrito tra la gomma e la strada bagnata."}},
+ {m:"GEO", t:"Da dove viene la gomma", p:"La gomma naturale si fa con il lattice di un albero, l'Hevea. L'albero viene dalla foresta amazzonica, in America del Sud. Oggi si coltiva soprattutto nel Sud-Est asiatico, per esempio in Thailandia e in Indonesia. Nei copertoni c'è anche gomma sintetica, fatta con il petrolio.", a:"Trova sulla carta l'Amazzonia e la Thailandia. Quali mari attraversa una nave che porta la gomma dalla Thailandia all'Italia?", q:{d:"Da quale continente viene l'albero della gomma?", o:["America del Sud","Europa","Oceania"], i:"Pensa alla foresta amazzonica."}}
+]},
+{id:"pressione", cat:"ruote", nome:"Gonfiare le gomme alla pressione giusta", min:5, ricambi:[], parole:["pompa","valvola","copertone"], studio:[
+ {m:"MAT", t:"Bar e PSI: due unità di misura", p:"La pressione delle gomme si misura in bar o in PSI. 1 bar è circa 14,5 PSI. Sul fianco della gomma c'è scritta la pressione minima e massima.", a:"Leggi sulla gomma la pressione massima. Se è in PSI, trasformala in bar: dividi per 14,5.", q:{d:"Una gomma ha scritto 58 PSI. Quanti bar sono, circa?", o:["4 bar","58 bar","0,4 bar"], i:"Dividi 58 per 14,5."}},
+ {m:"SCI", t:"L'aria si può comprimere", p:"Con la pompa spingi tanta aria in poco spazio. L'aria si comprime e spinge forte contro la gomma. Per questo la gomma diventa dura.", a:"Tappa con un dito il buco della pompa e spingi piano. Senti l'aria che spinge contro il dito?", q:{d:"Che cosa fa l'aria quando la pompi nella gomma?", o:["Si comprime e spinge contro la gomma","Diventa acqua","Sparisce"], i:"Pensa alla pompa tappata con il dito."}},
+ {m:"MOT", t:"Meno fatica a pedalare", p:"Con le gomme sgonfie la bici è più lenta e fai più fatica. Con la pressione giusta pedali meglio e ti stanchi meno.", a:"In cortile, con un adulto, fai un breve giro con le gomme poco gonfie e poi gonfie. Che cosa cambia nelle tue gambe?", q:{d:"Con le gomme sgonfie...", o:["fai più fatica a pedalare","vai più veloce","freni meglio"], i:"Pensa a quanta forza metti sui pedali."}}
+]},
+{id:"freni_reg", cat:"freni", nome:"Regolare i freni", min:15, ricambi:[], parole:["freno","leva","cavo"], studio:[
+ {m:"TEC", t:"La leva del freno", p:"La leva del freno è una leva. Il perno su cui gira è il fulcro. La mano spinge lontano dal fulcro, il cavo è attaccato vicino al fulcro: così con poca forza tiri forte il cavo.", a:"Guarda la leva del freno. Indica il fulcro, il punto dove spinge la mano e il punto dove è attaccato il cavo.", q:{d:"Dov'è il fulcro nella leva del freno?", o:["Nel perno su cui gira la leva","Nella gomma della ruota","Nel campanello"], i:"Il fulcro è il punto fermo intorno a cui la leva gira."}},
+ {m:"SCI", t:"L'attrito ferma la bici", p:"Il freno stringe il cerchio o il disco. L'attrito rallenta la ruota. L'energia del movimento diventa calore: dopo una lunga discesa il cerchio è caldo.", a:"Strofina forte le mani una contro l'altra per 10 secondi. Che cosa senti?", q:{d:"Quando freni, l'energia del movimento diventa soprattutto...", o:["calore","luce","elettricità"], i:"Pensa alle mani che strofini."}},
+ {m:"CIV", t:"Due freni per legge", p:"Il Codice della strada dice che la bici deve avere due freni indipendenti: uno per la ruota davanti e uno per la ruota dietro.", a:"Controlla una bici: ha due freni che funzionano ognuno da solo? Prova prima uno e poi l'altro.", q:{d:"Quanti freni deve avere una bici per il Codice della strada?", o:["Due: uno davanti e uno dietro","Uno solo","Nessuno"], i:"Ogni ruota ha il suo freno."}}
+]},
+{id:"pattini", cat:"freni", nome:"Sostituire i pattini dei freni", min:15, ricambi:["pattini"], parole:["pattino","freno","cerchio"], studio:[
+ {m:"SCI", t:"L'attrito consuma", p:"A ogni frenata il pattino si consuma un poco. Sui pattini ci sono delle righe: quando le righe spariscono, il pattino è consumato e la bici frena male.", a:"Guarda i pattini: si vedono ancora le righe? Disegna un pattino nuovo e un pattino consumato.", q:{d:"Quando si cambiano i pattini dei freni?", o:["Quando le righe sono sparite e la bici frena male","Ogni giorno","Mai"], i:"Guarda le righe sul pattino."}},
+ {m:"MAT", t:"Più veloce vai, più strada ti serve per fermarti", p:"Lo spazio di frenata cresce con la velocità, ma più in fretta della velocità. Se la velocità diventa doppia, lo spazio per fermarti diventa circa 4 volte più lungo (2 × 2 = 4).", a:"Se a 10 km/h ti servono 2 metri per fermarti, quanti metri ti servono circa a 20 km/h?", q:{d:"A 10 km/h ti servono 2 metri per fermarti. A 20 km/h ti servono circa...", o:["8 metri","4 metri","2 metri"], i:"La velocità è doppia: lo spazio diventa 4 volte più lungo."}},
+ {m:"TEC", t:"Materiali morbidi e duri", p:"Il pattino è di gomma morbida. Il cerchio è di metallo duro, l'alluminio. Si consuma il materiale più morbido: è meglio cambiare un pattino che un cerchio.", a:"Fai un elenco dei materiali della bici: metallo, gomma, plastica... Quale è il più morbido?", q:{d:"Perché il pattino è più morbido del cerchio?", o:["Così si consuma il pattino e non il cerchio","Per fare meno rumore","Per essere più bello"], i:"Che cosa costa meno cambiare?"}}
+]},
+{id:"cavo_freno", cat:"freni", nome:"Sostituire cavo e guaina del freno", min:20, ricambi:["cavo_freno","guaina"], parole:["cavo","guaina","freno","leva"], studio:[
+ {m:"TEC", t:"Il cavo porta il movimento", p:"Il cavo d'acciaio scorre dentro la guaina. Quando tiri la leva, il cavo porta il movimento fino al freno, anche se la guaina fa una curva.", a:"Metti uno spago dentro una cannuccia piegata e tira da una parte. Che cosa succede dall'altra parte?", q:{d:"A che cosa serve la guaina?", o:["Guida il cavo anche nelle curve","Rende il cavo colorato","Gonfia la gomma"], i:"Pensa alla cannuccia con lo spago."}},
+ {m:"STO", t:"Un'invenzione di fine Ottocento", p:"Il cavo dentro la guaina si chiama anche cavo Bowden, dal nome dell'inventore Ernest Bowden. È nato alla fine dell'Ottocento per i freni delle biciclette. Oggi si usa anche su moto, auto e macchine.", a:"Cercate intorno a voi altri oggetti con un cavo dentro una guaina.", q:{d:"Per che cosa è nato il cavo Bowden?", o:["Per i freni della bicicletta","Per gli aerei","Per i telefoni"], i:"Rileggi il testo: per quale mezzo è nato?"}},
+ {m:"MAT", t:"Misurare e tagliare", p:"La guaina va tagliata alla lunghezza giusta. Se è troppo corta, il manubrio non gira bene. Se è troppo lunga, fa curve strette e il freno diventa duro.", a:"Misura la guaina vecchia con il metro. Scrivi la misura in centimetri e in millimetri.", q:{d:"Una guaina è lunga 45 cm. Quanti millimetri sono?", o:["450 mm","45 mm","4,5 mm"], i:"1 centimetro è uguale a 10 millimetri."}}
+]},
+{id:"catena_lub", cat:"trasm", nome:"Pulire e lubrificare la catena", min:15, ricambi:["sgrassatore","lubrificante"], parole:["catena","olio","ruggine"], studio:[
+ {m:"SCI", t:"La ruggine", p:"La catena è di acciaio: dentro c'è ferro. Il ferro, con l'acqua e l'ossigeno dell'aria, fa la ruggine. È una reazione chimica: l'ossidazione. L'olio protegge la catena dall'acqua.", a:"Metti un chiodo in un bicchiere con acqua e un chiodo in un bicchiere asciutto. Guardali dopo qualche giorno.", q:{d:"Che cosa serve per fare la ruggine?", o:["Ferro, acqua e ossigeno","Plastica e sole","Solo il buio"], i:"Pensa al chiodo nel bicchiere con l'acqua."}},
+ {m:"TEC", t:"L'olio riduce l'attrito", p:"Tra i pezzi della catena c'è attrito. L'olio fa scivolare i pezzi uno sull'altro: la catena fa meno rumore, si consuma meno e pedali meglio.", a:"Ascolta una catena secca e una catena pulita e lubrificata. Che differenza senti?", q:{d:"A che cosa serve l'olio sulla catena?", o:["Riduce l'attrito e protegge dalla ruggine","Rende la catena più pesante","Fa andare la bici da sola"], i:"Pensa a come scivolano i pezzi."}},
+ {m:"CIV", t:"Olio e stracci: dove li butti?", p:"L'olio e gli stracci sporchi di olio inquinano l'acqua e la terra. Non vanno nel lavandino e nemmeno nel bidone normale. Si portano all'ecocentro.", a:"Cercate dove si trova l'ecocentro più vicino al vostro quartiere.", q:{d:"Dove porti l'olio usato?", o:["All'ecocentro","Nel lavandino","Nel prato"], i:"Deve andare in un posto dove lo trattano senza inquinare."}}
+]},
+{id:"catena_sost", cat:"trasm", nome:"Sostituire la catena", min:25, ricambi:["catena"], parole:["catena","corona","pignone","pedale"], studio:[
+ {m:"MAT", t:"Il rapporto: denti davanti e denti dietro", p:"La catena unisce la corona (davanti) e il pignone (dietro). Se la corona ha 42 denti e il pignone 14, fai 42 : 14 = 3. A ogni giro dei pedali la ruota fa 3 giri.", a:"Conta i denti della corona e del pignone di una bici. Dividi. Quanti giri fa la ruota a ogni pedalata?", q:{d:"Corona con 36 denti, pignone con 12 denti. Quanti giri fa la ruota a ogni pedalata?", o:["3 giri","12 giri","48 giri"], i:"Dividi i denti della corona per i denti del pignone."}},
+ {m:"STO", t:"La bicicletta di sicurezza", p:"Prima della catena c'era il biciclo: i pedali erano sulla ruota davanti, altissima, ed era facile cadere. Nel 1885 l'inglese John Kemp Starley costruì la Rover: ruote uguali e catena per muovere la ruota dietro. È la bici di oggi.", a:"Disegna un biciclo e una bici di oggi. Scrivi tre differenze.", q:{d:"Che cosa aveva di nuovo la Rover di Starley (1885)?", o:["Ruote uguali e una catena per la ruota dietro","I pedali sulla ruota davanti","Un motore elettrico"], i:"La Rover è molto simile alla bici di oggi."}},
+ {m:"TEC", t:"La trasmissione del moto", p:"La catena trasmette il moto: porta la forza delle gambe dalla corona alla ruota dietro. Le maglie della catena entrano nei denti, come in un ingranaggio.", a:"Conta le maglie della catena vecchia. La catena nuova deve avere lo stesso numero di maglie.", q:{d:"Che cosa fa la catena?", o:["Porta il moto dai pedali alla ruota dietro","Frena la bici","Tiene ferma la sella"], i:"Segui la catena dai pedali alla ruota."}}
+]},
+{id:"cambio", cat:"trasm", nome:"Regolare il cambio", min:20, ricambi:[], parole:["cambio","pignone","catena"], studio:[
+ {m:"MAT", t:"Quanta strada con un giro di ruota", p:"La circonferenza è la lunghezza del bordo del cerchio: diametro × 3,14 (pi greco). È la strada che la bici fa a ogni giro di ruota. Se la ruota fa 2 giri a ogni pedalata, una pedalata vale 2 circonferenze.", a:"Misura il diametro della ruota con il metro. Calcola la circonferenza.", q:{d:"Una ruota ha il diametro di 70 cm. La circonferenza è circa...", o:["220 cm","70 cm","140 cm"], i:"Fai 70 × 3,14."}},
+ {m:"SCI", t:"Marce leggere e marce dure", p:"In salita usi una marcia leggera: pedali tante volte, ma con poca forza. In pianura puoi usare una marcia dura: serve più forza, ma a ogni pedalata vai più lontano.", a:"In cortile, con un adulto, prova una marcia leggera e una marcia dura. Con quale senti più forza nelle gambe?", q:{d:"Quale marcia usi in salita?", o:["Una marcia leggera","Una marcia dura","Nessuna marcia"], i:"In salita la fatica è tanta: serve meno forza a ogni pedalata."}},
+ {m:"MUS", t:"Pedalare a ritmo", p:"Il numero di pedalate in un minuto si chiama cadenza. In musica il tempo di una canzone si misura in battiti al minuto (BPM). Per molti ciclisti una cadenza comoda è tra 80 e 90 pedalate al minuto.", a:"Metti una canzone e batti i piedi a tempo. Conta i battiti in 15 secondi e moltiplica per 4: sono i BPM.", q:{d:"Che cosa vuol dire BPM in musica?", o:["Battiti al minuto","Bici per metro","Bassi più medi"], i:"Pensa a «battiti» e a «minuto»."}}
+]},
+{id:"raggi", cat:"ruote", nome:"Centrare la ruota e tendere i raggi", min:30, ricambi:["raggio"], parole:["raggio","cerchio","mozzo","ruota"], studio:[
+ {m:"MUS", t:"Il suono dei raggi", p:"Il meccanico pizzica i raggi come le corde di una chitarra. Un raggio più teso fa un suono più acuto. Un raggio lento fa un suono più grave.", a:"Pizzica i raggi di una ruota uno dopo l'altro. C'è un raggio che suona diverso?", q:{d:"Un raggio molto teso fa un suono...", o:["più acuto","più grave","nessun suono"], i:"Pensa a una corda di chitarra molto tirata."}},
+ {m:"MAT", t:"Il cerchio e gli angoli", p:"Il raggio della bici ha lo stesso nome del raggio del cerchio. Sul cerchio della ruota i fori per i raggi sono alla stessa distanza. Un giro intero è 360 gradi: con 36 raggi, tra due fori vicini ci sono 360 : 36 = 10 gradi.", a:"Conta i raggi di una ruota. Calcola i gradi tra due fori vicini: 360 diviso il numero dei raggi.", q:{d:"Una ruota ha 32 raggi. Quanti gradi ci sono tra due fori vicini?", o:["11,25 gradi","32 gradi","10 gradi"], i:"Fai 360 : 32."}},
+ {m:"ART", t:"Simmetria e raggiera", p:"La ruota ha una simmetria radiale: le parti si ripetono uguali intorno al centro. La trovi anche nei fiori, nei rosoni delle chiese e nei mandala.", a:"Con compasso e goniometro disegna una ruota con 12 raggi, uno ogni 30 gradi. Colorala con un motivo che si ripete.", q:{d:"Che cosa vuol dire simmetria radiale?", o:["Le parti si ripetono uguali intorno a un centro","Le parti sono tutte diverse","C'è solo una linea dritta"], i:"Pensa ai petali di un fiore."}},
+ {m:"TEC", t:"Una struttura in tensione", p:"I raggi sono sottili, ma tutti insieme tengono il cerchio rotondo e robusto. Devono avere tutti la stessa tensione. Se un raggio è lento, la ruota si storce.", a:"Fai girare la ruota e guarda il cerchio vicino al pattino del freno. Si sposta a destra e a sinistra? Allora la ruota va centrata.", q:{d:"Che cosa succede se un raggio è lento?", o:["La ruota si storce","La ruota diventa più leggera","La gomma si gonfia"], i:"Tutti i raggi devono tirare allo stesso modo."}}
+]},
+{id:"luci", cat:"sicur", nome:"Montare luci e catadiottri", min:15, ricambi:["fanale_ant","fanale_post","catadiottri"], parole:["luce_ant","luce_post","catadiottro"], studio:[
+ {m:"SCI", t:"La luce rimbalza: la riflessione", p:"Il catadiottro non fa luce da solo. Riflette la luce dei fari delle auto e la rimanda indietro, verso chi guida. Così ti vedono anche al buio.", a:"In una stanza buia punta una torcia verso un catadiottro. Dove torna la luce?", q:{d:"Il catadiottro...", o:["riflette la luce verso chi la manda","ha una pila dentro","funziona solo di giorno"], i:"Non ha pile: usa la luce degli altri."}},
+ {m:"TEC", t:"Il circuito elettrico", p:"Una luce a LED funziona con un circuito: pila, interruttore, fili e LED. Se il circuito è chiuso, la corrente passa e il LED si accende. La dinamo, invece, produce elettricità con il movimento della ruota.", a:"Con l'aiuto di un adulto apri una luce da bici. Trova la pila, l'interruttore e il LED.", q:{d:"Quando si accende il LED?", o:["Quando il circuito è chiuso","Quando il circuito è aperto","Quando togli la pila"], i:"La corrente deve fare tutto il giro."}},
+ {m:"CIV", t:"Farsi vedere: che cosa dice la legge", p:"Per il Codice della strada la bici deve avere: luce bianca o gialla davanti, luce rossa e catadiottro rosso dietro, catadiottri gialli sui pedali e sui lati. Di notte, fuori città, il ciclista deve indossare il giubbotto o le bretelle che riflettono la luce.", a:"Controllate una bici: che cosa ha? Che cosa manca?", q:{d:"Di che colore è la luce dietro la bici?", o:["Rossa","Bianca","Verde"], i:"È lo stesso colore delle luci dietro le auto."}}
+]},
+{id:"campanello", cat:"sicur", nome:"Montare il campanello", min:5, ricambi:["campanello"], parole:["campanello","manubrio"], studio:[
+ {m:"MUS", t:"Il suono è una vibrazione", p:"Quando suoni il campanello, il metallo vibra. La vibrazione muove l'aria e arriva alle tue orecchie: è il suono. Ogni campanello ha il suo timbro.", a:"Suona il campanello e appoggia subito un dito sopra. Che cosa senti? Che cosa succede al suono?", q:{d:"Da dove nasce il suono del campanello?", o:["Da una vibrazione del metallo","Dalla luce","Dal vento"], i:"Appoggia il dito: senti che trema."}},
+ {m:"SCI", t:"Quanto corre il suono", p:"Nell'aria il suono viaggia a circa 340 metri al secondo. La luce è molto più veloce: per questo, durante un temporale, vedi il lampo prima di sentire il tuono.", a:"Durante un temporale conta i secondi tra il lampo e il tuono. Moltiplica per 340: sai quanti metri è lontano il fulmine.", q:{d:"Nell'aria il suono viaggia a circa...", o:["340 metri al secondo","3 metri al secondo","340 chilometri al secondo"], i:"Leggi bene l'unità di misura."}},
+ {m:"CIV", t:"Il campanello è obbligatorio", p:"Il Codice della strada chiede il campanello su ogni bici. Serve per avvisare pedoni e ciclisti. Si suona con gentilezza, non per spaventare.", a:"Scrivete insieme tre regole gentili per usare il campanello.", q:{d:"A che cosa serve il campanello?", o:["Ad avvisare pedoni e ciclisti","A fare musica di notte","A frenare"], i:"Pensa a un pedone che non ti ha visto."}}
+]},
+{id:"sella", cat:"comfort", nome:"Regolare la sella sulla misura del ciclista", min:10, ricambi:[], parole:["sella","telaio"], studio:[
+ {m:"MAT", t:"Una formula per la sella", p:"C'è una formula per l'altezza della sella: misura del cavallo × 0,883. Il cavallo è la lunghezza della gamba da terra all'inguine, senza scarpe. Il risultato è la distanza dal perno dei pedali al piano della sella.", a:"Misura in centimetri il cavallo di un compagno. Moltiplica per 0,883.", q:{d:"Il cavallo di Sara misura 70 cm. L'altezza della sella è circa...", o:["62 cm","70 cm","88 cm"], i:"Fai 70 × 0,883."}},
+ {m:"MOT", t:"Pedalare nella posizione giusta", p:"Con la sella giusta, quando il pedale è in basso la gamba è quasi distesa. Così lavorano bene i muscoli: quadricipiti (davanti alla coscia), glutei e polpacci. E il ginocchio non si fa male.", a:"Sali sulla bici mentre un adulto la tiene ferma. Metti un pedale in basso: la gamba è quasi distesa?", q:{d:"Con la sella giusta, quando il pedale è in basso, la gamba è...", o:["quasi distesa","molto piegata","sollevata dal pedale"], i:"Né troppo piegata, né del tutto dritta."}},
+ {m:"SCI", t:"Il ginocchio: un'articolazione", p:"Il ginocchio unisce il femore e la tibia. È un'articolazione che si piega soprattutto in un verso, come una cerniera. Se la sella è troppo bassa, il ginocchio lavora troppo piegato e si stanca.", a:"Siediti e piega la gamba piano. Tocca il ginocchio: senti la rotula che si muove?", q:{d:"Quali ossa unisce il ginocchio?", o:["Femore e tibia","Omero e radio","Cranio e mandibola"], i:"Sono le ossa della gamba."}}
+]},
+{id:"manubrio", cat:"comfort", nome:"Regolare manubrio e serie sterzo", min:15, ricambi:[], parole:["manubrio","serie","cuscinetto"], studio:[
+ {m:"TEC", t:"I cuscinetti a sfere", p:"Nello sterzo e nelle ruote ci sono i cuscinetti a sfere. Le sfere rotolano invece di strisciare: così c'è meno attrito e il manubrio gira leggero.", a:"Fai rotolare una biglia sul banco, poi trascina una gomma da cancellare. Quale si muove più facilmente?", q:{d:"Perché nei cuscinetti ci sono le sfere?", o:["Perché rotolano e c'è meno attrito","Perché sono belle","Perché pesano di più"], i:"Pensa alla biglia e alla gomma da cancellare."}},
+ {m:"SCI", t:"Strisciare o rotolare", p:"Quando un oggetto striscia c'è attrito radente. Quando un oggetto rotola c'è attrito volvente, che è molto più piccolo. La ruota usa proprio questo.", a:"Spingi uno scatolone sul pavimento. Poi mettilo sopra alcune matite tonde e spingi di nuovo. Quando fai meno fatica?", q:{d:"Quando un oggetto rotola, l'attrito è...", o:["più piccolo","più grande","uguale a quando striscia"], i:"Pensa allo scatolone sopra le matite."}}
+]},
+{id:"pedali", cat:"comfort", nome:"Sostituire i pedali", min:10, ricambi:["pedali"], parole:["pedale","pedivella","vite"], studio:[
+ {m:"TEC", t:"Il pedale sinistro si svita al contrario", p:"Il pedale destro si svita girando in senso antiorario, come una vite normale. Il pedale sinistro ha la filettatura al contrario: si svita in senso orario. Così, pedalando, i pedali non si svitano da soli.", a:"Guarda i pedali: spesso c'è scritto R (destro) e L (sinistro). Di' da che parte giri la chiave per svitare ogni pedale.", q:{d:"Come si svita il pedale sinistro?", o:["Girando in senso orario","Girando in senso antiorario","Non si svita mai"], i:"Ha la filettatura al contrario di una vite normale."}},
+ {m:"SCI", t:"La pedivella è una leva", p:"La pedivella è il braccio che tiene il pedale. È una leva: più è lunga, meno forza serve per far girare la corona.", a:"Prova ad aprire una porta spingendo vicino ai cardini e poi lontano dai cardini. Quando fai meno fatica?", q:{d:"Una pedivella più lunga...", o:["chiede meno forza per girare","chiede più forza","non cambia niente"], i:"Pensa alla porta spinta lontano dai cardini."}},
+ {m:"MAT", t:"Gli angoli dei pedali", p:"Le due pedivelle sono opposte: tra loro c'è un angolo di 180 gradi, cioè un angolo piatto. Quando un pedale è in alto, l'altro è in basso.", a:"Con un goniometro misura l'angolo tra le due pedivelle.", q:{d:"Quanti gradi ci sono tra le due pedivelle?", o:["180 gradi","90 gradi","360 gradi"], i:"Formano una linea dritta: un angolo piatto."}}
+]},
+{id:"pulizia", cat:"cura", nome:"Pulizia e controllo completo di una bici usata", min:45, ricambi:["sgrassatore"], parole:["bici","telaio","catena"], studio:[
+ {m:"CIV", t:"Riparare invece di buttare", p:"Una bici riparata ha una seconda vita. Si risparmiano materiali ed energia e ci sono meno rifiuti. L'Agenda 2030 dell'ONU ha un obiettivo su questo: il numero 12, consumo e produzione responsabili.", a:"Fate un elenco di oggetti di casa che si possono riparare invece di buttare.", q:{d:"Quale obiettivo dell'Agenda 2030 parla di consumo responsabile?", o:["L'obiettivo 12","L'obiettivo 1","L'obiettivo 20"], i:"Gli obiettivi sono 17. Rileggi il testo."}},
+ {m:"REL", t:"Prendersi cura delle cose e delle persone", p:"Papa Francesco, nell'enciclica Laudato si' (2015), invita a prendersi cura della casa comune: il pianeta. Don Bosco, a Torino, apriva laboratori per insegnare un mestiere ai ragazzi.", a:"Scrivi un piccolo gesto che puoi fare ogni settimana per prenderti cura del tuo quartiere.", q:{d:"Come si chiama l'enciclica di Papa Francesco sulla cura del pianeta?", o:["Laudato si'","Fratelli tutti","Evangelii gaudium"], i:"Il titolo viene dal Cantico delle creature di San Francesco."}},
+ {m:"ITA", t:"Scrivere un annuncio", p:"Per vendere o regalare una bici riparata serve un annuncio chiaro: che bici è, com'è, che cosa è stato riparato, per chi è adatta. Frasi brevi e parole precise.", a:"Scrivi un annuncio di 5 righe per la bici che avete pulito. Usa almeno tre aggettivi.", q:{d:"Che cosa deve dire un buon annuncio?", o:["Che bici è, com'è e che cosa è stato riparato","Solo il prezzo","Una barzelletta"], i:"Chi legge deve capire bene com'è la bici."}},
+ {m:"GEO", t:"Città in bicicletta", p:"In alcune città europee, come Copenaghen e Amsterdam, moltissime persone vanno al lavoro e a scuola in bici. Ci sono tante piste ciclabili e parcheggi per le bici. Anche in Italia le piste ciclabili aumentano.", a:"Guardate una mappa di Alessandria. Dove sono le piste ciclabili? Che strada fate per arrivare all'oratorio?", q:{d:"Copenaghen è la capitale di quale Stato?", o:["Danimarca","Paesi Bassi","Svezia"], i:"Questo Stato è a nord della Germania."}}
+]},
+{id:"decoro", cat:"cura", nome:"Personalizzare la bici", min:30, ricambi:["adesivi"], parole:["adesivo","vernice","telaio"], studio:[
+ {m:"ART", t:"I colori complementari", p:"Nel cerchio dei colori i complementari stanno uno di fronte all'altro: giallo e viola, rosso e verde, blu e arancione. Vicini, si fanno risaltare a vicenda. Sono utili anche per farsi vedere in strada.", a:"Progetta una decorazione per la bici con due colori complementari. Fai prima un bozzetto su carta.", q:{d:"Qual è il colore complementare del blu?", o:["Arancione","Verde","Azzurro"], i:"Nel cerchio dei colori è dalla parte opposta del blu."}},
+ {m:"TEC", t:"Disegnare in scala", p:"Prima di tagliare gli adesivi, misura i tubi del telaio. Poi disegna la bici vista di lato, in scala 1:10: 1 cm sul foglio è uguale a 10 cm sulla bici.", a:"Misura il tubo più lungo del telaio. Quanto sarà lungo nel disegno in scala 1:10?", q:{d:"Un tubo è lungo 60 cm. In scala 1:10, sul foglio è lungo...", o:["6 cm","60 cm","600 cm"], i:"In scala 1:10 dividi per 10."}},
+ {m:"CIV", t:"Decorare in sicurezza", p:"La decorazione non deve coprire luci, catadiottri e freni. E la bici deve restare riconoscibile: scrivi il numero del telaio, ti serve se te la rubano.", a:"Trovate il numero del telaio sulla bici (spesso è sotto il perno dei pedali) e copiatelo sulla scheda.", q:{d:"Che cosa non devi coprire con gli adesivi?", o:["Luci e catadiottri","Il tubo del telaio","Il parafango"], i:"Sono le parti che ti fanno vedere al buio."}}
+]}
+];
+
+const BASE = {id:"base", nome:"Ogni lavoro in officina", parole:["cliente","preventivo","officina","chiave"], studio:[
+ {m:"ITA", t:"Accogliere il cliente", p:"Il meccanico saluta, ascolta e scrive la richiesta del cliente con parole chiare. Con un adulto che non conosci usi il «Lei»: «Buongiorno, come posso aiutarLa?».", a:"Riscrivi la richiesta del cliente in una frase chiara: chi, che cosa, quando.", q:{d:"Che cosa dici a un cliente adulto che entra in officina?", o:["«Buongiorno, come posso aiutarLa?»","«Ehi, che vuoi?»","Niente"], i:"Con un adulto che non conosci usi il «Lei»."}},
+ {m:"MAT", t:"Fare il preventivo", p:"Il preventivo dice quanto costerà il lavoro, prima di farlo. Si sommano i ricambi (quantità × prezzo) e la manodopera (tempo × tariffa all'ora). Ricorda: un'ora ha 60 minuti.", a:"Fai tu il conto del preventivo e controllalo con il correttore.", q:{d:"30 minuti sono...", o:["mezz'ora, cioè 0,5 ore","0,30 ore","3 ore"], i:"Un'ora ha 60 minuti, non 100."}},
+ {m:"TEC", t:"Organizzare il lavoro e lavorare sicuri", p:"Prima di lavorare il meccanico prepara gli attrezzi, decide l'ordine dei lavori e usa guanti e occhiali quando serve. Alla fine rimette tutto a posto.", a:"Scrivi l'elenco degli attrezzi che servono per questa scheda.", q:{d:"Quando usi i guanti?", o:["Quando tocchi olio, sgrassatore o pezzi taglienti","Mai","Solo d'inverno"], i:"I guanti proteggono le mani dallo sporco e dai tagli."}}
+]};
+
+const LAV = Object.fromEntries(LAVORI.map(l => [l.id, l]));
+
+const TIPI_BICI = ["Bici da città","Mountain bike","Bici da corsa","BMX","Bici da bambino","Pieghevole","Bici elettrica"];
+const COLORI = [["Nero","#1b1b1b"],["Bianco","#ffffff"],["Grigio","#8a8a8a"],["Rosso","#c62828"],["Blu","#1e4fa8"],["Azzurro","#5fa8d3"],["Verde","#2e7d32"],["Giallo","#f2c230"],["Arancione","#e8711a"],["Rosa","#e88bb0"],["Viola","#6a3d9a"],["Marrone","#7b4a2a"]];
+const RUOTE = ["12","16","20","24","26","27,5","28","29","Non so"];
+const SIMBOLI = [["ruota","Ruota"],["chiave","Chiave"],["lampo","Fulmine"],["stella","Stella"],["regola","Ingranaggio"],["campanello","Campanello"]];
+const COLORI_OFF = [["#C2410C","Arancio"],["#1D4ED8","Blu"],["#15803D","Verde"],["#7E22CE","Viola"],["#B91C1C","Rosso"],["#0F766E","Petrolio"]];
+const NOMI_SUGGERITI = ["Ruote Veloci","Catena d'Oro","Raggio di Sole","Pedali Rapidi","Officina del Fulmine"];
+
+const STATI = [
+  {id:"bozza", n:"Bozza", ico:"matita"},
+  {id:"preventivo", n:"Preventivo da accettare", ico:"euro"},
+  {id:"accettato", n:"Accettato dal cliente", ico:"ok"},
+  {id:"lavorazione", n:"In lavorazione", ico:"chiave"},
+  {id:"pronta", n:"Pronta da ritirare", ico:"campanello"},
+  {id:"consegnata", n:"Consegnata", ico:"bici"}
+];
+const IDX_STATO = Object.fromEntries(STATI.map((s, i) => [s.id, i]));
+
+const IMPREVISTI = [
+  "Il cliente torna e dice: «Il freno fa ancora rumore!». Controllate di nuovo il lavoro e spiegate al cliente che cosa avete fatto.",
+  "Un ricambio è finito. Trovate un ricambio di recupero e cambiate il preventivo.",
+  "Il cliente chiede uno sconto del 10 %. Rifate il conto e scrivete il nuovo totale.",
+  "Il cliente ha fretta: vuole la bici tra 30 minuti. Quali lavori fate prima? Spiegate perché.",
+  "Il cliente non capisce il preventivo. Spiegatelo a voce, con parole semplici.",
+  "Entra un cliente che parla inglese. Accoglietelo e scrivete la sua richiesta in inglese.",
+  "Il cliente vuole sapere se la sua bici rispetta il Codice della strada. Controllate freni, luci, catadiottri e campanello."
+];
+
+const ABIL = [
+  {id:"acc", n:"Accoglienza", t:"Registra il primo cliente dell'officina.", f:o => o.clienti.length >= 1},
+  {id:"ctr", n:"Controllo", t:"Controlla una bici in modo completo: tutte le 12 voci.", f:o => o.schede.some(s => CONTROLLI.every(c => s.controllo[c.id]))},
+  {id:"prv", n:"Preventivo", t:"Prepara e salva un preventivo con almeno 2 lavori.", f:o => o.schede.some(s => s.stato !== "bozza" && s.lavori.length >= 2)},
+  {id:"cnt", n:"Conto giusto", t:"Fai tu il conto di un preventivo, senza guardare i passaggi.", f:o => o.schede.some(s => s.conto && s.conto.ok && !s.conto.aiuto)},
+  {id:"cns", n:"Consegna", t:"Segna come fatti tutti i lavori e consegna una bici al cliente.", f:o => o.schede.some(s => s.stato === "consegnata")},
+  {id:"std", n:"Studio", t:"Rispondi giusto a 5 domande di «Cosa studio».", f:o => Object.values(o.quiz).filter(q => q.ok).length >= 5},
+  {id:"capo", n:"Capo officina", t:"Consegna 3 bici, con almeno 6 lavori diversi in tutto.", f:o => { const c = o.schede.filter(s => s.stato === "consegnata"); const set = new Set(); c.forEach(s => s.lavori.forEach(l => set.add(l.id))); return c.length >= 3 && set.size >= 6; }}
+];
+const LIVELLI = ["Apprendista","Apprendista","Aiuto meccanico","Aiuto meccanico","Meccanico","Meccanico","Meccanico esperto","Capo officina"];
+
+/* ---------------- STATO E SALVATAGGIO ---------------- */
+const CHIAVE = "bicilab.dati.v1", CHIAVE_PREF = "bicilab.pref.v1";
+let D, P, memoriaOk = true;
+const ui = {vista:"scelta", officinaId:null, schedaId:null, clienteId:null, passo:1, edu:false, eduTab:"officine",
+  modale:null, focus:null, cercaCli:"", cercaC:"", cercaS:"", filtroS:"aperte", tabScheda:"scheda", studioVista:"lavoro",
+  materia:null, formCliente:false, wizCliente:null, msg:null, errCli:null, bozzaCli:null, modCliente:false};
+
+function impostazioniBase(){
+  return {tariffa:36, iva:false, ivaPct:22, sconti:true, contoComputer:true, lingua2:"fr",
+    nomeAttivita:"Maker Lab · Oratorio Don Bosco Alessandria", pin:"1234"};
+}
+function datiVuoti(){
+  return {versione:1, impostazioni:impostazioniBase(), listino:LISTINO_BASE.map(x => ({...x})), officine:[]};
+}
+function normalizzaOfficina(o){
+  o.clienti = Array.isArray(o.clienti) ? o.clienti : [];
+  o.schede = Array.isArray(o.schede) ? o.schede : [];
+  o.quiz = o.quiz && typeof o.quiz === "object" ? o.quiz : {};
+  o.imprevisti = Array.isArray(o.imprevisti) ? o.imprevisti : [];
+  o.contatore = +o.contatore || o.schede.length;
+  o.abilVisti = +o.abilVisti || 0;
+  o.simbolo = o.simbolo || "ruota";
+  o.colore = o.colore || "#C2410C";
+  o.schede.forEach(s => {
+    s.bici = s.bici || {}; s.controllo = s.controllo || {}; s.lavori = s.lavori || []; s.ricambi = s.ricambi || [];
+    s.stato = s.stato || "bozza";
+  });
+  return o;
+}
+function normalizza(){
+  if(!D || typeof D !== "object") D = datiVuoti();
+  D.impostazioni = Object.assign(impostazioniBase(), D.impostazioni || {});
+  if(!Array.isArray(D.listino)) D.listino = LISTINO_BASE.map(x => ({...x}));
+  if(!Array.isArray(D.officine)) D.officine = [];
+  D.officine.forEach(normalizzaOfficina);
+}
+function carica(){
+  try{ localStorage.setItem("bicilab.prova", "1"); localStorage.removeItem("bicilab.prova"); }catch(e){ memoriaOk = false; }
+  try{ const t = localStorage.getItem(CHIAVE); D = t ? JSON.parse(t) : datiVuoti(); }catch(e){ D = datiVuoti(); }
+  normalizza();
+  try{ P = JSON.parse(localStorage.getItem(CHIAVE_PREF)) || {}; }catch(e){ P = {}; }
+  P = Object.assign({testo:"normale", spazio:false, maiuscolo:false, sfondo:"crema", voce:true}, P);
+}
+function salva(){
+  const o = off(); if(o) o.aggiornata = new Date().toISOString();
+  try{ localStorage.setItem(CHIAVE, JSON.stringify(D)); }
+  catch(e){ if(memoriaOk){ memoriaOk = false; toast("Attenzione: i dati non si salvano. Prima di chiudere, salva una copia dall'area educatore."); } }
+}
+function salvaPref(){ try{ localStorage.setItem(CHIAVE_PREF, JSON.stringify(P)); }catch(e){} applicaPref(); }
+function applicaPref(){
+  const r = document.documentElement;
+  r.classList.toggle("t-grande", P.testo === "grande");
+  r.classList.toggle("t-mgrande", P.testo === "mgrande");
+  r.dataset.sfondo = P.sfondo;
+  document.body.classList.toggle("spazio", !!P.spazio);
+  document.body.classList.toggle("maiuscolo", !!P.maiuscolo);
+}
+
+/* ---------------- UTILITÀ ---------------- */
+const $ = s => document.querySelector(s);
+const h = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const r2 = x => Math.round((x + Number.EPSILON) * 100) / 100;
+const euro = x => r2(x).toLocaleString("it-IT", {minimumFractionDigits:2, maximumFractionDigits:2}) + " €";
+const num = x => (Math.round(x * 100) / 100).toLocaleString("it-IT", {maximumFractionDigits:2});
+const pad = n => String(n).padStart(2, "0");
+function oggi(){ const d = new Date(); return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+function dataIT(v){
+  if(!v) return "";
+  let d = /^\d{4}-\d{2}-\d{2}$/.test(v) ? new Date(+v.slice(0,4), +v.slice(5,7) - 1, +v.slice(8,10)) : new Date(v);
+  if(isNaN(d)) return "";
+  return d.toLocaleDateString("it-IT", {day:"numeric", month:"long", year:"numeric"});
+}
+function leggiNumero(t){
+  let s = String(t == null ? "" : t).replace(/€|euro|eur/gi, "").replace(/\s/g, "");
+  if(!s) return NaN;
+  if(s.includes(",") && s.includes(".")) s = s.replace(/\./g, "").replace(",", ".");
+  else s = s.replace(",", ".");
+  if(!/^-?\d*\.?\d+$/.test(s)) return NaN;
+  return parseFloat(s);
+}
+function hs(s){ let x = 2166136261; for(let i = 0; i < s.length; i++){ x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return x >>> 0; }
+function mescola(arr, seed){
+  const a = arr.slice(); let x = seed || 1;
+  for(let i = a.length - 1; i > 0; i--){ x = (Math.imul(x, 1103515245) + 12345) >>> 0; const j = x % (i + 1); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function ico(n, cls){ return '<svg class="ico ' + (cls || "") + '" aria-hidden="true" focusable="false"><use href="#i-' + n + '"/></svg>'; }
+function elenco(arr){ if(arr.length <= 1) return arr.join(""); return arr.slice(0, -1).join(", ") + " e " + arr[arr.length - 1]; }
+function toast(msg){
+  const el = $("#avviso"); el.textContent = msg; el.classList.add("vis");
+  clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("vis"), 4800);
+}
+
+const off = () => D.officine.find(o => o.id === ui.officinaId);
+const trovaScheda = id => { const o = off(); return o ? o.schede.find(s => s.id === id) : null; };
+const trovaCliente = id => { const o = off(); return o ? o.clienti.find(c => c.id === id) : null; };
+function nomeCliente(c){ return c ? (c.nome + " " + (c.cognome || "")).trim() : "Cliente non trovato"; }
+function descrBici(b){
+  if(!b) return "";
+  return [b.tipo, b.colore ? b.colore.toLowerCase() : "", b.marca, b.ruota && b.ruota !== "Non so" ? "ruote da " + b.ruota + " pollici" : ""].filter(Boolean).join(" · ");
+}
+function mat(m){
+  const x = MATERIE[m];
+  if(m === "L2"){ const es = D.impostazioni.lingua2 === "es"; return {...x, n: es ? "Spagnolo" : "Francese", s: es ? "SPA" : "FRA"}; }
+  return x;
+}
+function badgeMat(m){ const x = mat(m); return '<span class="mat" style="--c:' + x.c + '" title="' + h(x.n) + '">' + x.s + '</span>'; }
+
+/* ---------------- VOCE (solo voci offline del dispositivo) ---------------- */
+const haVoce = "speechSynthesis" in window;
+function vociLocali(){ try{ return speechSynthesis.getVoices().filter(v => v.localService); }catch(e){ return []; } }
+function parla(testo, lang){
+  if(!haVoce){ toast("Questo browser non sa leggere ad alta voce."); return; }
+  const pref = (lang || "it-IT").slice(0, 2).toLowerCase();
+  const prova = () => {
+    const voci = vociLocali();
+    const v = voci.find(v => v.lang.replace("_", "-").toLowerCase() === (lang || "it-IT").toLowerCase()) || voci.find(v => v.lang.toLowerCase().startsWith(pref));
+    if(!v){ toast("Su questo dispositivo non c'è una voce offline per questa lingua."); return; }
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(testo); u.voice = v; u.lang = v.lang; u.rate = .9;
+    speechSynthesis.speak(u);
+  };
+  if(speechSynthesis.getVoices().length) prova();
+  else { speechSynthesis.onvoiceschanged = () => { speechSynthesis.onvoiceschanged = null; prova(); }; setTimeout(() => { if(!speechSynthesis.speaking) prova(); }, 700); }
+}
+function btnVoce(testo, lang, etichetta){
+  if(!P.voce || !haVoce) return "";
+  return '<button type="button" class="btn-voce" data-act="parla" data-t="' + h(testo) + '" data-l="' + (lang || "it-IT") + '">' + ico("voce") + '<span>' + h(etichetta || "Ascolta") + '</span></button>';
+}
+
+/* ---------------- CALCOLI ---------------- */
+function calcola(s){
+  const righe = s.ricambi.map(r => ({nome:r.nome, qta:+r.qta || 0, prezzo:+r.prezzo || 0, tot:r2((+r.qta || 0) * (+r.prezzo || 0)), recupero:r.recupero}));
+  const ricambi = r2(righe.reduce((a, r) => a + r.tot, 0));
+  const minuti = s.lavori.reduce((a, l) => a + (+l.min || 0), 0);
+  const tariffa = s.tariffa != null ? +s.tariffa : +D.impostazioni.tariffa;
+  const manodopera = r2(minuti / 60 * tariffa);
+  const subtotale = r2(ricambi + manodopera);
+  const scontoPct = +s.scontoPct || 0;
+  const sconto = r2(subtotale * scontoPct / 100);
+  const imponibile = r2(subtotale - sconto);
+  const ivaPct = +s.ivaPct || 0;
+  const iva = r2(imponibile * ivaPct / 100);
+  const totale = r2(imponibile + iva);
+  return {righe, ricambi, minuti, tariffa, manodopera, subtotale, scontoPct, sconto, imponibile, ivaPct, iva, totale};
+}
+function firmaConto(s){
+  const c = calcola(s);
+  return JSON.stringify([c.righe.map(r => [r.qta, r.prezzo]), c.minuti, c.tariffa, c.scontoPct, c.ivaPct]);
+}
+function contoNuovo(firma){ return {firma, risp:{}, esito:{}, tent:{}, msg:{}, pass:{}, ok:false, aiuto:false, rivelato:false, modo:null}; }
+function allineaConto(s){
+  const f = firmaConto(s);
+  if(!s.conto || s.conto.firma !== f){ s.conto = contoNuovo(f); salva(); }
+}
+const contoVisibile = s => !!(s.conto && (s.conto.ok || s.conto.rivelato) && s.conto.firma === firmaConto(s));
+function campiConto(c){
+  const f = [];
+  if(c.righe.length) f.push({k:"ricambi", lab:"Totale dei ricambi", v:c.ricambi});
+  f.push({k:"manodopera", lab:"Manodopera", v:c.manodopera});
+  if(c.scontoPct > 0 || c.ivaPct > 0) f.push({k:"subtotale", lab:"Ricambi + manodopera", v:c.subtotale});
+  if(c.scontoPct > 0) f.push({k:"sconto", lab:"Sconto del " + c.scontoPct + " % (quanto togli)", v:c.sconto});
+  if(c.ivaPct > 0) f.push({k:"iva", lab:"IVA del " + c.ivaPct + " %", v:c.iva});
+  f.push({k:"totale", lab:"Totale da pagare", v:c.totale});
+  return f;
+}
+const vicino = (a, b) => Math.abs(a - b) < 0.011;
+function totaleDaRisposte(k, c){
+  const g = x => leggiNumero(k.risp[x]);
+  let t;
+  if(c.scontoPct > 0 || c.ivaPct > 0){ t = g("subtotale") - (c.scontoPct > 0 ? g("sconto") : 0) + (c.ivaPct > 0 ? g("iva") : 0); }
+  else t = (c.righe.length ? g("ricambi") : 0) + g("manodopera");
+  return isNaN(t) ? null : r2(t);
+}
+function indizio(campo, c, ans, tent, k){
+  const t = c.tariffa, m = c.minuti;
+  switch(campo){
+    case "ricambi": {
+      const senzaQ = r2(c.righe.reduce((a, r) => a + r.prezzo, 0));
+      if(c.righe.some(r => r.qta > 1) && vicino(ans, senzaQ)) return "Hai sommato i prezzi, ma hai dimenticato le quantità. Moltiplica ogni prezzo per la sua quantità.";
+      if(tent === 1) return "Per ogni ricambio fai: quantità × prezzo. Poi somma tutti i risultati.";
+      return "Fai così: " + c.righe.map(r => r.qta + " × " + euro(r.prezzo)).join(" + ") + ". Usa la calcolatrice, se ti aiuta.";
+    }
+    case "manodopera": {
+      if(m > 0 && vicino(ans, r2(m * t))) return "Attenzione: " + euro(t) + " è il prezzo di un'ora, non di un minuto. Prima trasforma i minuti in ore.";
+      if(m > 0 && m % 60 !== 0 && vicino(ans, r2(m / 100 * t))) return "Attenzione: un'ora ha 60 minuti, non 100. Per avere le ore dividi i minuti per 60.";
+      if(m > 0 && vicino(ans, r2(m / 60))) return "Hai trovato le ore: " + num(m / 60) + ". Adesso moltiplica per la tariffa: " + euro(t) + " all'ora.";
+      if(tent === 1) return "Somma i minuti di tutti i lavori. Dividi per 60: trovi le ore. Poi moltiplica per la tariffa: " + euro(t) + " all'ora.";
+      return "In tutto sono " + m + " minuti. Fai " + m + " : 60 per avere le ore, poi moltiplica per " + num(t) + "." + (t % 12 === 0 ? " Trucco: 5 minuti costano " + euro(t / 12) + "." : "");
+    }
+    case "subtotale":
+      if(vicino(ans, c.ricambi) || vicino(ans, c.manodopera)) return "Qui devi sommare due numeri: i ricambi e la manodopera.";
+      return "Somma il totale dei ricambi e la manodopera.";
+    case "sconto":
+      if(vicino(ans, c.scontoPct)) return "Lo sconto del " + c.scontoPct + " % non vuol dire " + c.scontoPct + " euro: dipende dal prezzo.";
+      if(vicino(ans, r2(c.subtotale - c.sconto))) return "Hai scritto il prezzo già scontato. Qui serve solo lo sconto: quanto togli.";
+      if(tent === 1) return c.scontoPct + " % vuol dire " + c.scontoPct + " euro ogni 100 euro. Si calcola su ricambi + manodopera.";
+      return "Fai: " + num(c.subtotale) + " × " + c.scontoPct + " : 100.";
+    case "iva":
+      if(vicino(ans, c.ivaPct)) return "IVA del " + c.ivaPct + " % non vuol dire " + c.ivaPct + " euro: dipende dal prezzo.";
+      if(vicino(ans, r2(c.imponibile + c.iva))) return "Hai scritto il totale con l'IVA. Qui serve solo l'IVA.";
+      if(tent === 1) return "L'IVA è il " + c.ivaPct + " %: " + c.ivaPct + " euro ogni 100 euro. Si calcola sul prezzo dopo lo sconto.";
+      return "Fai: " + num(c.imponibile) + " × " + c.ivaPct + " : 100.";
+    case "totale": {
+      const mio = totaleDaRisposte(k, c);
+      if(mio != null && vicino(ans, mio)) return "Il tuo ultimo calcolo è giusto con i tuoi numeri, ma un numero di prima non è giusto. Controllalo.";
+      if(c.scontoPct > 0 && vicino(ans, r2(c.subtotale + (c.ivaPct ? r2(c.subtotale * c.ivaPct / 100) : 0)))) return "Hai dimenticato di togliere lo sconto.";
+      if(c.scontoPct > 0 && vicino(ans, r2(c.subtotale + c.sconto + c.iva))) return "Lo sconto si toglie, non si aggiunge.";
+      if(c.ivaPct > 0 && vicino(ans, c.imponibile)) return "Hai dimenticato di aggiungere l'IVA.";
+      const formula = (c.scontoPct > 0 || c.ivaPct > 0) ? "(ricambi + manodopera)" + (c.scontoPct > 0 ? " − sconto" : "") + (c.ivaPct > 0 ? " + IVA" : "") : (c.righe.length ? "ricambi + manodopera" : "solo la manodopera");
+      if(tent === 1) return "Il totale è: " + formula + ".";
+      return "Usa i numeri giusti che hai trovato sopra e fai: " + formula + ".";
+    }
+  }
+  return "";
+}
+function passaggi(campo, c){
+  switch(campo){
+    case "ricambi": return c.righe.map(r => r.qta + " × " + euro(r.prezzo) + " = " + euro(r.tot)).concat(["Somma: " + euro(c.ricambi)]);
+    case "manodopera": return [c.minuti + " minuti : 60 = " + num(c.minuti / 60) + " ore", num(c.minuti / 60) + " × " + euro(c.tariffa) + " = " + euro(c.manodopera)];
+    case "subtotale": return [euro(c.ricambi) + " + " + euro(c.manodopera) + " = " + euro(c.subtotale)];
+    case "sconto": return [num(c.subtotale) + " × " + c.scontoPct + " : 100 = " + euro(c.sconto)];
+    case "iva": return [euro(c.subtotale) + (c.scontoPct ? " − " + euro(c.sconto) + " = " + euro(c.imponibile) : ""), num(c.imponibile) + " × " + c.ivaPct + " : 100 = " + euro(c.iva)];
+    case "totale":
+      if(c.scontoPct > 0 || c.ivaPct > 0) return [euro(c.subtotale) + (c.scontoPct ? " − " + euro(c.sconto) : "") + (c.ivaPct ? " + " + euro(c.iva) : "") + " = " + euro(c.totale)];
+      return [(c.righe.length ? euro(c.ricambi) + " + " : "") + euro(c.manodopera) + " = " + euro(c.totale)];
+  }
+  return [];
+}
+
+/* ---------------- PERCORSO ---------------- */
+function abilitazioni(o){
+  let bloccata = false;
+  return ABIL.map((a, i) => {
+    const fatta = !bloccata && a.f(o);
+    const stato = fatta ? "superata" : (bloccata ? "bloccata" : "corrente");
+    if(!fatta) bloccata = true;
+    return {...a, ok:fatta, stato, i};
+  });
+}
+const nAbil = o => abilitazioni(o).filter(a => a.ok).length;
+function controllaAbilitazioni(){
+  const o = off(); if(!o) return;
+  const ab = abilitazioni(o); const n = ab.filter(a => a.ok).length;
+  if(n > o.abilVisti){ const nuova = ab[n - 1]; o.abilVisti = n; salva(); setTimeout(() => toast("Prova superata: " + nuova.n + "! Livello: " + LIVELLI[n] + "."), 250); }
+  else if(n < o.abilVisti){ o.abilVisti = n; salva(); }
+}
+
+/* ---------------- COSA STUDIO: contenuti ---------------- */
+function itemLingua(def, m){
+  const cod = m === "ING" ? "en" : D.impostazioni.lingua2;
+  const L = LINGUE[cod];
+  const parole = def.parole.map(p => VOC[p]).filter(Boolean);
+  const scelta = parole[hs(def.id) % parole.length];
+  const giusta = scelta[L.i];
+  const altre = Object.keys(VOC).filter(k => !def.parole.includes(k)).map(k => VOC[k][L.i]).filter((t, i, a) => t !== giusta && a.indexOf(t) === i);
+  const x = hs(def.id + cod);
+  const d1 = altre[x % altre.length]; const resto = altre.filter(t => t !== d1); const d2 = resto[(x >>> 5) % resto.length];
+  return {m, key:def.id + ":" + m + ":" + cod, lingua:cod, t:"Le parole del mestiere in " + L.n,
+    p:"In officina può arrivare un cliente che parla " + L.n + ". Ecco le parole di questo lavoro.",
+    a:"Leggi le parole ad alta voce. Poi copri la colonna in " + L.n + " e prova a ricordarle.",
+    parole, q:{d:"Come si dice «" + scelta[0] + "» in " + L.n + "?", o:[giusta, d1, d2], i:"Cerca la parola nell'elenco qui sopra."}};
+}
+function itemsDi(def){
+  const items = def.studio.map((it, i) => ({...it, key:def.id + ":" + i}));
+  if(def.parole && def.parole.length){ items.push(itemLingua(def, "ING")); items.push(itemLingua(def, "L2")); }
+  return items;
+}
+function blocchiStudio(s){
+  const b = [{id:"base", nome:BASE.nome, items:itemsDi(BASE)}];
+  s.lavori.forEach(l => { const def = LAV[l.id]; if(def && !b.some(x => x.id === def.id)) b.push({id:def.id, nome:def.nome, items:itemsDi(def)}); });
+  return b;
+}
+function materieDiScheda(s){
+  const set = new Set(); blocchiStudio(s).forEach(b => b.items.forEach(it => set.add(it.m)));
+  return ORDINE_MATERIE.filter(m => set.has(m));
+}
+function tuttiGliItems(){
+  const out = [];
+  [BASE].concat(LAVORI).forEach(def => itemsDi(def).forEach(it => out.push({...it, lavoro:def.id, lavoroNome:def.nome})));
+  return out;
+}
+
+/* =========================================================
+   VISTE
+   ========================================================= */
+function render(){
+  const att = document.activeElement; const id = att && att.id; let s1 = null, s2 = null;
+  try{ if(att && (att.tagName === "INPUT" || att.tagName === "TEXTAREA")){ s1 = att.selectionStart; s2 = att.selectionEnd; } }catch(e){}
+  let html;
+  if(ui.vista === "edu" && ui.edu) html = testataEdu() + vEdu();
+  else if(!off()){ ui.vista = "scelta"; html = testataMin() + vScelta(); }
+  else html = testata() + navigazione() + vistaOfficina();
+  $("#app").innerHTML = html;
+  $("#modale").innerHTML = ui.modale ? vModale() : "";
+  if(id){ const el = document.getElementById(id); if(el && !ui.focus){ el.focus({preventScroll:true}); try{ if(s1 != null) el.setSelectionRange(s1, s2); }catch(e){} } }
+  if(ui.focus){ const el = document.getElementById(ui.focus); ui.focus = null; if(el) el.focus(); }
+  else if(ui.modale){ const f = $("#modale [autofocus]") || $("#modale input, #modale button, #modale textarea"); if(f && !$("#modale").contains(document.activeElement)) f.focus(); }
+}
+function vai(vista, extra){
+  Object.assign(ui, {vista, msg:null}, extra || {});
+  ui.focus = "titolo";
+  render(); window.scrollTo(0, 0);
+  controllaAbilitazioni();
+}
+
+/* ---------- testate e navigazione ---------- */
+function testataMin(){
+  return '<header class="testata"><div class="testata-in"><span class="marchio"><span class="marchio-ico">' + ico("bici") + '</span><span>BiciLab</span></span><span style="flex:1"></span>' +
+    '<div class="testata-azioni"><button class="btn-testa" data-act="apriPref">' + ico("aa") + '<span>Leggibilità</span></button></div></div></header>';
+}
+function testata(){
+  const o = off(); const n = nAbil(o);
+  return '<header class="testata"><div class="testata-in">' +
+    '<button class="marchio" data-act="vai" data-v="banco" aria-label="BiciLab: torna al banco di lavoro"><span class="marchio-ico">' + ico("bici") + '</span><span>BiciLab</span></button>' +
+    '<div class="off-info"><span class="off-simbolo" style="--c:' + o.colore + '">' + ico(o.simbolo) + '</span><span><b>Officina «' + h(o.nome) + '»</b>' +
+    '<button class="livello" data-act="vai" data-v="abil">' + ico("medaglia") + ' ' + LIVELLI[n] + ' · ' + n + '/7</button></span></div>' +
+    '<div class="testata-azioni"><button class="btn-testa" data-act="apriPref">' + ico("aa") + '<span>Leggibilità</span></button>' +
+    '<button class="btn-testa" data-act="cambiaOfficina">' + ico("entra") + '<span>Cambia officina</span></button></div>' +
+    '</div></header>' +
+    (ui.edu ? '<div class="fascia-edu"><div class="fascia-edu-in">' + ico("lucchetto") + ' Sei nell\'officina come educatore. <button class="btn btn-piccolo" data-act="vaiEdu">Torna all\'area educatore</button><button class="link" data-act="eduEsci">Esci dall\'area educatore</button></div></div>' : "");
+}
+function testataEdu(){
+  return '<header class="testata"><div class="testata-in"><span class="marchio"><span class="marchio-ico">' + ico("lucchetto") + '</span><span>BiciLab · Area educatore</span></span><span style="flex:1"></span>' +
+    '<div class="testata-azioni"><button class="btn-testa" data-act="apriPref">' + ico("aa") + '<span>Leggibilità</span></button>' +
+    '<button class="btn-testa" data-act="eduEsci">' + ico("entra") + '<span>Esci</span></button></div></div></header>';
+}
+function navigazione(){
+  if(ui.vista === "wizard") return "";
+  const v = ui.vista;
+  const att = x => (x === v || (x === "schede" && v === "scheda") || (x === "clienti" && v === "cliente") || (x === "studio" && v === "materia")) ? ' aria-current="page"' : "";
+  return '<nav class="nav" aria-label="Menu dell\'officina"><div class="nav-in">' +
+    '<button data-act="vai" data-v="banco"' + att("banco") + '>' + ico("casa") + '<span>Banco</span></button>' +
+    '<button data-act="vai" data-v="clienti"' + att("clienti") + '>' + ico("persona") + '<span>Clienti</span></button>' +
+    '<button class="nav-nuova" data-act="nuovaScheda">' + ico("piu") + '<span>Nuova scheda</span></button>' +
+    '<button data-act="vai" data-v="schede"' + att("schede") + '>' + ico("scheda") + '<span>Schede</span></button>' +
+    '<button data-act="vai" data-v="studio"' + att("studio") + '>' + ico("libro") + '<span>Cosa studio</span></button>' +
+    '<button class="solo-largo" data-act="vai" data-v="abil"' + att("abil") + '>' + ico("medaglia") + '<span>Percorso</span></button>' +
+    '<button class="solo-largo" data-act="vai" data-v="listino"' + att("listino") + '>' + ico("tag") + '<span>Listino</span></button>' +
+    '</div></nav>';
+}
+function vistaOfficina(){
+  switch(ui.vista){
+    case "clienti": return vClienti();
+    case "cliente": return vCliente();
+    case "schede": return vSchede();
+    case "scheda": return trovaScheda(ui.schedaId) ? vScheda() : vSchede();
+    case "wizard": return vWizard();
+    case "studio": return vStudio();
+    case "materia": return vMateria();
+    case "abil": return vAbil();
+    case "listino": return vListino();
+    default: ui.vista = "banco"; return vBanco();
+  }
+}
+
+/* ---------- scelta dell'officina ---------- */
+function vScelta(){
+  const lista = D.officine;
+  return '<main class="contenitore" id="main"><section class="benvenuto"><h1 id="titolo" tabindex="-1">' + ico("bici", "ico-xl") + ' BiciLab</h1>' +
+    '<p class="sotto">L\'officina delle biciclette: clienti, schede di lavoro, preventivi e «Cosa studio».</p></section>' +
+    (memoriaOk ? "" : '<p class="msg-passo">' + ico("avviso") + ' In questa pagina i dati non si salvano. Apri il file direttamente nel browser.</p>') +
+    '<h2>' + ico("gruppo") + ' Scegli la tua officina</h2>' +
+    (lista.length ? '<div class="griglia-off">' + lista.map(cardOfficina).join("") + '</div>' : '<p class="vuoto">Non c\'è ancora nessuna officina. Create la vostra.</p>') +
+    '<div class="azioni-riga"><button class="btn btn-primario btn-grande" data-act="nuovaOfficina">' + ico("piu") + ' Crea una nuova officina</button></div>' +
+    '<p class="nota">' + ico("lucchetto") + ' Sei un educatore? <button class="link" data-act="eduApri">Vai all\'area educatore</button></p></main>';
+}
+function cardOfficina(o){
+  const n = nAbil(o);
+  return '<button class="card-off" data-act="apriOfficina" data-id="' + o.id + '"><span class="tondo" style="--c:' + o.colore + '">' + ico(o.simbolo) + '</span>' +
+    '<span><b>' + h(o.nome) + '</b>' + (o.membri ? '<small>' + h(o.membri) + '</small>' : "") + '<small>' + LIVELLI[n] + ' · ' + o.schede.length + ' schede</small></span></button>';
+}
+
+/* ---------- banco di lavoro ---------- */
+function saluto(o){
+  const nomi = (o.membri || "").split(/,| e /).map(x => x.trim()).filter(Boolean);
+  return nomi.length ? "Ciao " + elenco(nomi) + "!" : "Ciao, officina «" + o.nome + "»!";
+}
+function barra(n, tot){ return '<div class="barra" role="img" aria-label="' + n + ' su ' + tot + '"><span style="width:' + Math.round(n / tot * 100) + '%"></span></div>'; }
+function ordinaSchede(a, b){ return (b.aggiornata || b.creata || "").localeCompare(a.aggiornata || a.creata || ""); }
+function bannerImprevisto(imp){
+  return '<div class="imprevisto" role="alert">' + ico("lampo") + '<div><b>Imprevisto in officina!</b><p>' + h(imp.testo) + '</p>' + btnVoce("Imprevisto in officina. " + imp.testo) +
+    ' <button class="btn btn-piccolo" data-act="risolviImprevisto" data-id="' + imp.id + '">' + ico("ok") + ' Abbiamo risolto</button></div></div>';
+}
+function vBanco(){
+  const o = off(); const ab = abilitazioni(o); const n = ab.filter(a => a.ok).length; const prossima = ab.find(a => !a.ok);
+  const aperte = o.schede.filter(s => s.stato !== "consegnata").sort(ordinaSchede);
+  const imp = o.imprevisti.find(i => !i.risolto);
+  return '<main class="contenitore" id="main"><h1 id="titolo" tabindex="-1">' + h(saluto(o)) + '</h1>' +
+    '<p class="sotto">Questo è il banco di lavoro dell\'officina. ' + btnVoce("Questo è il banco di lavoro. Quando arriva un cliente con la bici, premi: nuova scheda intervento.") + '</p>' +
+    (imp ? bannerImprevisto(imp) : "") +
+    '<div class="azione-centrale"><button class="btn btn-primario btn-enorme" data-act="nuovaScheda">' + ico("piu") + ' Nuova scheda intervento</button>' +
+    '<p class="nota">Arriva un cliente con la bici? Parti da qui.</p></div>' +
+    '<h2>' + ico("bici") + ' Bici in officina (' + aperte.length + ')</h2>' +
+    (aperte.length ? '<div class="lista-cart">' + aperte.map(cartellino).join("") + '</div>' : '<p class="vuoto">Adesso non ci sono bici in officina.</p>') +
+    '<section class="carta"><h2 style="margin-top:.2em">' + ico("medaglia") + ' Il vostro percorso: ' + LIVELLI[n] + '</h2>' + barra(n, 7) +
+    '<p>' + n + ' prove superate su 7.</p>' +
+    (prossima ? '<p><b>Prossima prova: ' + h(prossima.n) + '.</b> ' + h(prossima.t) + '</p>' : '<p><b>Avete superato tutte le prove: siete capi officina!</b></p>') +
+    '<button class="btn" data-act="vai" data-v="abil">Vedi il percorso</button></section>' +
+    '<h2>Strumenti dell\'officina</h2><div class="tessere">' +
+    tessera("clienti", "persona", "Clienti", o.clienti.length + (o.clienti.length === 1 ? " cliente" : " clienti")) +
+    tessera("schede", "scheda", "Tutte le schede", o.schede.length + (o.schede.length === 1 ? " scheda" : " schede")) +
+    tessera("studio", "libro", "Cosa studio", "Il lavoro e le materie di scuola") +
+    tessera("listino", "tag", "Listino prezzi", "Ricambi e manodopera") +
+    tessera("abil", "medaglia", "Percorso", n + " prove su 7") +
+    '</div><p class="nota" style="margin-top:20px"><button class="link" data-act="esportaOfficina" data-id="' + o.id + '">' + ico("giu") + ' Salva una copia dell\'officina</button> Serve per portarla su un altro computer o per darla all\'educatore.</p></main>';
+}
+function tessera(v, i, t, s){ return '<button class="tessera" data-act="vai" data-v="' + v + '">' + ico(i) + '<b>' + t + '</b><small>' + h(s) + '</small></button>'; }
+function statoChip(st){ const s = STATI[IDX_STATO[st]] || STATI[0]; return '<span class="stato" data-s="' + s.id + '">' + ico(s.ico) + s.n + '</span>'; }
+function cartellino(s){
+  const c = trovaCliente(s.clienteId);
+  const tot = contoVisibile(s) ? euro(calcola(s).totale) : (s.lavori.length ? "Conto da fare" : "");
+  return '<button class="cartellino" data-act="apriScheda" data-id="' + s.id + '"><span class="cart-num">N. ' + h(s.numero) + '</span>' +
+    '<span class="cart-main"><b>' + h(nomeCliente(c)) + '</b><small>' + h(descrBici(s.bici) || "Bici da descrivere") + '</small></span>' +
+    '<span class="cart-dx">' + statoChip(s.stato) + (tot ? '<span class="cart-tot">' + tot + '</span>' : "") + '</span></button>';
+}
+
+/* ---------- clienti ---------- */
+function formCliente(ctx, c){
+  const b = ui.bozzaCli || c || {}; const e = ui.errCli || {};
+  const testo = ctx === "wiz" ? "Salva il cliente e vai avanti" : "Salva il cliente";
+  return '<form class="carta" data-submit="salvaCliente" data-ctx="' + ctx + '" data-id="' + (c ? c.id : "") + '" novalidate>' +
+    '<h3 style="margin-top:.2em">' + ico("persona") + ' ' + (c ? "Modifica il cliente" : "Nuovo cliente") + '</h3>' +
+    '<div class="due-col"><div><label class="etichetta" for="cli-nome">Nome *</label><input class="campo" id="cli-nome" name="nome" value="' + h(b.nome) + '" autocomplete="off"' + (e.nome ? ' aria-invalid="true" aria-describedby="err-nome"' : "") + '>' +
+    (e.nome ? '<p class="errore" id="err-nome">' + h(e.nome) + '</p>' : "") + '</div>' +
+    '<div><label class="etichetta" for="cli-cognome">Cognome</label><input class="campo" id="cli-cognome" name="cognome" value="' + h(b.cognome) + '" autocomplete="off"></div></div>' +
+    '<label class="etichetta" for="cli-tel">Telefono</label><input class="campo" id="cli-tel" name="telefono" inputmode="tel" value="' + h(b.telefono) + '" autocomplete="off">' +
+    '<p class="aiuto">In una simulazione scrivi un numero inventato.</p>' +
+    '<label class="etichetta" for="cli-note">Note</label><input class="campo" id="cli-note" name="note" value="' + h(b.note) + '" autocomplete="off" placeholder="Per esempio: preferisce essere chiamato al pomeriggio">' +
+    '<div class="azioni-riga"><button class="btn btn-primario btn-grande" type="submit">' + ico("ok") + ' ' + testo + '</button>' +
+    (ctx !== "wiz" || off().clienti.length ? '<button class="btn" type="button" data-act="annullaCliente" data-ctx="' + ctx + '">Annulla</button>' : "") + '</div></form>';
+}
+function vClienti(){
+  const o = off(); const q = (ui.cercaC || "").toLowerCase();
+  const lista = o.clienti.filter(c => !q || nomeCliente(c).toLowerCase().includes(q)).sort((a, b) => nomeCliente(a).localeCompare(nomeCliente(b)));
+  return '<main class="contenitore" id="main"><h1 id="titolo" tabindex="-1">' + ico("persona") + ' Clienti</h1>' +
+    (ui.formCliente ? formCliente("nuovo") : '<div class="azioni-riga"><button class="btn btn-primario btn-grande" data-act="mostraFormCliente">' + ico("piu") + ' Nuovo cliente</button></div>') +
+    (o.clienti.length ? '<label class="etichetta" for="cercaC">' + ico("cerca") + ' Cerca un cliente</label><input class="campo" id="cercaC" data-in="cercaC" value="' + h(ui.cercaC) + '" placeholder="Scrivi il nome" autocomplete="off" style="max-width:420px">' : "") +
+    '<div class="lista-scelta">' + (lista.map(c => {
+      const sc = o.schede.filter(s => s.clienteId === c.id);
+      return '<button class="scelta" data-act="apriCliente" data-id="' + c.id + '">' + ico("persona") + '<span><b>' + h(nomeCliente(c)) + '</b><small>' + (c.telefono ? h(c.telefono) + " · " : "") + sc.length + (sc.length === 1 ? " scheda" : " schede") + '</small></span>' + ico("dx") + '</button>';
+    }).join("") || '<p class="vuoto">' + (o.clienti.length ? "Nessun cliente con questo nome." : "Non ci sono ancora clienti. Il primo cliente si registra anche dalla nuova scheda.") + '</p>') + '</div></main>';
+}
+function vCliente(){
+  const o = off(); const c = trovaCliente(ui.clienteId);
+  if(!c) return vClienti();
+  const sc = o.schede.filter(s => s.clienteId === c.id).sort(ordinaSchede);
+  const bici = []; sc.forEach(s => { const d = descrBici(s.bici); if(d && !bici.includes(d)) bici.push(d); });
+  return '<main class="contenitore" id="main"><p><button class="link" data-act="vai" data-v="clienti">' + ico("sx") + ' Tutti i clienti</button></p>' +
+    '<h1 id="titolo" tabindex="-1">' + ico("persona") + ' ' + h(nomeCliente(c)) + '</h1>' +
+    (ui.modCliente ? formCliente("modifica", c) :
+    '<div class="carta"><dl class="dl"><div><dt>Telefono</dt><dd>' + (h(c.telefono) || "—") + '</dd></div><div><dt>Note</dt><dd>' + (h(c.note) || "—") + '</dd></div><div><dt>Cliente dal</dt><dd>' + dataIT(c.creato) + '</dd></div></dl>' +
+    '<div class="azioni-riga"><button class="btn" data-act="modificaCliente">' + ico("matita") + ' Modifica</button></div></div>') +
+    '<div class="azioni-riga"><button class="btn btn-primario btn-grande" data-act="nuovaSchedaCliente" data-id="' + c.id + '">' + ico("piu") + ' Nuova scheda per questo cliente</button></div>' +
+    '<h2>' + ico("bici") + ' Le sue bici</h2>' + (bici.length ? '<ul>' + bici.map(b => '<li>' + h(b) + '</li>').join("") + '</ul>' : '<p class="vuoto">Ancora nessuna bici registrata.</p>') +
+    '<h2>' + ico("scheda") + ' Storico delle schede</h2>' + (sc.length ? '<div class="lista-cart">' + sc.map(cartellino).join("") + '</div>' : '<p class="vuoto">Nessuna scheda per questo cliente.</p>') +
+    '<p style="margin-top:24px"><button class="link pericolo" data-act="eliminaCliente" data-id="' + c.id + '">' + ico("cestino") + ' Elimina il cliente</button></p></main>';
+}
+
+/* ---------- schede ---------- */
+function vSchede(){
+  const o = off(); const q = (ui.cercaS || "").toLowerCase();
+  const filtri = [["aperte","In officina"],["bozza","Bozze"],["consegnata","Consegnate"],["tutte","Tutte"]];
+  const passa = s => ui.filtroS === "tutte" || (ui.filtroS === "aperte" ? (s.stato !== "consegnata" && s.stato !== "bozza") : s.stato === ui.filtroS);
+  const conta = f => o.schede.filter(s => f === "tutte" || (f === "aperte" ? (s.stato !== "consegnata" && s.stato !== "bozza") : s.stato === f)).length;
+  const lista = o.schede.filter(passa).filter(s => !q || (nomeCliente(trovaCliente(s.clienteId)) + " " + s.numero).toLowerCase().includes(q)).sort(ordinaSchede);
+  return '<main class="contenitore" id="main"><h1 id="titolo" tabindex="-1">' + ico("scheda") + ' Schede intervento</h1>' +
+    '<div class="chips" role="group" aria-label="Quali schede vedere">' + filtri.map(f => '<button class="chip" data-act="filtroS" data-f="' + f[0] + '" aria-pressed="' + (ui.filtroS === f[0]) + '">' + f[1] + ' (' + conta(f[0]) + ')</button>').join("") + '</div>' +
+    (o.schede.length ? '<label class="etichetta" for="cercaS">' + ico("cerca") + ' Cerca per cliente o numero</label><input class="campo" id="cercaS" data-in="cercaS" value="' + h(ui.cercaS) + '" autocomplete="off" style="max-width:420px">' : "") +
+    '<div class="lista-cart" style="margin-top:14px">' + (lista.map(cartellino).join("") || '<p class="vuoto">Nessuna scheda qui.</p>') + '</div>' +
+    '<div class="azioni-riga"><button class="btn btn-primario btn-grande" data-act="nuovaScheda">' + ico("piu") + ' Nuova scheda intervento</button></div></main>';
+}
+
+/* ---------- procedura guidata ---------- */
+const PASSI = ["Cliente","Bici","Controllo","Lavori","Preventivo","Salva"];
+function vWizard(){
+  const s = ui.schedaId ? trovaScheda(ui.schedaId) : null;
+  const p = ui.passo;
+  const corpo = [null, wCliente, wBici, wControllo, wLavori, wPreventivo, wSalva][p](s);
+  const step = '<ol class="stepper">' + PASSI.map((n, i) => {
+    const k = i + 1; const cls = k === p ? "attivo" : (k < p ? "fatto" : "");
+    const tag = s && k !== p ? 'button data-act="passo" data-p="' + k + '"' : 'span';
+    return '<li class="' + cls + '"><' + tag + ' class="pe"' + (k === p ? ' aria-current="step"' : "") + '><span class="num">' + (k < p ? ico("ok") : k) + '</span><span class="lab">' + n + '</span></' + tag.split(" ")[0] + '></li>';
+  }).join("") + '</ol>';
+  return '<main class="contenitore" id="main"><div class="wiz-testa"><h1 id="titolo" tabindex="-1">' + (s ? "Scheda n. " + h(s.numero) : "Nuova scheda intervento") + '</h1>' +
+    '<button class="btn btn-piccolo" data-act="wizEsci">' + (s ? ico("ok") + " Salva ed esci" : ico("no") + " Annulla") + '</button></div>' +
+    step + '<p class="passo-testo">Passo ' + p + ' di 6: ' + PASSI[p - 1] + '</p>' +
+    (ui.msg ? '<p class="msg-passo" role="alert">' + ico("avviso") + ' ' + h(ui.msg) + '</p>' : "") + corpo + '</main>';
+}
+function barraAzioni(o){
+  o = o || {};
+  return '<div class="barra-azioni">' + (o.indietro === false ? '<span class="spazio-vuoto"></span>' : '<button class="btn" data-act="wizIndietro">' + ico("sx") + ' Indietro</button>') +
+    (o.avanti === false ? "" : '<button class="btn btn-primario btn-grande" id="wiz-avanti" data-act="wizAvanti">' + (o.testo || "Avanti") + ' ' + ico("dx") + '</button>') + '</div>';
+}
+function wCliente(s){
+  const o = off(); const sel = s ? s.clienteId : ui.wizCliente; const q = (ui.cercaCli || "").toLowerCase();
+  const lista = o.clienti.filter(c => !q || nomeCliente(c).toLowerCase().includes(q)).sort((a, b) => nomeCliente(a).localeCompare(nomeCliente(b)));
+  const form = ui.formCliente || o.clienti.length === 0;
+  return '<section class="passo"><h2>' + ico("persona") + ' Chi porta la bici? ' + btnVoce("Chi porta la bici? Scegli il cliente. Se è la prima volta, registra un nuovo cliente.") + '</h2>' +
+    (o.clienti.length ? '<label class="etichetta" for="cercaCli">' + ico("cerca") + ' Cerca il cliente</label><input class="campo" id="cercaCli" data-in="cercaCli" value="' + h(ui.cercaCli) + '" placeholder="Scrivi il nome" autocomplete="off" style="max-width:420px">' +
+      '<div class="lista-scelta" role="radiogroup" aria-label="Clienti">' + (lista.map(c => '<button role="radio" id="cli-' + c.id + '" aria-checked="' + (c.id === sel) + '" class="scelta' + (c.id === sel ? " scelto" : "") + '" data-act="scegliCliente" data-id="' + c.id + '">' + ico("persona") + '<span><b>' + h(nomeCliente(c)) + '</b>' + (c.telefono ? '<small>' + h(c.telefono) + '</small>' : "") + '</span>' + (c.id === sel ? ico("ok") : "") + '</button>').join("") || '<p class="vuoto">Nessun cliente con questo nome.</p>') + '</div>' +
+      (form ? "" : '<button class="btn" data-act="mostraFormCliente">' + ico("piu") + ' È un cliente nuovo</button>') : '<p>È il primo cliente dell\'officina: registralo qui sotto.</p>') +
+    (form ? formCliente("wiz") : "") + '</section>' + barraAzioni({indietro:false});
+}
+function wBici(s){
+  const b = s.bici; const o = off();
+  const viste = []; o.schede.filter(x => x.clienteId === s.clienteId && x.id !== s.id && x.bici && x.bici.tipo).forEach(x => { if(!viste.some(v => descrBici(v) === descrBici(x.bici))) viste.push(x.bici); });
+  return '<section class="passo"><h2>' + ico("bici") + ' Che bici è? ' + btnVoce("Che bici è? Scegli il tipo di bici. Poi scrivi la marca, scegli il colore e la misura delle ruote.") + '</h2>' +
+    (viste.length ? '<div class="carta"><p><b>Questo cliente è già venuto con:</b></p><div class="chips">' + viste.map((v, i) => '<button class="chip" data-act="usaBici" data-i="' + i + '">' + ico("bici") + h(descrBici(v)) + '</button>').join("") + '</div></div>' : "") +
+    '<fieldset><legend>Tipo di bici *</legend><div class="chips">' + TIPI_BICI.map((t, i) => '<button class="chip" id="tipo-' + i + '" data-act="biciTipo" data-v="' + h(t) + '" aria-pressed="' + (b.tipo === t) + '">' + h(t) + '</button>').join("") + '</div></fieldset>' +
+    '<div class="due-col"><div><label class="etichetta" for="bici-marca">Marca</label><input class="campo" id="bici-marca" data-in="bici" data-k="marca" value="' + h(b.marca) + '" autocomplete="off" placeholder="La scritta sul telaio"></div>' +
+    '<div><label class="etichetta" for="bici-telaio">Numero del telaio</label><input class="campo" id="bici-telaio" data-in="bici" data-k="telaio" value="' + h(b.telaio) + '" autocomplete="off" placeholder="Spesso è sotto i pedali"></div></div>' +
+    '<fieldset><legend>Colore</legend><div class="chips">' + COLORI.map((c, i) => '<button class="chip" id="col-' + i + '" data-act="biciColore" data-v="' + c[0] + '" aria-pressed="' + (b.colore === c[0]) + '"><span class="campione" style="background:' + c[1] + '"></span>' + c[0] + '</button>').join("") + '</div></fieldset>' +
+    '<fieldset><legend>Misura delle ruote (pollici)</legend><div class="chips">' + RUOTE.map((r, i) => '<button class="chip" id="ruo-' + i + '" data-act="biciRuota" data-v="' + r + '" aria-pressed="' + (b.ruota === r) + '">' + r + '</button>').join("") + '</div>' +
+    '<p class="aiuto">La misura è scritta sul fianco della gomma.</p></fieldset></section>' + barraAzioni();
+}
+function wControllo(s){
+  const fatti = CONTROLLI.filter(c => s.controllo[c.id]).length;
+  const btn = (c, v, t, i) => '<button class="tg v-' + v + '" id="c-' + c.id + '-' + v + '" data-act="controllo" data-id="' + c.id + '" data-v="' + v + '" aria-pressed="' + (s.controllo[c.id] === v) + '">' + ico(i) + t + '</button>';
+  return '<section class="passo"><h2>' + ico("persona") + ' Che cosa dice il cliente? ' + btnVoce("Che cosa dice il cliente? Scrivi il problema con le sue parole.") + '</h2>' +
+    '<label class="etichetta" for="richiesta">La richiesta del cliente</label><textarea class="campo" id="richiesta" data-in="richiesta" placeholder="Per esempio: la gomma dietro si sgonfia sempre.">' + h(s.richiesta) + '</textarea>' +
+    '<h2>' + ico("cerca") + ' Il controllo della bici ' + btnVoce("Controlla ogni parte della bici. Per ogni parte scegli: va bene, da sistemare, oppure non c'è.") + '</h2>' +
+    '<p><span class="contatore">Hai controllato ' + fatti + ' parti su ' + CONTROLLI.length + '</span></p>' +
+    CONTROLLI.map(c => '<div class="ctr-riga" role="group" aria-label="' + h(c.n) + '"><span class="ctr-nome">' + ico(c.ico) + h(c.n) + '</span><span class="ctr-btn">' + btn(c, "ok", "Va bene", "ok") + btn(c, "ko", "Da sistemare", "no") + btn(c, "na", "Non c'è", "meno") + '</span></div>').join("") +
+    (fatti < CONTROLLI.length && fatti > 0 ? '<div class="azioni-riga"><button class="btn" data-act="restoOk">' + ico("ok") + ' Tutte le altre parti vanno bene</button></div>' : "") +
+    '</section>' + barraAzioni();
+}
+function consigliati(s){
+  const set = new Set(); CONTROLLI.forEach(c => { const v = s.controllo[c.id]; if(v === "ko" || (v === "na" && ["luci","campanello","freno_ant","freno_post"].includes(c.id))) c.lav.forEach(l => set.add(l)); });
+  return set;
+}
+function cardLavoro(def, s, cons){
+  const l = s.lavori.find(x => x.id === def.id); const sel = !!l;
+  const materie = [...new Set(itemsDi(def).map(i => i.m))];
+  return '<div class="lavoro' + (sel ? " scelto" : "") + (cons ? " consigliato" : "") + '"><button class="lav-toggle" id="lav-' + def.id + '" data-act="toggleLavoro" data-id="' + def.id + '" aria-pressed="' + sel + '">' +
+    '<span class="spunta">' + (sel ? ico("ok") : "") + '</span><span><span class="lav-nome">' + h(def.nome) + '</span><span class="lav-info">' + ico("orologio") + def.min + ' minuti' + (cons ? ' · consigliato dal controllo' : "") + '</span></span></button>' +
+    '<div class="lav-materie" aria-label="Materie collegate">' + materie.map(badgeMat).join("") + '</div>' +
+    (sel ? '<div class="minuti" role="group" aria-label="Tempo del lavoro">' + ico("orologio") + '<button class="tondo-btn" id="min-' + def.id + '-m" data-act="minuti" data-id="' + def.id + '" data-d="-5" aria-label="5 minuti in meno">' + ico("meno") + '</button><b>' + l.min + ' min</b><button class="tondo-btn" id="min-' + def.id + '-p" data-act="minuti" data-id="' + def.id + '" data-d="5" aria-label="5 minuti in più">' + ico("piu") + '</button></div>' : "") + '</div>';
+}
+function wLavori(s){
+  const cons = consigliati(s);
+  const tot = s.lavori.reduce((a, l) => a + (+l.min || 0), 0);
+  const liberi = s.lavori.filter(l => !LAV[l.id]);
+  return '<section class="passo"><h2>' + ico("chiave") + ' Quali lavori servono? ' + btnVoce("Quali lavori servono? Tocca un lavoro per sceglierlo. Puoi cambiare il tempo con i tasti più e meno.") + '</h2>' +
+    (cons.size ? '<div class="etichetta-cat">' + ico("cerca") + ' Consigliati dal controllo</div><div class="lavori-griglia">' + [...cons].map(id => cardLavoro(LAV[id], s, true)).join("") + '</div>' : "") +
+    CATEGORIE.map(cat => { const ls = LAVORI.filter(l => l.cat === cat.id && !cons.has(l.id)); return ls.length ? '<div class="etichetta-cat">' + ico(cat.ico) + ' ' + cat.n + '</div><div class="lavori-griglia">' + ls.map(l => cardLavoro(l, s, false)).join("") + '</div>' : ""; }).join("") +
+    '<div class="etichetta-cat">' + ico("piu") + ' Un lavoro diverso</div>' +
+    (liberi.length ? '<ul class="lavori-fatti">' + liberi.map(l => '<li><span><b>' + h(l.nome) + '</b> · ' + l.min + ' min</span><button class="btn btn-piccolo btn-pericolo" data-act="rimuoviLavoro" data-id="' + l.id + '">' + ico("cestino") + ' Togli</button></li>').join("") + '</ul>' : "") +
+    '<form class="carta" data-submit="lavoroLibero"><div class="due-col"><div><label class="etichetta" for="lib-nome">Nome del lavoro</label><input class="campo" id="lib-nome" name="nome" autocomplete="off"></div>' +
+    '<div><label class="etichetta" for="lib-min">Minuti</label><input class="campo" id="lib-min" name="min" inputmode="numeric" value="15"></div></div>' +
+    '<div class="azioni-riga"><button class="btn" type="submit">' + ico("piu") + ' Aggiungi il lavoro</button></div></form>' +
+    '<div class="riepilogo-lav" aria-live="polite">' + ico("chiave") + ' Lavori scelti: ' + s.lavori.length + ' · Tempo: ' + tot + ' minuti</div></section>' + barraAzioni();
+}
+function righeConto(c, vis){
+  const v = x => vis ? euro(x) : "?";
+  let html = '<div class="riga-conto tit"><span>VOCE</span><span class="mezzo">CALCOLO</span><span class="val">EURO</span></div>';
+  c.righe.forEach(r => { html += '<div class="riga-conto"><span>' + h(r.nome) + (r.recupero ? " (di recupero)" : "") + '</span><span class="mezzo">' + r.qta + ' × ' + euro(r.prezzo) + '</span><span class="val">' + v(r.tot) + '</span></div>'; });
+  if(!c.righe.length) html += '<div class="riga-conto"><span>Nessun ricambio</span><span class="mezzo"></span><span class="val">' + euro(0) + '</span></div>';
+  html += '<div class="riga-conto"><span>Manodopera</span><span class="mezzo">' + c.minuti + ' min · ' + euro(c.tariffa) + ' all\'ora</span><span class="val">' + v(c.manodopera) + '</span></div>';
+  if(c.scontoPct > 0 || c.ivaPct > 0) html += '<div class="riga-conto"><span><b>Ricambi + manodopera</b></span><span class="mezzo"></span><span class="val">' + v(c.subtotale) + '</span></div>';
+  if(c.scontoPct > 0) html += '<div class="riga-conto"><span>Sconto</span><span class="mezzo">' + c.scontoPct + ' %</span><span class="val">' + (vis ? "− " + euro(c.sconto) : "?") + '</span></div>';
+  if(c.ivaPct > 0) html += '<div class="riga-conto"><span>IVA</span><span class="mezzo">' + c.ivaPct + ' %</span><span class="val">' + (vis ? "+ " + euro(c.iva) : "?") + '</span></div>';
+  html += '<div class="riga-conto totale"><span><b>Totale da pagare</b></span><span class="mezzo"></span><span class="val">' + v(c.totale) + '</span></div>';
+  return html;
+}
+function boxConto(s){
+  allineaConto(s);
+  const c = calcola(s), k = s.conto, vis = contoVisibile(s);
+  let html = '<div class="conto">' + righeConto(c, vis);
+  if(!vis){
+    if(k.modo !== "io"){
+      html += '<div class="conto-scelta"><p><b>Adesso tocca a voi: chi fa il conto?</b></p><div class="azioni-riga">' +
+        '<button class="btn btn-primario btn-grande" data-act="contoIo">' + ico("matita") + ' Faccio io il conto</button>' +
+        (D.impostazioni.contoComputer ? '<button class="btn" data-act="contoComputer">' + ico("euro") + ' Lo fa il computer</button>' : "") + '</div></div>';
+    } else html += correttore(s, c);
+  } else if(k.ok){
+    html += '<div class="esito esito-ok">' + ico("ok") + '<span>Conto giusto! ' + (k.aiuto ? "Avete usato i passaggi: la prossima volta provate senza." : "Avete fatto il conto senza aiuto.") + '</span></div>';
+  } else {
+    html += '<p class="nota">Il conto l\'ha fatto il computer. <button class="link" data-act="contoRifai">Volete provare voi?</button></p>';
+  }
+  return html + '</div>';
+}
+function correttore(s, c){
+  const k = s.conto;
+  return '<div class="correttore"><h3>' + ico("matita") + ' Fate il conto ' + btnVoce("Fate il conto. Scrivete ogni risultato nella sua casella. Potete usare la calcolatrice. Poi premete: controlla il conto.") + '</h3>' +
+    '<p class="nota">Potete usare la calcolatrice. Scrivete i numeri con la virgola, per esempio 12,50.</p>' +
+    campiConto(c).map(f => {
+      const es = k.esito[f.k]; const cls = es === true ? " ok" : (es === false ? " ko" : "");
+      return '<div class="campo-conto' + cls + '"><label for="conto-' + f.k + '">' + h(f.lab) + '</label><div class="input-euro"><input class="campo" id="conto-' + f.k + '" inputmode="decimal" autocomplete="off" data-in="risposta" data-k="' + f.k + '" value="' + h(k.risp[f.k]) + '"' + (es === true ? " readonly" : "") + ' aria-describedby="fb-' + f.k + '"><span>€</span></div>' +
+        '<div class="fb" id="fb-' + f.k + '" aria-live="polite">' + (es === true ? ico("ok") + ' Giusto!' : (es === false ? ico("no") + ' ' + h(k.msg[f.k]) : "")) +
+        (es === false && (k.tent[f.k] || 0) >= 3 && !k.pass[f.k] ? ' <button class="link" data-act="passaggi" data-k="' + f.k + '">Vedi i passaggi</button>' : "") +
+        (k.pass[f.k] ? '<ol class="passaggi">' + passaggi(f.k, c).map(x => '<li>' + h(x) + '</li>').join("") + '</ol>' : "") + '</div></div>';
+    }).join("") +
+    '<div class="azioni-riga"><button class="btn btn-primario btn-grande" id="btn-controlla" data-act="controllaConto">' + ico("ok") + ' Controlla il conto</button><button class="btn" data-act="ricominciaConto">Ricomincia</button></div></div>';
+}
+function wPreventivo(s){
+  if(s.stato === "bozza"){ s.tariffa = +D.impostazioni.tariffa; s.ivaPct = D.impostazioni.iva ? +D.impostazioni.ivaPct : 0; }
+  return '<section class="passo"><h2>' + ico("euro") + ' Il preventivo ' + btnVoce("Il preventivo dice al cliente quanto spende. Controllate i ricambi e le quantità. Poi fate il conto.") + '</h2>' +
+    '<h3>' + ico("tag") + ' Ricambi</h3>' +
+    (s.ricambi.length ? s.ricambi.map((r, i) => '<div class="ricambio"><span class="nome">' + h(r.nome) + (r.recupero ? ' <small>(di recupero)</small>' : "") + '</span><span class="qta"><button class="tondo-btn" id="q-' + i + '-m" data-act="qta" data-i="' + i + '" data-d="-1" aria-label="Uno in meno">' + ico("meno") + '</button><b aria-label="Quantità">' + r.qta + '</b><button class="tondo-btn" id="q-' + i + '-p" data-act="qta" data-i="' + i + '" data-d="1" aria-label="Uno in più">' + ico("piu") + '</button></span><span>× ' + euro(r.prezzo) + '</span><button class="btn btn-piccolo btn-pericolo" data-act="rimuoviRicambio" data-i="' + i + '">' + ico("cestino") + ' Togli</button></div>').join("") : '<p class="vuoto">Nessun ricambio. Se serve, aggiungilo qui sotto.</p>') +
+    '<div class="due-col"><form class="carta" data-submit="aggiungiRicambio"><label class="etichetta" for="sel-ric" style="margin-top:0">Aggiungi dal listino</label><select class="campo" id="sel-ric" name="rid">' +
+    D.listino.map(x => '<option value="' + x.id + '">' + h(x.nome) + ' – ' + euro(x.prezzo) + '</option>').join("") + '</select><div class="azioni-riga"><button class="btn" type="submit">' + ico("piu") + ' Aggiungi</button></div></form>' +
+    '<form class="carta" data-submit="ricambioRecupero"><p style="margin:0"><b>Ricambio di recupero</b></p><p class="aiuto">Un pezzo usato ma buono, preso da un\'altra bici.</p><div class="due-col"><div><label class="etichetta" for="rec-nome">Che pezzo è?</label><input class="campo" id="rec-nome" name="nome" autocomplete="off"></div>' +
+    '<div><label class="etichetta" for="rec-prezzo">Prezzo (€)</label><input class="campo" id="rec-prezzo" name="prezzo" inputmode="decimal" value="0"></div></div><div class="azioni-riga"><button class="btn" type="submit">' + ico("piu") + ' Aggiungi</button></div></form></div>' +
+    '<h3>' + ico("orologio") + ' Manodopera</h3><p>Lavori: ' + (s.lavori.map(l => h(LAV[l.id] ? LAV[l.id].nome : l.nome) + " (" + l.min + " min)").join(", ") || "nessuno") + '.<br>La tariffa è di <b>' + euro(s.tariffa) + ' all\'ora</b>.</p>' +
+    (D.impostazioni.sconti ? '<label class="etichetta" for="sel-sconto">Sconto</label><select class="campo" id="sel-sconto" data-ch="sconto" style="max-width:16rem">' + [0, 5, 10, 15, 20, 25, 50].map(x => '<option value="' + x + '"' + (+s.scontoPct === x ? " selected" : "") + '>' + (x ? x + " %" : "Nessuno sconto") + '</option>').join("") + '</select>' : "") +
+    (s.ivaPct ? '<p class="nota">I prezzi del listino sono senza IVA. Al conto si aggiunge l\'IVA del ' + s.ivaPct + ' %.</p>' : '<p class="nota">I prezzi comprendono già l\'IVA.</p>') +
+    '<h3>' + ico("euro") + ' Il conto</h3>' + boxConto(s) + '</section>' + barraAzioni();
+}
+function wSalva(s){
+  const c = trovaCliente(s.clienteId); const vis = contoVisibile(s); const tot = calcola(s);
+  const daDecidere = s.stato === "bozza" || s.stato === "preventivo";
+  return '<section class="passo"><h2>' + ico("ok") + ' Controlla e salva la scheda</h2><div class="carta"><dl class="dl">' +
+    '<div><dt>Cliente</dt><dd>' + h(nomeCliente(c)) + '</dd></div><div><dt>Bici</dt><dd>' + h(descrBici(s.bici) || "—") + '</dd></div>' +
+    '<div><dt>Richiesta</dt><dd>' + (h(s.richiesta) || "—") + '</dd></div><div><dt>Lavori</dt><dd>' + s.lavori.length + ' · ' + tot.minuti + ' minuti</dd></div>' +
+    '<div><dt>Totale</dt><dd>' + (vis ? euro(tot.totale) : "conto da fare") + '</dd></div></dl></div>' +
+    '<label class="etichetta" for="consegna">' + ico("calendario") + ' Quando sarà pronta la bici?</label><input class="campo" type="date" id="consegna" data-in="consegna" value="' + h(s.consegna) + '" style="max-width:16rem">' +
+    (daDecidere ? (vis ?
+      '<h3>Il cliente accetta il preventivo?</h3><div class="azioni-riga"><button class="btn btn-primario btn-grande" data-act="salvaAccetta">' + ico("ok") + ' Sì, il cliente accetta</button><button class="btn" data-act="salvaPreventivo">Salva: il cliente decide dopo</button></div>' :
+      '<div class="esito esito-info">' + ico("avviso") + '<span>Il conto non è ancora fatto: il cliente non sa quanto spende.</span></div><div class="azioni-riga"><button class="btn btn-primario btn-grande" data-act="passo" data-p="5">' + ico("sx") + ' Torna al preventivo e fate il conto</button><button class="btn" data-act="salvaPreventivo">Salva: il conto lo facciamo dopo</button></div>') :
+      '<div class="azioni-riga"><button class="btn btn-primario btn-grande" data-act="salvaModifiche">' + ico("ok") + ' Salva le modifiche</button></div>') +
+    '</section>' + barraAzioni({avanti:false});
+}
+
+/* ---------- dettaglio della scheda ---------- */
+const AZIONE_STATO = {bozza:"Completa la scheda", preventivo:"Il cliente accetta il preventivo", accettato:"Inizia il lavoro", lavorazione:"La bici è pronta", pronta:"Consegna la bici al cliente"};
+function vScheda(){
+  const s = trovaScheda(ui.schedaId); const c = trovaCliente(s.clienteId); const i = IDX_STATO[s.stato];
+  const nMat = materieDiScheda(s).length;
+  return '<main class="contenitore" id="main"><p><button class="link" data-act="vai" data-v="schede">' + ico("sx") + ' Tutte le schede</button></p>' +
+    '<header class="scheda-testa"><div><div class="etich">SCHEDA INTERVENTO</div><h1 id="titolo" tabindex="-1">N. ' + h(s.numero) + '</h1><p>' + h(nomeCliente(c)) + ' · ' + h(descrBici(s.bici) || "bici da descrivere") + '</p></div>' + statoChip(s.stato) + '</header>' +
+    '<ol class="tracker" aria-label="A che punto è la scheda">' + STATI.map((x, j) => '<li class="' + (j < i ? "fatto" : (j === i ? "ora" : "")) + '"' + (j === i ? ' aria-current="step"' : "") + '>' + (j < i ? ico("ok") : ico(x.ico)) + '<span class="tr-t">' + x.n + '</span></li>').join("") + '</ol>' +
+    '<div class="azioni-riga">' + (AZIONE_STATO[s.stato] ? '<button class="btn btn-primario btn-grande" id="btn-stato" data-act="avanzaStato">' + ico("dx") + ' ' + AZIONE_STATO[s.stato] + '</button>' : '<span class="esito esito-ok">' + ico("ok") + ' Lavoro concluso. Bici consegnata' + (s.consegnataIl ? " il " + dataIT(s.consegnataIl) : "") + '.</span>') +
+    '<button class="btn" data-act="apriStampa">' + ico("stampa") + ' Stampa</button><button class="btn" data-act="modificaScheda">' + ico("matita") + ' Modifica</button>' +
+    (i > 0 ? '<button class="link" data-act="indietroStato">Annulla l\'ultimo passaggio</button>' : "") + '</div>' +
+    '<div class="tabs" role="tablist"><button class="tab" role="tab" id="tab-scheda" aria-selected="' + (ui.tabScheda === "scheda") + '" data-act="tabScheda" data-t="scheda">' + ico("scheda") + ' Scheda e preventivo</button>' +
+    '<button class="tab" role="tab" id="tab-studio" aria-selected="' + (ui.tabScheda === "studio") + '" data-act="tabScheda" data-t="studio">' + ico("libro") + ' Cosa studio (' + nMat + ' materie)</button></div>' +
+    '<div role="tabpanel">' + (ui.tabScheda === "studio" ? vStudioScheda(s) : vDettaglio(s)) + '</div>' +
+    '<p style="margin-top:28px"><button class="link pericolo" data-act="eliminaScheda">' + ico("cestino") + ' Elimina questa scheda</button></p></main>';
+}
+function vDettaglio(s){
+  const c = trovaCliente(s.clienteId); const b = s.bici;
+  const ctr = CONTROLLI.filter(x => s.controllo[x.id]);
+  const lab = {ok:["ok","Va bene"], ko:["no","Da sistemare"], na:["meno","Non c'è"]};
+  const lavorando = s.stato === "lavorazione";
+  return '<div class="info-griglia"><section class="carta"><h3 style="margin-top:0">' + ico("persona") + ' Cliente</h3><dl class="dl"><div><dt>Nome</dt><dd>' + h(nomeCliente(c)) + '</dd></div><div><dt>Telefono</dt><dd>' + (h(c && c.telefono) || "—") + '</dd></div></dl></section>' +
+    '<section class="carta"><h3 style="margin-top:0">' + ico("bici") + ' Bicicletta</h3><dl class="dl"><div><dt>Tipo</dt><dd>' + (h(b.tipo) || "—") + '</dd></div><div><dt>Marca</dt><dd>' + (h(b.marca) || "—") + '</dd></div><div><dt>Colore</dt><dd>' + (h(b.colore) || "—") + '</dd></div><div><dt>Ruote</dt><dd>' + (b.ruota ? h(b.ruota) + (b.ruota !== "Non so" ? " pollici" : "") : "—") + '</dd></div>' + (b.telaio ? '<div><dt>Telaio n.</dt><dd>' + h(b.telaio) + '</dd></div>' : "") + '</dl></section></div>' +
+    '<section class="carta"><h3 style="margin-top:0">Richiesta del cliente</h3><p>' + (h(s.richiesta) || "Non scritta.") + '</p></section>' +
+    '<section class="carta"><h3 style="margin-top:0">' + ico("cerca") + ' Controllo della bici (' + ctr.length + '/' + CONTROLLI.length + ')</h3>' + (ctr.length ? '<ul class="lista-controllo">' + ctr.map(x => { const v = s.controllo[x.id]; return '<li class="v-' + v + '-t">' + ico(lab[v][0]) + '<span><b>' + h(x.n) + ':</b> ' + lab[v][1] + '</span></li>'; }).join("") + '</ul>' : '<p>Controllo non ancora fatto.</p>') + '</section>' +
+    '<section class="carta"><h3 style="margin-top:0">' + ico("chiave") + ' Lavori</h3>' + (lavorando ? '<p>Quando finite un lavoro, premete «Fatto».</p>' : "") +
+    (s.lavori.length ? '<ul class="lavori-fatti">' + s.lavori.map((l, i) => '<li><span>' + (l.fatto ? ico("ok", "v-ok-t") : ico("chiave")) + ' <b>' + h(LAV[l.id] ? LAV[l.id].nome : l.nome) + '</b> · ' + l.min + ' min</span>' +
+      (lavorando ? '<button class="btn btn-piccolo' + (l.fatto ? "" : " btn-primario") + '" id="fatto-' + i + '" data-act="lavoroFatto" data-i="' + i + '" aria-pressed="' + !!l.fatto + '">' + (l.fatto ? ico("ok") + " Fatto" : "Segna come fatto") + '</button>' : (l.fatto ? '<span class="segno si">' + ico("ok") + ' Fatto</span>' : "")) + '</li>').join("") + '</ul>' : '<p>Nessun lavoro scelto.</p>') + '</section>' +
+    '<section class="carta"><h3 style="margin-top:0">' + ico("euro") + ' Preventivo</h3>' + boxConto(s) + '</section>' +
+    '<div class="due-col"><div><label class="etichetta" for="consegna">' + ico("calendario") + ' Consegna prevista</label><input class="campo" type="date" id="consegna" data-in="consegna" value="' + h(s.consegna) + '"></div>' +
+    '<div><label class="etichetta" for="note-scheda">Note del meccanico</label><textarea class="campo" id="note-scheda" data-in="noteScheda" style="min-height:3rem">' + h(s.note) + '</textarea></div></div>';
+}
+
+/* ---------- cosa studio ---------- */
+function vQuiz(it){
+  const st = off().quiz[it.key] || {tent:0, ok:false};
+  const fin = st.ok || st.tent >= 2;
+  const opz = mescola(it.q.o.map((t, i) => ({t, i})), hs(it.key));
+  const qid = "q" + hs(it.key);
+  let esito = "";
+  if(st.ok) esito = '<div class="esito esito-ok">' + ico("ok") + '<span>Giusto!' + (st.tent ? " Ce l'hai fatta al secondo tentativo." : "") + '</span></div>';
+  else if(st.tent >= 2) esito = '<div class="esito esito-info">' + ico("libro") + '<span>La risposta giusta ha il segno ' + '✓' + '. Rileggi la spiegazione.</span></div>';
+  else if(st.tent === 1) esito = '<div class="esito esito-ko">' + ico("no") + '<span>Non ancora. Indizio: ' + h(it.q.i) + '</span></div>';
+  return '<div class="quiz" role="group" aria-labelledby="' + qid + '"><p id="' + qid + '" style="margin:.2em 0"><b>Mettiti alla prova:</b> ' + h(it.q.d) + '</p><div class="quiz-opz">' +
+    opz.map(x => { const giusta = x.i === 0; let cls = ""; if(fin && giusta) cls = "giusta"; else if(st.ultima === x.i && !giusta) cls = "sbagliata";
+      return '<button class="opz ' + cls + '" id="' + qid + '-' + x.i + '" data-act="rispondi" data-k="' + h(it.key) + '" data-i="' + x.i + '"' + (fin ? " disabled" : "") + '>' + (cls === "giusta" ? ico("ok") : (cls === "sbagliata" ? ico("no") : "")) + '<span>' + h(x.t) + '</span></button>'; }).join("") +
+    '</div><div aria-live="polite">' + esito + '</div></div>';
+}
+function cardStudio(it, conLavoro){
+  const m = mat(it.m);
+  const corpo = it.parole ?
+    '<p>' + h(it.p) + '</p><ul class="parole">' + it.parole.map(p => '<li><span class="it">' + h(p[0]) + '</span>' + ico("dx") + '<span class="tr">' + h(p[LINGUE[it.lingua].i]) + '</span>' + btnVoce(p[LINGUE[it.lingua].i], LINGUE[it.lingua].v, "Ascolta in " + LINGUE[it.lingua].n) + '</li>').join("") + '</ul>' :
+    '<p>' + h(it.p) + '</p>';
+  return '<article class="studio" style="--c:' + m.c + '"><header>' + badgeMat(it.m) + '<span>' + h(m.n) + '</span></header>' +
+    (conLavoro ? '<p class="da-lavoro">Dal lavoro: ' + h(conLavoro) + '</p>' : "") + '<h4>' + h(it.t) + '</h4>' + corpo +
+    '<p class="prova"><b>Prova a:</b> ' + h(it.a) + '</p>' + (it.parole ? "" : btnVoce(it.t + ". " + it.p + " Prova a: " + it.a)) + (it.q ? vQuiz(it) : "") + '</article>';
+}
+function vStudioScheda(s){
+  const blocchi = blocchiStudio(s); const materie = materieDiScheda(s);
+  let corpo;
+  if(ui.studioVista === "materia"){
+    corpo = materie.map(m => { const items = []; blocchi.forEach(b => b.items.forEach(it => { if(it.m === m) items.push([it, b.nome]); }));
+      return '<h3 style="display:flex;gap:.5em;align-items:center">' + badgeMat(m) + ' ' + h(mat(m).n) + '</h3>' + items.map(x => cardStudio(x[0], x[1])).join(""); }).join("");
+  } else {
+    corpo = blocchi.map(b => '<h3>' + ico(b.id === "base" ? "scheda" : "chiave") + ' ' + h(b.nome) + '</h3>' + b.items.map(it => cardStudio(it)).join("")).join("");
+  }
+  return '<p>' + ico("libro") + ' <b>Con questa bici studi ' + materie.length + ' materie:</b> ' + btnVoce("Cosa studio. Ogni lavoro di questa scheda si collega a una materia di scuola. Leggi le schede e mettiti alla prova.") + '</p>' +
+    '<div class="chips-mat">' + materie.map(m => badgeMat(m) + '<span class="sr">' + h(mat(m).n) + '</span>').join("") + '</div>' +
+    (s.lavori.length ? "" : '<p class="vuoto">Scegli i lavori della scheda: per ogni lavoro qui compaiono le materie collegate.</p>') +
+    '<div class="chips" role="group" aria-label="Come ordinare"><button class="chip" data-act="studioVista" data-v="lavoro" aria-pressed="' + (ui.studioVista === "lavoro") + '">Per lavoro</button><button class="chip" data-act="studioVista" data-v="materia" aria-pressed="' + (ui.studioVista === "materia") + '">Per materia</button></div>' + corpo;
+}
+function lavoriFatti(o){ const set = new Set(); o.schede.filter(s => s.stato !== "bozza").forEach(s => s.lavori.forEach(l => set.add(l.id))); return set; }
+function vStudio(){
+  const o = off(); const tutti = tuttiGliItems(); const fatti = lavoriFatti(o);
+  const toccate = ORDINE_MATERIE.filter(m => tutti.some(it => it.m === m && (it.lavoro === "base" ? o.schede.some(s => s.stato !== "bozza") : fatti.has(it.lavoro))));
+  const giuste = Object.values(o.quiz).filter(q => q.ok).length;
+  return '<main class="contenitore" id="main"><h1 id="titolo" tabindex="-1">' + ico("libro") + ' Cosa studio</h1>' +
+    '<p>Ogni lavoro in officina si collega a una materia di scuola. Scegli una materia e scopri che cosa c\'entra con le bici. ' + btnVoce("Cosa studio. Ogni lavoro in officina si collega a una materia di scuola. Scegli una materia e scopri che cosa c'entra con le bici.") + '</p>' +
+    '<div class="carta"><p style="margin:0"><b>Le vostre schede hanno toccato ' + toccate.length + ' materie su ' + ORDINE_MATERIE.length + '.</b> Risposte giuste: ' + giuste + '.</p></div>' +
+    '<div class="griglia-mat">' + ORDINE_MATERIE.map(m => { const n = tutti.filter(it => it.m === m).length; const x = mat(m); const t = toccate.includes(m);
+      return '<button class="card-mat" style="--c:' + x.c + '" data-act="apriMateria" data-m="' + m + '">' + badgeMat(m) + '<b>' + h(x.n) + '</b><small>' + n + ' argomenti</small><span class="segno ' + (t ? "si" : "no") + '">' + (t ? ico("ok") + " Già incontrata" : ico("meno") + " Non ancora") + '</span></button>'; }).join("") +
+    '</div></main>';
+}
+function vMateria(){
+  const m = ui.materia; const x = mat(m); const o = off(); const fatti = lavoriFatti(o);
+  let corpo;
+  if(m === "ING" || m === "L2"){
+    const cod = m === "ING" ? "en" : D.impostazioni.lingua2; const L = LINGUE[cod];
+    const parole = Object.values(VOC).slice().sort((a, b) => a[0].localeCompare(b[0]));
+    corpo = '<p>Il dizionario dell\'officina: tutte le parole del mestiere in ' + L.n + '.</p><ul class="parole">' + parole.map(p => '<li><span class="it">' + h(p[0]) + '</span>' + ico("dx") + '<span class="tr">' + h(p[L.i]) + '</span>' + btnVoce(p[L.i], L.v, "Ascolta") + '</li>').join("") + '</ul>' +
+      '<h2>Mettiti alla prova</h2>' + [BASE].concat(LAVORI).filter(d => d.parole && d.parole.length).map(d => cardStudio(itemLingua(d, m), d.nome)).join("");
+  } else {
+    const items = tuttiGliItems().filter(it => it.m === m);
+    corpo = items.map(it => { const fatto = it.lavoro === "base" || fatti.has(it.lavoro);
+      return cardStudio(it, it.lavoroNome + (fatto ? " · già fatto in officina ✓" : "")); }).join("");
+  }
+  return '<main class="contenitore" id="main"><p><button class="link" data-act="vai" data-v="studio">' + ico("sx") + ' Tutte le materie</button></p>' +
+    '<h1 id="titolo" tabindex="-1" style="display:flex;align-items:center;gap:.5em">' + badgeMat(m) + ' ' + h(x.n) + '</h1>' + corpo + '</main>';
+}
+
+/* ---------- percorso, listino ---------- */
+function vAbil(){
+  const o = off(); const ab = abilitazioni(o); const n = ab.filter(a => a.ok).length;
+  return '<main class="contenitore" id="main"><h1 id="titolo" tabindex="-1">' + ico("medaglia") + ' Il percorso del meccanico</h1>' +
+    '<p>Ogni prova superata apre la prova dopo. Livello di oggi: <b>' + LIVELLI[n] + '</b> (' + n + ' prove su 7). ' + btnVoce("Il percorso del meccanico. Ogni prova superata apre la prova dopo. Il vostro livello è " + LIVELLI[n] + ".") + '</p>' + barra(n, 7) +
+    '<ol class="percorso">' + ab.map(a => '<li class="' + a.stato + '"><span class="tappa-ico" aria-hidden="true">' + (a.stato === "superata" ? ico("ok") : (a.stato === "bloccata" ? ico("lucchetto") : (a.i + 1))) + '</span>' +
+      '<h3>Prova ' + (a.i + 1) + ': ' + h(a.n) + '</h3><p>' + h(a.t) + '</p><p class="segno ' + (a.stato === "superata" ? "si" : "no") + '">' + (a.stato === "superata" ? "Superata" : (a.stato === "corrente" ? "È la vostra prossima prova" : "Si apre quando superate la prova " + a.i)) + '</p></li>').join("") + '</ol>' +
+    '<p class="nota">Livelli: Apprendista · Aiuto meccanico · Meccanico · Meccanico esperto · Capo officina.</p></main>';
+}
+function vListino(){
+  const t = D.impostazioni.tariffa;
+  return '<main class="contenitore" id="main"><h1 id="titolo" tabindex="-1">' + ico("tag") + ' Listino prezzi</h1>' +
+    '<div class="carta"><p style="margin:0"><b>Manodopera: ' + euro(t) + ' all\'ora.</b>' + (t % 12 === 0 ? " Cioè " + euro(t / 12) + " ogni 5 minuti." : "") + '</p><p class="nota" style="margin:0">' + (D.impostazioni.iva ? "Prezzi senza IVA: al conto si aggiunge l'IVA del " + D.impostazioni.ivaPct + " %." : "I prezzi comprendono l'IVA.") + '</p></div>' +
+    (ui.edu ? editorListino() : '<div class="carta">' + D.listino.map(x => '<div class="riga-listino"><span>' + h(x.nome) + '</span><b>' + euro(x.prezzo) + '</b></div>').join("") + '</div><p class="nota">Solo l\'educatore può cambiare i prezzi.</p>') + '</main>';
+}
+function editorListino(){
+  return '<div class="carta"><p><b>Modifica i ricambi.</b> I prezzi si salvano mentre scrivi. Le schede già fatte tengono i loro prezzi.</p>' +
+    D.listino.map(x => '<div class="listino-ed"><label class="sr" for="ln-' + x.id + '">Nome</label><input class="campo" id="ln-' + x.id + '" data-in="listinoNome" data-id="' + x.id + '" value="' + h(x.nome) + '">' +
+      '<label class="sr" for="lp-' + x.id + '">Prezzo</label><input class="campo" id="lp-' + x.id + '" data-in="listinoPrezzo" data-id="' + x.id + '" inputmode="decimal" value="' + h(num(x.prezzo)) + '">' +
+      '<button class="btn btn-piccolo btn-pericolo" data-act="listinoElimina" data-id="' + x.id + '" aria-label="Elimina ' + h(x.nome) + '">' + ico("cestino") + '</button></div>').join("") +
+    '<div class="azioni-riga"><button class="btn" data-act="listinoAggiungi">' + ico("piu") + ' Aggiungi un ricambio</button></div></div>';
+}
+
+/* ---------- area educatore ---------- */
+function vEdu(){
+  const tabs = [["officine","Officine"],["impostazioni","Impostazioni"],["listino","Listino"],["dati","Dati"],["guida","Guida"]];
+  let corpo;
+  switch(ui.eduTab){
+    case "impostazioni": corpo = eduImpostazioni(); break;
+    case "listino": corpo = editorListino(); break;
+    case "dati": corpo = eduDati(); break;
+    case "guida": corpo = eduGuida(); break;
+    default: corpo = eduOfficine();
+  }
+  return '<main class="contenitore" id="main"><h1 id="titolo" tabindex="-1">' + ico("lucchetto") + ' Area educatore</h1>' +
+    '<div class="tabs" role="tablist">' + tabs.map(t => '<button class="tab" role="tab" aria-selected="' + (ui.eduTab === t[0]) + '" data-act="eduTab" data-t="' + t[0] + '">' + t[1] + '</button>').join("") + '</div>' + corpo + '</main>';
+}
+function eduOfficine(){
+  const lista = D.officine;
+  return '<p>Ogni officina è la «stanza» di un gruppo. Da qui vedi i progressi, entri nell\'officina e mandi un imprevisto.</p>' +
+    '<div class="azioni-riga"><button class="btn btn-primario" data-act="nuovaOfficina">' + ico("piu") + ' Nuova officina</button><button class="btn" data-act="esempio">' + ico("bici") + ' Crea un\'officina di esempio</button></div>' +
+    (lista.length ? '<div class="edu-off">' + lista.map(o => {
+      const n = nAbil(o); const aperte = o.schede.filter(s => s.stato !== "consegnata" && s.stato !== "bozza").length; const cons = o.schede.filter(s => s.stato === "consegnata").length;
+      const giuste = Object.values(o.quiz).filter(q => q.ok).length; const date = Object.values(o.quiz).length;
+      const imp = o.imprevisti.find(i => !i.risolto); const ult = o.imprevisti.filter(i => i.risolto).slice(-1)[0];
+      return '<article class="edu-card"><header><span class="tondo" style="--c:' + o.colore + '">' + ico(o.simbolo) + '</span><div style="flex:1;min-width:12em"><b>' + h(o.nome) + '</b><br><small>' + (h(o.membri) || "Nessun nome") + '</small></div><span class="contatore">' + LIVELLI[n] + ' · ' + n + '/7</span></header>' +
+        '<div style="margin:8px 0">' + barra(n, 7) + '</div>' +
+        '<div class="edu-stat"><span>' + ico("persona") + ' Clienti: <b>' + o.clienti.length + '</b></span><span>' + ico("scheda") + ' Schede: <b>' + o.schede.length + '</b> (in officina ' + aperte + ', consegnate ' + cons + ')</span><span>' + ico("libro") + ' Domande: <b>' + giuste + '</b> giuste su ' + date + '</span><span>' + ico("calendario") + ' Ultima attività: <b>' + (dataIT(o.aggiornata || o.creata) || "—") + '</b></span></div>' +
+        (imp ? '<p class="esito esito-info">' + ico("lampo") + '<span>Imprevisto in corso: ' + h(imp.testo) + '</span></p>' : "") +
+        (ult ? '<p class="nota">Ultimo imprevisto risolto il ' + dataIT(ult.risolto) + (ult.risposta ? ': «' + h(ult.risposta) + '»' : "") + '</p>' : "") +
+        '<div class="azioni-riga"><button class="btn btn-primario" data-act="eduEntra" data-id="' + o.id + '">' + ico("entra") + ' Entra nell\'officina</button>' +
+        '<button class="btn" data-act="eduImprevisto" data-id="' + o.id + '">' + ico("lampo") + ' Manda un imprevisto</button>' +
+        '<button class="btn" data-act="esportaOfficina" data-id="' + o.id + '">' + ico("giu") + ' Salva una copia</button>' +
+        '<button class="btn btn-pericolo" data-act="eduEliminaOff" data-id="' + o.id + '">' + ico("cestino") + ' Elimina</button></div></article>';
+    }).join("") + '</div>' : '<p class="vuoto">Non ci sono officine. Creane una o usa l\'officina di esempio.</p>');
+}
+function eduImpostazioni(){
+  const I = D.impostazioni;
+  return '<form class="carta" data-submit="salvaImpostazioni">' +
+    '<label class="etichetta" for="imp-tariffa">Tariffa della manodopera (€ all\'ora)</label><input class="campo" id="imp-tariffa" name="tariffa" inputmode="decimal" value="' + h(num(I.tariffa)) + '" style="max-width:10rem">' +
+    '<p class="aiuto">Con 36 € all\'ora, 5 minuti costano 3 €: i conti vengono senza troppi decimali.</p>' +
+    '<label class="interruttore"><input type="checkbox" name="sconti"' + (I.sconti ? " checked" : "") + '> I ragazzi possono fare sconti</label>' +
+    '<label class="interruttore"><input type="checkbox" name="iva"' + (I.iva ? " checked" : "") + '> Calcolo con l\'IVA (per classi più grandi)</label>' +
+    '<label class="etichetta" for="imp-ivapct">Aliquota IVA (%)</label><input class="campo" id="imp-ivapct" name="ivaPct" inputmode="numeric" value="' + h(I.ivaPct) + '" style="max-width:8rem">' +
+    '<label class="interruttore"><input type="checkbox" name="contoComputer"' + (I.contoComputer ? " checked" : "") + '> Il computer può fare il conto al posto dei ragazzi</label>' +
+    '<p class="aiuto">Se lo togli, i ragazzi devono fare il conto. Dopo 3 errori sulla stessa riga possono vedere i passaggi.</p>' +
+    '<label class="etichetta" for="imp-l2">Seconda lingua</label><select class="campo" id="imp-l2" name="lingua2" style="max-width:14rem"><option value="fr"' + (I.lingua2 === "fr" ? " selected" : "") + '>Francese</option><option value="es"' + (I.lingua2 === "es" ? " selected" : "") + '>Spagnolo</option></select>' +
+    '<label class="etichetta" for="imp-nome">Nome dell\'attività (in fondo alle stampe)</label><input class="campo" id="imp-nome" name="nomeAttivita" value="' + h(I.nomeAttivita) + '">' +
+    '<label class="etichetta" for="imp-pin">Nuovo PIN dell\'area educatore</label><input class="campo" id="imp-pin" name="pin" inputmode="numeric" autocomplete="off" placeholder="Lascia vuoto per non cambiarlo" style="max-width:14rem">' +
+    '<div class="azioni-riga"><button class="btn btn-primario btn-grande" type="submit">' + ico("ok") + ' Salva le impostazioni</button></div></form>' +
+    '<p class="nota">' + ico("avviso") + ' Il PIN evita solo i clic per errore. Non protegge davvero i dati: chi apre il file può leggere tutto.</p>';
+}
+function eduDati(){
+  return '<section class="carta"><h3 style="margin-top:0">' + ico("giu") + ' Salvare una copia</h3><p>I dati restano solo in questo browser. Salva una copia a fine incontro, oppure per spostare i dati su un altro computer.</p>' +
+    '<button class="btn btn-primario" data-act="esportaTutto">' + ico("giu") + ' Salva una copia di tutto</button></section>' +
+    '<section class="carta"><h3 style="margin-top:0">' + ico("su") + ' Caricare una copia</h3><p>Carica un file di BiciLab. Le officine con lo stesso nome interno vengono sostituite, le altre si aggiungono.</p>' +
+    '<label class="etichetta" for="file-import">Scegli il file</label><input class="campo" type="file" id="file-import" accept=".json,application/json" data-ch="fileImport">' +
+    '<label class="etichetta" for="testo-import">Oppure incolla qui il testo della copia</label><textarea class="campo" id="testo-import" style="font-family:monospace;font-size:.8rem"></textarea>' +
+    '<label class="interruttore"><input type="checkbox" id="imp-sost"> Sostituisci anche impostazioni e listino</label>' +
+    '<button class="btn" data-act="importaTesto">' + ico("su") + ' Carica il testo incollato</button></section>' +
+    '<section class="carta"><h3 style="margin-top:0">' + ico("cestino") + ' Fine del corso</h3><p>Cancella tutte le officine, i clienti e le schede di questo browser. Impostazioni e listino restano.</p>' +
+    '<button class="btn btn-pericolo" data-act="azzera">' + ico("cestino") + ' Cancella tutte le officine</button></section>';
+}
+function eduGuida(){
+  return '<section class="carta"><h3 style="margin-top:0">Come si usa, in breve</h3><ol>' +
+    '<li>Ogni gruppo crea la sua officina (nome, simbolo, colore, solo i nomi dei ragazzi).</li>' +
+    '<li>Arriva un cliente: «Nuova scheda intervento». Sei passi: cliente, bici, controllo, lavori, preventivo, salvataggio.</li>' +
+    '<li>Nel preventivo i ragazzi fanno il conto. Il correttore dice che cosa non va e dà un indizio. Dopo 3 errori sulla stessa riga si possono vedere i passaggi.</li>' +
+    '<li>Ogni scheda ha la sua «Cosa studio»: per ogni lavoro, i collegamenti con le materie della scuola media e una domanda con correttore.</li>' +
+    '<li>La stampa produce la scheda intervento con il preventivo (e il cartellino da appendere alla bici) e la scheda «Cosa studio».</li>' +
+    '<li>Dalla scheda «Officine» entri in ogni officina, vedi i progressi e mandi un imprevisto. I ragazzi lo vedono sul banco di lavoro.</li>' +
+    '<li>I dati restano nel browser. Se i gruppi usano computer diversi, ogni gruppo salva una copia e tu la carichi da «Dati».</li></ol>' +
+    '<p class="nota">Il PIN iniziale è indicato nella nota per l\'educatore. Cambialo subito in «Impostazioni».</p></section>';
+}
+
+/* ---------- finestre ---------- */
+function vModale(){
+  const m = ui.modale;
+  let c = "";
+  switch(m.tipo){
+    case "officina": {
+      const e = m.err || {};
+      c = '<h2 id="mod-tit">' + ico("gruppo") + ' Nuova officina</h2><form data-submit="salvaOfficina" novalidate>' +
+        '<label class="etichetta" for="off-nome">Nome dell\'officina *</label><input class="campo" id="off-nome" name="nome" value="' + h(m.nome || "") + '" autocomplete="off" autofocus' + (e.nome ? ' aria-invalid="true"' : "") + '>' + (e.nome ? '<p class="errore">' + h(e.nome) + '</p>' : "") +
+        '<p class="aiuto">Idee: ' + NOMI_SUGGERITI.map(n => '<button type="button" class="link" data-act="suggerisciNome" data-v="' + h(n) + '">' + h(n) + '</button>').join(" · ") + '</p>' +
+        '<label class="etichetta" for="off-membri">Chi lavora in questa officina?</label><input class="campo" id="off-membri" name="membri" value="' + h(m.membri || "") + '" autocomplete="off" placeholder="Per esempio: Luca, Sara, Ahmed">' +
+        '<p class="aiuto">Scrivi solo i nomi, senza cognomi.</p>' +
+        '<fieldset><legend>Simbolo</legend><div class="chips">' + SIMBOLI.map((s, i) => '<label class="radio-card"><input type="radio" name="simbolo" value="' + s[0] + '"' + (i === 0 ? " checked" : "") + '><span class="rc"><span class="tondo" style="--c:#4F4943">' + ico(s[0]) + '</span>' + s[1] + '</span></label>').join("") + '</div></fieldset>' +
+        '<fieldset><legend>Colore</legend><div class="chips">' + COLORI_OFF.map((s, i) => '<label class="radio-card"><input type="radio" name="colore" value="' + s[0] + '"' + (i === 0 ? " checked" : "") + '><span class="rc"><span class="tondo" style="--c:' + s[0] + '"></span>' + s[1] + '</span></label>').join("") + '</div></fieldset>' +
+        '<div class="azioni-riga"><button class="btn btn-primario btn-grande" type="submit">' + ico("ok") + ' Apri l\'officina</button><button class="btn" type="button" data-act="chiudiModale">Annulla</button></div></form>';
+      break;
+    }
+    case "pin":
+      c = '<h2 id="mod-tit">' + ico("lucchetto") + ' Area educatore</h2><form data-submit="eduPin"><label class="etichetta" for="pin">Scrivi il PIN</label><input class="campo" type="password" id="pin" name="pin" inputmode="numeric" autocomplete="off" autofocus style="max-width:12rem">' +
+        (m.err ? '<p class="errore" role="alert">PIN sbagliato. Riprova.</p>' : "") + '<div class="azioni-riga"><button class="btn btn-primario" type="submit">' + ico("entra") + ' Entra</button><button class="btn" type="button" data-act="chiudiModale">Annulla</button></div></form>';
+      break;
+    case "pref": {
+      const b = (k, v, t, extra) => '<button class="chip" id="pref-' + k + '-' + v + '" data-act="pref" data-k="' + k + '" data-v="' + v + '" aria-pressed="' + (P[k] === v) + '">' + (extra || "") + t + '</button>';
+      const t = (k, lab) => '<label class="interruttore"><input type="checkbox" data-ch="prefToggle" data-k="' + k + '"' + (P[k] ? " checked" : "") + '> ' + lab + '</label>';
+      c = '<h2 id="mod-tit">' + ico("aa") + ' Come leggi meglio?</h2>' +
+        '<fieldset><legend>Grandezza del testo</legend><div class="chips">' + b("testo", "normale", "Normale") + b("testo", "grande", "Grande") + b("testo", "mgrande", "Molto grande") + '</div></fieldset>' +
+        '<fieldset><legend>Colore dello sfondo</legend><div class="chips">' + b("sfondo", "crema", "Crema", '<span class="campione" style="background:#FBF6EC"></span>') + b("sfondo", "giallo", "Giallo chiaro", '<span class="campione" style="background:#FFF7D1"></span>') + b("sfondo", "azzurro", "Azzurro chiaro", '<span class="campione" style="background:#EAF3F8"></span>') + b("sfondo", "bianco", "Bianco", '<span class="campione" style="background:#fff"></span>') + '</div></fieldset>' +
+        '<fieldset><legend>Altre scelte</legend>' + t("spazio", "Lettere e parole più distanziate") + t("maiuscolo", "Tutto in STAMPATO MAIUSCOLO") + (haVoce ? t("voce", "Pulsanti «Ascolta» per leggere ad alta voce") : "") + '</fieldset>' +
+        '<p class="nota">Queste scelte valgono solo su questo dispositivo.</p><div class="azioni-riga"><button class="btn btn-primario btn-grande" data-act="chiudiModale" autofocus>' + ico("ok") + ' Fatto</button></div>';
+      break;
+    }
+    case "conferma":
+      c = '<h2 id="mod-tit">' + ico("avviso") + ' ' + h(m.titolo) + '</h2><p>' + h(m.testo) + '</p><div class="azioni-riga"><button class="btn ' + (m.pericolo ? "btn-pericolo" : "btn-primario") + ' btn-grande" data-act="conferma" autofocus>' + h(m.si) + '</button><button class="btn" data-act="chiudiModale">No, torna indietro</button></div>';
+      break;
+    case "stampa":
+      c = '<h2 id="mod-tit">' + ico("stampa") + ' Che cosa stampi?</h2><div class="azioni-riga" style="flex-direction:column;align-items:stretch">' +
+        '<button class="btn btn-primario btn-grande" data-act="stampa" data-c="tutto" autofocus>' + ico("scheda") + ' Scheda intervento e «Cosa studio»</button>' +
+        '<button class="btn" data-act="stampa" data-c="scheda">' + ico("euro") + ' Solo scheda intervento e preventivo</button>' +
+        '<button class="btn" data-act="stampa" data-c="studio">' + ico("libro") + ' Solo «Cosa studio»</button></div>' +
+        '<p class="nota">Nella finestra di stampa puoi scegliere anche «Salva come PDF».</p><div class="azioni-riga"><button class="btn" data-act="chiudiModale">Annulla</button></div>';
+      break;
+    case "imprevisto": {
+      const o = D.officine.find(x => x.id === m.id);
+      c = '<h2 id="mod-tit">' + ico("lampo") + ' Imprevisto per «' + h(o ? o.nome : "") + '»</h2><form data-submit="inviaImprevisto" data-id="' + m.id + '"><fieldset><legend>Scegli un imprevisto</legend>' +
+        IMPREVISTI.map((t, i) => '<label class="interruttore" style="font-weight:400;align-items:flex-start"><input type="radio" name="scelta" value="' + i + '"' + (i === 0 ? " checked" : "") + '> ' + h(t) + '</label>').join("") +
+        '<label class="interruttore" style="font-weight:400"><input type="radio" name="scelta" value="libero"> Scrivo io l\'imprevisto</label></fieldset>' +
+        '<label class="etichetta" for="imp-testo">Il tuo imprevisto</label><textarea class="campo" id="imp-testo" name="testo" placeholder="Usa frasi brevi e chiare"></textarea>' +
+        '<div class="azioni-riga"><button class="btn btn-primario btn-grande" type="submit">' + ico("lampo") + ' Manda l\'imprevisto</button><button class="btn" type="button" data-act="chiudiModale">Annulla</button></div></form>';
+      break;
+    }
+    case "risolvi":
+      c = '<h2 id="mod-tit">' + ico("ok") + ' Avete risolto l\'imprevisto?</h2><form data-submit="salvaRisolto" data-id="' + m.id + '"><label class="etichetta" for="ris-testo">Scrivete in poche parole che cosa avete fatto</label><textarea class="campo" id="ris-testo" name="testo" autofocus></textarea>' +
+        '<div class="azioni-riga"><button class="btn btn-primario btn-grande" type="submit">' + ico("ok") + ' Sì, abbiamo risolto</button><button class="btn" type="button" data-act="chiudiModale">Non ancora</button></div></form>';
+      break;
+    case "testo":
+      c = '<h2 id="mod-tit">' + ico("giu") + ' Copia di sicurezza</h2><p>Il file «' + h(m.nome) + '» è pronto: lo trovi nella cartella dei download. Se non c\'è, copia questo testo e incollalo in un file di testo.</p>' +
+        '<textarea class="campo esporta" id="testo-esporta" readonly>' + h(m.testo) + '</textarea><div class="azioni-riga"><button class="btn" data-act="copiaTesto">Copia il testo</button><button class="btn btn-primario" data-act="chiudiModale" autofocus>Chiudi</button></div>';
+      break;
+  }
+  return '<div class="velo" data-act="chiudiVelo"><div class="finestra" role="dialog" aria-modal="true" aria-labelledby="mod-tit">' + c + '</div></div>';
+}
+function chiedi(titolo, testo, si, ok, pericolo){ ui.modale = {tipo:"conferma", titolo, testo, si, ok, pericolo}; render(); }
+
+/* ---------- stampa ---------- */
+function stampa(s, cosa){
+  const html = (cosa !== "studio" ? paginaScheda(s) : "") + (cosa !== "scheda" ? paginaStudio(s) : "");
+  $("#stampa").innerHTML = html;
+  ui.modale = null; render();
+  setTimeout(() => { try{ window.print(); }catch(e){ toast("La stampa non parte qui. Apri il file direttamente nel browser."); } }, 80);
+}
+function testaStampa(s, titolo){
+  const o = off(); const c = trovaCliente(s.clienteId);
+  return '<header class="st-testa"><div><div class="st-off">Officina «' + h(o.nome) + '»</div><div class="st-tit">' + titolo + '</div><div>Scheda n. <b>' + h(s.numero) + '</b> · aperta il ' + dataIT(s.creata) + '</div><div>Cliente: <b>' + h(nomeCliente(c)) + '</b></div></div>';
+}
+function piedeStampa(){ return '<footer class="st-piede"><span>' + h(D.impostazioni.nomeAttivita) + '</span><span>Simulazione didattica: non è un documento fiscale.</span></footer>'; }
+function paginaScheda(s){
+  const c = trovaCliente(s.clienteId); const b = s.bici; const k = calcola(s); const vis = contoVisibile(s);
+  const v = x => vis ? euro(x) : '<span class="st-vuoto"></span> €';
+  const lab = {ok:["ok","Va bene"], ko:["no","Da sistemare"], na:["meno","Non c'è"]};
+  let righe = k.righe.map(r => '<div class="st-riga"><span>' + h(r.nome) + (r.recupero ? " (recupero)" : "") + '</span><span class="m">' + r.qta + ' × ' + euro(r.prezzo) + '</span><span class="v">' + v(r.tot) + '</span></div>').join("");
+  righe += '<div class="st-riga"><span>Manodopera</span><span class="m">' + k.minuti + ' min · ' + euro(k.tariffa) + '/ora</span><span class="v">' + v(k.manodopera) + '</span></div>';
+  if(k.scontoPct || k.ivaPct) righe += '<div class="st-riga"><span>Ricambi + manodopera</span><span class="m"></span><span class="v">' + v(k.subtotale) + '</span></div>';
+  if(k.scontoPct) righe += '<div class="st-riga"><span>Sconto</span><span class="m">' + k.scontoPct + ' %</span><span class="v">− ' + v(k.sconto) + '</span></div>';
+  if(k.ivaPct) righe += '<div class="st-riga"><span>IVA</span><span class="m">' + k.ivaPct + ' %</span><span class="v">+ ' + v(k.iva) + '</span></div>';
+  righe += '<div class="st-riga tot"><span><b>TOTALE DA PAGARE</b></span><span class="m"></span><span class="v">' + v(k.totale) + '</span></div>';
+  return '<section class="pagina">' + testaStampa(s, "Scheda intervento e preventivo") +
+    '<div class="st-cart"><span class="foro"></span><span class="forbici">' + ico("forbici") + ' Ritaglia e appendi al manubrio</span><b>N. ' + h(s.numero) + '</b>' + h(nomeCliente(c)) + '<br>' + h(b.tipo || "") + (b.colore ? " · " + h(b.colore) : "") + '<br>Consegna: ' + (s.consegna ? dataIT(s.consegna) : '<span class="st-vuoto"></span>') + '</div></header>' +
+    '<div class="st-due"><div class="st-box"><h3>Cliente</h3>' + h(nomeCliente(c)) + '<br>Telefono: ' + (h(c && c.telefono) || "—") + '</div>' +
+    '<div class="st-box"><h3>Bicicletta</h3>' + (h(b.tipo) || "—") + (b.marca ? " · " + h(b.marca) : "") + (b.colore ? " · " + h(b.colore) : "") + '<br>Ruote: ' + (b.ruota ? h(b.ruota) + (b.ruota !== "Non so" ? " pollici" : "") : "—") + (b.telaio ? " · Telaio n. " + h(b.telaio) : "") + '</div></div>' +
+    '<div class="st-box"><h3>Richiesta del cliente</h3>' + (h(s.richiesta) || '<div class="st-righe"></div><div class="st-righe"></div>') + '</div>' +
+    '<div class="st-box"><h3>Controllo della bici</h3><ul class="st-ctr">' + CONTROLLI.map(x => { const val = s.controllo[x.id]; return '<li>' + (val ? ico(lab[val][0]) + ' <b>' + h(x.n) + ':</b> ' + lab[val][1] : '☐ <b>' + h(x.n) + ':</b> ______'); }).join("") + '</ul></div>' +
+    '<div class="st-box"><h3>Lavori da fare</h3>' + (s.lavori.length ? '<ol class="st-lav">' + s.lavori.map(l => '<li><span>' + h(LAV[l.id] ? LAV[l.id].nome : l.nome) + ' (' + l.min + ' min)</span><span>' + (l.fatto ? "✓ fatto" : "☐ fatto") + '</span></li>').join("") + '</ol>' : "—") + '</div>' +
+    '<div class="st-box"><h3>Preventivo</h3>' + righe + '<p style="margin:4px 0 0;font-size:8.5pt">' + (k.ivaPct ? "Prezzi dei ricambi senza IVA." : "Prezzi IVA compresa.") + (vis ? "" : " Completa il conto a mano.") + '</p></div>' +
+    (s.note ? '<div class="st-box"><h3>Note del meccanico</h3>' + h(s.note) + '</div>' : "") +
+    '<div class="st-firme"><div>Firma del cliente per accettazione</div><div>Firma del meccanico</div></div>' + piedeStampa() + '</section>';
+}
+function paginaStudio(s){
+  const blocchi = blocchiStudio(s); const materie = materieDiScheda(s);
+  const item = (it, da) => { const m = mat(it.m);
+    return '<div class="st-item" style="--c:' + m.c + '"><span class="mat" style="--c:' + m.c + '">' + m.s + '</span> <b>' + h(m.n) + ' · ' + h(it.t) + '</b>' + (da ? ' <small>(' + h(da) + ')</small>' : "") +
+      '<p>' + h(it.p) + '</p>' + (it.parole ? '<ul class="st-parole">' + it.parole.map(p => '<li>' + h(p[0]) + ' = <b>' + h(p[LINGUE[it.lingua].i]) + '</b></li>').join("") + '</ul>' : "") +
+      '<p><b>Prova a:</b> ' + h(it.a) + '</p>' + (it.q ? '<p><b>Domanda:</b> ' + h(it.q.d) + '</p><ul class="st-opz">' + mescola(it.q.o, hs(it.key)).map(o => '<li>' + h(o) + '</li>').join("") + '</ul>' : "") + '</div>'; };
+  let corpo = "";
+  materie.forEach(m => {
+    if(m === "ING" || m === "L2"){
+      /* nella stampa le parole di tutti i lavori vanno in un solo riquadro per lingua */
+      const its = []; blocchi.forEach(b => b.items.forEach(it => { if(it.m === m) its.push(it); }));
+      if(!its.length) return;
+      const x = mat(m); const L = LINGUE[its[0].lingua]; const viste = new Set(); const parole = [];
+      its.forEach(it => it.parole.forEach(p => { if(!viste.has(p[0])){ viste.add(p[0]); parole.push(p); } }));
+      corpo += '<div class="st-item" style="--c:' + x.c + '"><span class="mat" style="--c:' + x.c + '">' + x.s + '</span> <b>' + h(x.n) + ' · Le parole del mestiere in ' + L.n + '</b>' +
+        '<ul class="st-parole">' + parole.map(p => '<li>' + h(p[0]) + ' = <b>' + h(p[L.i]) + '</b></li>').join("") + '</ul>' +
+        '<p><b>Prova a:</b> leggi le parole ad alta voce. Poi copri la colonna in ' + L.n + ' e prova a ricordarle.</p>' +
+        '<p><b>Domande:</b></p><ol class="st-dom">' + its.map(it => '<li>' + h(it.q.d) + '&nbsp;&nbsp; ' + mescola(it.q.o, hs(it.key)).map(o => '☐&nbsp;' + h(o)).join("&nbsp;&nbsp;&nbsp; ") + '</li>').join("") + '</ol></div>';
+      return;
+    }
+    blocchi.forEach(b => b.items.forEach(it => { if(it.m === m) corpo += item(it, b.nome); }));
+  });
+  return '<section class="pagina">' + testaStampa(s, "Cosa studio") + '<div class="st-cart"><span class="foro"></span><b>' + materie.length + ' materie</b>' + materie.map(m => mat(m).n).join(", ") + '</div></header>' +
+    '<p>Ogni lavoro di questa scheda si collega a una materia di scuola. Leggi, fai la prova e rispondi alla domanda.</p>' + corpo +
+    '<div class="st-box"><h3>Che cosa ho imparato oggi</h3><div class="st-righe"></div><div class="st-righe"></div><div class="st-righe"></div></div>' + piedeStampa() + '</section>';
+}
+
+/* ---------- esportare e importare ---------- */
+function scarica(nome, testo){
+  try{
+    const bl = new Blob([testo], {type:"application/json"}); const u = URL.createObjectURL(bl);
+    const a = document.createElement("a"); a.href = u; a.download = nome; document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(u); a.remove(); }, 1000);
+  }catch(e){}
+  ui.modale = {tipo:"testo", nome, testo}; render();
+}
+function nomeFile(t){ return t.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
+function importaOggetto(obj, sostituisci){
+  let n = 0; const lista = [];
+  if(obj && obj.tipo === "officina" && obj.officina) lista.push(obj.officina);
+  else if(obj && Array.isArray(obj.officine)) lista.push(...obj.officine);
+  else throw new Error("formato");
+  lista.forEach(o => { if(!o || !o.id || !o.nome) return; normalizzaOfficina(o); const i = D.officine.findIndex(x => x.id === o.id); if(i >= 0) D.officine[i] = o; else D.officine.push(o); n++; });
+  if(sostituisci && obj.impostazioni){ D.impostazioni = Object.assign(impostazioniBase(), obj.impostazioni); }
+  if(sostituisci && Array.isArray(obj.listino)) D.listino = obj.listino;
+  salva(); return n;
+}
+function importa(testo){
+  try{
+    const n = importaOggetto(JSON.parse(testo), !!($("#imp-sost") && $("#imp-sost").checked));
+    toast(n === 1 ? "Ho caricato 1 officina." : "Ho caricato " + n + " officine."); render();
+  }catch(e){ toast("Non riesco a leggere il file. Controlla che sia una copia di BiciLab."); }
+}
+
+/* ---------- officina di esempio (dati inventati) ---------- */
+function creaEsempio(){
+  const o = normalizzaOfficina({id:uid(), nome:"Officina di prova", membri:"Luca, Sara e Ahmed", simbolo:"ruota", colore:"#C2410C", creata:new Date().toISOString()});
+  const c1 = {id:uid(), nome:"Giulia", cognome:"Costa", telefono:"000 000 0001", note:"", creato:new Date().toISOString()};
+  const c2 = {id:uid(), nome:"Davide", cognome:"Moretti", telefono:"000 000 0002", note:"Passa dopo le 17", creato:new Date().toISOString()};
+  const c3 = {id:uid(), nome:"Nadia", cognome:"El Amrani", telefono:"000 000 0003", note:"", creato:new Date().toISOString()};
+  o.clienti.push(c1, c2, c3);
+  const anno = new Date().getFullYear();
+  const nuova = (cli, bici, rich, ctr, lav, stato) => {
+    o.contatore++;
+    const s = {id:uid(), numero:anno + "-" + String(o.contatore).padStart(3, "0"), clienteId:cli.id, creata:new Date().toISOString(), stato, bici, richiesta:rich, controllo:ctr, lavori:[], ricambi:[], scontoPct:0, tariffa:D.impostazioni.tariffa, ivaPct:D.impostazioni.iva ? D.impostazioni.ivaPct : 0, consegna:"", note:""};
+    lav.forEach(id => aggiungiLavoro(s, id));
+    o.schede.push(s); return s;
+  };
+  nuova(c1, {tipo:"Bici da città", colore:"Rosso", marca:"", ruota:"28"}, "La gomma dietro si sgonfia sempre e il freno davanti è morbido.", {gomme:"ko", freno_ant:"ko", freno_post:"ok", catena:"ok"}, ["foratura","freni_reg"], "preventivo");
+  const s2 = nuova(c2, {tipo:"Mountain bike", colore:"Nero", marca:"", ruota:"26"}, "La catena fa rumore e il cambio salta.", Object.fromEntries(CONTROLLI.map(c => [c.id, ["catena","cambio"].includes(c.id) ? "ko" : "ok"])), ["catena_lub","cambio"], "consegnata");
+  s2.lavori.forEach(l => l.fatto = true); s2.consegnataIl = oggi();
+  s2.conto = contoNuovo(firmaConto(s2)); s2.conto.rivelato = true; s2.conto.aiuto = true;
+  nuova(c3, {tipo:"Bici da bambino", colore:"Viola", marca:"", ruota:"20"}, "Vuole le luci e il campanello per andare a scuola.", {luci:"na", campanello:"na"}, ["luci","campanello"], "bozza");
+  D.officine.push(o); salva(); return o;
+}
+
+/* ---------------- MODIFICHE AI DATI ---------------- */
+function aggiungiLavoro(s, id){
+  const def = LAV[id]; if(!def || s.lavori.some(l => l.id === id)) return;
+  s.lavori.push({id, min:def.min, fatto:false});
+  def.ricambi.forEach(rid => { const x = D.listino.find(r => r.id === rid); if(x && !s.ricambi.some(r => r.rid === rid)) s.ricambi.push({rid, nome:x.nome, prezzo:+x.prezzo, qta:1, origine:id}); });
+}
+function togliLavoro(s, id){ s.lavori = s.lavori.filter(l => l.id !== id); s.ricambi = s.ricambi.filter(r => r.origine !== id); }
+function creaScheda(clienteId){
+  const o = off(); o.contatore++;
+  const s = {id:uid(), numero:new Date().getFullYear() + "-" + String(o.contatore).padStart(3, "0"), clienteId, creata:new Date().toISOString(), aggiornata:new Date().toISOString(), stato:"bozza",
+    bici:{tipo:"", marca:"", colore:"", ruota:"", telaio:""}, richiesta:"", controllo:{}, lavori:[], ricambi:[], scontoPct:0, tariffa:+D.impostazioni.tariffa, ivaPct:D.impostazioni.iva ? +D.impostazioni.ivaPct : 0, consegna:"", note:""};
+  o.schede.push(s); salva(); return s;
+}
+function toccaScheda(s){ s.aggiornata = new Date().toISOString(); salva(); }
+
+/* ---------------- AZIONI (clic) ---------------- */
+const A = {
+  vai: el => vai(el.dataset.v, {formCliente:false, modCliente:false}),
+  parla: el => parla(el.dataset.t, el.dataset.l),
+  apriPref: () => { ui.modale = {tipo:"pref"}; render(); },
+  pref: el => { P[el.dataset.k] = el.dataset.v; salvaPref(); ui.focus = el.id; render(); },
+  chiudiModale: () => { ui.modale = null; render(); },
+  chiudiVelo: (el, e) => { if(e.target === el){ ui.modale = null; render(); } },
+  conferma: () => { const f = ui.modale && ui.modale.ok; ui.modale = null; if(f) f(); else render(); },
+  suggerisciNome: el => { const i = $("#off-nome"); if(i){ i.value = el.dataset.v; i.focus(); } },
+
+  nuovaOfficina: () => { ui.modale = {tipo:"officina"}; render(); },
+  apriOfficina: el => { ui.officinaId = el.dataset.id; vai("banco"); },
+  cambiaOfficina: () => { ui.officinaId = null; vai(ui.edu ? "edu" : "scelta"); },
+
+  nuovaScheda: () => { Object.assign(ui, {schedaId:null, wizCliente:null, passo:1, formCliente:false, cercaCli:"", errCli:null, bozzaCli:null}); vai("wizard"); },
+  nuovaSchedaCliente: el => { const s = creaScheda(el.dataset.id); Object.assign(ui, {schedaId:s.id, passo:2, formCliente:false}); vai("wizard"); },
+  scegliCliente: el => { const s = ui.schedaId && trovaScheda(ui.schedaId); if(s){ s.clienteId = el.dataset.id; toccaScheda(s); } else ui.wizCliente = el.dataset.id; ui.msg = null; ui.focus = el.id; render(); },
+  mostraFormCliente: () => { ui.formCliente = true; ui.errCli = null; ui.bozzaCli = null; ui.focus = "cli-nome"; render(); },
+  annullaCliente: () => { ui.formCliente = false; ui.modCliente = false; ui.errCli = null; ui.bozzaCli = null; render(); },
+  apriCliente: el => vai("cliente", {clienteId:el.dataset.id, modCliente:false}),
+  modificaCliente: () => { ui.modCliente = true; ui.errCli = null; ui.bozzaCli = null; ui.focus = "cli-nome"; render(); },
+  eliminaCliente: el => {
+    const o = off(); const id = el.dataset.id;
+    if(o.schede.some(s => s.clienteId === id)){ toast("Questo cliente ha delle schede. Prima elimina le sue schede."); return; }
+    chiedi("Eliminare il cliente?", "Il cliente viene cancellato. Non si può tornare indietro.", "Sì, elimina il cliente", () => { o.clienti = o.clienti.filter(c => c.id !== id); salva(); vai("clienti"); }, true);
+  },
+
+  wizAvanti: () => {
+    let s = ui.schedaId && trovaScheda(ui.schedaId);
+    ui.msg = null;
+    if(ui.passo === 1){
+      const cid = s ? s.clienteId : ui.wizCliente;
+      if(!cid){ ui.msg = "Prima scegli un cliente oppure registra un cliente nuovo."; render(); return; }
+      if(!s){ s = creaScheda(cid); ui.schedaId = s.id; }
+    }
+    if(ui.passo === 2 && !s.bici.tipo){ ui.msg = "Scegli che tipo di bici è."; render(); return; }
+    if(ui.passo === 4 && !s.lavori.length){ ui.msg = "Scegli almeno un lavoro."; render(); return; }
+    ui.passo = Math.min(6, ui.passo + 1); ui.focus = "titolo"; render(); window.scrollTo(0, 0); controllaAbilitazioni();
+  },
+  wizIndietro: () => { ui.msg = null; ui.passo = Math.max(1, ui.passo - 1); ui.focus = "titolo"; render(); window.scrollTo(0, 0); },
+  passo: el => { ui.msg = null; ui.passo = +el.dataset.p; ui.focus = "titolo"; render(); window.scrollTo(0, 0); },
+  wizEsci: () => { const s = ui.schedaId && trovaScheda(ui.schedaId); if(s) vai("scheda", {tabScheda:"scheda"}); else vai("banco"); },
+  biciTipo: el => { const s = trovaScheda(ui.schedaId); s.bici.tipo = el.dataset.v; toccaScheda(s); ui.msg = null; ui.focus = el.id; render(); },
+  biciColore: el => { const s = trovaScheda(ui.schedaId); s.bici.colore = s.bici.colore === el.dataset.v ? "" : el.dataset.v; toccaScheda(s); ui.focus = el.id; render(); },
+  biciRuota: el => { const s = trovaScheda(ui.schedaId); s.bici.ruota = s.bici.ruota === el.dataset.v ? "" : el.dataset.v; toccaScheda(s); ui.focus = el.id; render(); },
+  usaBici: el => {
+    const s = trovaScheda(ui.schedaId); const o = off(); const viste = [];
+    o.schede.filter(x => x.clienteId === s.clienteId && x.id !== s.id && x.bici && x.bici.tipo).forEach(x => { if(!viste.some(v => descrBici(v) === descrBici(x.bici))) viste.push(x.bici); });
+    const b = viste[+el.dataset.i]; if(b){ s.bici = {...b}; toccaScheda(s); render(); toast("Ho copiato i dati della bici."); }
+  },
+  controllo: el => { const s = trovaScheda(ui.schedaId); s.controllo[el.dataset.id] = el.dataset.v; toccaScheda(s); ui.focus = el.id; render(); controllaAbilitazioni(); },
+  restoOk: () => { const s = trovaScheda(ui.schedaId); CONTROLLI.forEach(c => { if(!s.controllo[c.id]) s.controllo[c.id] = "ok"; }); toccaScheda(s); render(); controllaAbilitazioni(); },
+  toggleLavoro: el => { const s = trovaScheda(ui.schedaId); const id = el.dataset.id; if(s.lavori.some(l => l.id === id)) togliLavoro(s, id); else aggiungiLavoro(s, id); ui.msg = null; toccaScheda(s); ui.focus = el.id; render(); },
+  minuti: el => { const s = trovaScheda(ui.schedaId); const l = s.lavori.find(x => x.id === el.dataset.id); if(l){ l.min = Math.max(5, Math.min(240, l.min + +el.dataset.d)); toccaScheda(s); } ui.focus = el.id; render(); },
+  rimuoviLavoro: el => { const s = trovaScheda(ui.schedaId); togliLavoro(s, el.dataset.id); toccaScheda(s); render(); },
+  qta: el => { const s = trovaScheda(ui.schedaId); const r = s.ricambi[+el.dataset.i]; if(r){ r.qta = Math.max(1, Math.min(99, r.qta + +el.dataset.d)); toccaScheda(s); } ui.focus = el.id; render(); },
+  rimuoviRicambio: el => { const s = trovaScheda(ui.schedaId); s.ricambi.splice(+el.dataset.i, 1); toccaScheda(s); render(); },
+
+  contoIo: () => { const s = trovaScheda(ui.schedaId); allineaConto(s); s.conto.modo = "io"; salva(); ui.focus = "conto-" + campiConto(calcola(s))[0].k; render(); },
+  contoComputer: () => { const s = trovaScheda(ui.schedaId); allineaConto(s); s.conto.rivelato = true; s.conto.aiuto = true; toccaScheda(s); render(); },
+  contoRifai: () => { const s = trovaScheda(ui.schedaId); const f = firmaConto(s); s.conto = contoNuovo(f); s.conto.aiuto = true; s.conto.modo = "io"; toccaScheda(s); render(); },
+  ricominciaConto: () => { const s = trovaScheda(ui.schedaId); const aiuto = s.conto.aiuto; s.conto = contoNuovo(firmaConto(s)); s.conto.aiuto = aiuto; s.conto.modo = "io"; toccaScheda(s); render(); },
+  passaggi: el => { const s = trovaScheda(ui.schedaId); s.conto.pass[el.dataset.k] = true; s.conto.aiuto = true; toccaScheda(s); render(); },
+  controllaConto: () => {
+    const s = trovaScheda(ui.schedaId); const c = calcola(s); const k = s.conto; let primo = null;
+    campiConto(c).forEach(f => {
+      if(k.esito[f.k] === true) return;
+      const ans = leggiNumero(k.risp[f.k]);
+      if(isNaN(ans)){ k.esito[f.k] = false; k.msg[f.k] = "Scrivi un numero, per esempio 12,50."; }
+      else if(vicino(ans, f.v)){ k.esito[f.k] = true; }
+      else { k.tent[f.k] = (k.tent[f.k] || 0) + 1; k.esito[f.k] = false; k.msg[f.k] = "Non torna. " + indizio(f.k, c, ans, k.tent[f.k], k); }
+      if(k.esito[f.k] !== true && !primo) primo = "conto-" + f.k;
+    });
+    k.ok = campiConto(c).every(f => k.esito[f.k] === true);
+    toccaScheda(s);
+    ui.focus = k.ok ? null : primo; render();
+    if(k.ok) toast("Conto giusto! Bravi."); controllaAbilitazioni();
+  },
+
+  salvaAccetta: () => { const s = trovaScheda(ui.schedaId); s.stato = "accettato"; toccaScheda(s); vai("scheda", {tabScheda:"scheda"}); toast("Scheda salvata: il cliente ha accettato il preventivo."); },
+  salvaPreventivo: () => { const s = trovaScheda(ui.schedaId); s.stato = "preventivo"; toccaScheda(s); vai("scheda", {tabScheda:"scheda"}); toast("Scheda salvata."); },
+  salvaModifiche: () => { const s = trovaScheda(ui.schedaId); toccaScheda(s); vai("scheda", {tabScheda:"scheda"}); toast("Modifiche salvate."); },
+
+  apriScheda: el => vai("scheda", {schedaId:el.dataset.id, tabScheda:"scheda"}),
+  tabScheda: el => { ui.tabScheda = el.dataset.t; ui.focus = "tab-" + el.dataset.t; render(); },
+  modificaScheda: () => { ui.passo = 1; ui.formCliente = false; ui.cercaCli = ""; vai("wizard"); },
+  avanzaStato: () => {
+    const s = trovaScheda(ui.schedaId);
+    if(s.stato === "bozza"){ ui.passo = 6; vai("wizard"); return; }
+    if(s.stato === "preventivo" && !contoVisibile(s)){ toast("Prima fate il conto del preventivo: il cliente deve sapere quanto spende."); return; }
+    if(s.stato === "lavorazione" && s.lavori.some(l => !l.fatto)){ toast("Prima segnate come fatti tutti i lavori."); return; }
+    const i = IDX_STATO[s.stato]; s.stato = STATI[i + 1].id;
+    if(s.stato === "consegnata") s.consegnataIl = oggi();
+    toccaScheda(s); ui.focus = "btn-stato"; render(); toast("Adesso la scheda è: " + STATI[i + 1].n + "."); controllaAbilitazioni();
+  },
+  indietroStato: () => { const s = trovaScheda(ui.schedaId); const i = IDX_STATO[s.stato]; if(i > 0){ s.stato = STATI[i - 1].id; toccaScheda(s); render(); controllaAbilitazioni(); } },
+  lavoroFatto: el => { const s = trovaScheda(ui.schedaId); const l = s.lavori[+el.dataset.i]; l.fatto = !l.fatto; toccaScheda(s); ui.focus = el.id; render(); if(s.lavori.every(x => x.fatto)) toast("Tutti i lavori sono fatti: la bici può essere pronta."); },
+  eliminaScheda: () => { const s = trovaScheda(ui.schedaId); chiedi("Eliminare la scheda n. " + s.numero + "?", "La scheda viene cancellata. Non si può tornare indietro.", "Sì, elimina la scheda", () => { const o = off(); o.schede = o.schede.filter(x => x.id !== s.id); salva(); vai("schede"); }, true); },
+  apriStampa: () => { ui.modale = {tipo:"stampa"}; render(); },
+  stampa: el => stampa(trovaScheda(ui.schedaId), el.dataset.c),
+
+  filtroS: el => { ui.filtroS = el.dataset.f; render(); },
+  studioVista: el => { ui.studioVista = el.dataset.v; render(); },
+  apriMateria: el => vai("materia", {materia:el.dataset.m}),
+  rispondi: el => {
+    const o = off(); const k = el.dataset.k; const i = +el.dataset.i;
+    const st = o.quiz[k] || (o.quiz[k] = {tent:0, ok:false});
+    if(st.ok || st.tent >= 2) return;
+    st.ultima = i; if(i === 0) st.ok = true; else st.tent++;
+    salva(); ui.focus = el.id; render(); controllaAbilitazioni();
+  },
+  risolviImprevisto: el => { ui.modale = {tipo:"risolvi", id:el.dataset.id}; render(); },
+  esportaOfficina: el => { const o = D.officine.find(x => x.id === el.dataset.id); scarica("bicilab-officina-" + nomeFile(o.nome) + "-" + oggi() + ".json", JSON.stringify({versione:1, tipo:"officina", officina:o}, null, 1)); },
+
+  eduApri: () => { if(ui.edu) vai("edu"); else { ui.modale = {tipo:"pin"}; render(); } },
+  vaiEdu: () => vai("edu"),
+  eduEsci: () => { ui.edu = false; ui.officinaId = null; vai("scelta"); },
+  eduTab: el => { ui.eduTab = el.dataset.t; render(); },
+  eduEntra: el => { ui.officinaId = el.dataset.id; vai("banco"); },
+  eduImprevisto: el => { ui.modale = {tipo:"imprevisto", id:el.dataset.id}; render(); },
+  eduEliminaOff: el => { const o = D.officine.find(x => x.id === el.dataset.id); chiedi("Eliminare l'officina «" + o.nome + "»?", "Si cancellano anche i suoi clienti e le sue schede. Prima puoi salvarne una copia.", "Sì, elimina l'officina", () => { D.officine = D.officine.filter(x => x.id !== o.id); if(ui.officinaId === o.id) ui.officinaId = null; salva(); vai("edu"); }, true); },
+  esempio: () => { creaEsempio(); render(); toast("Ho creato l'«Officina di prova» con clienti inventati."); },
+  esportaTutto: () => scarica("bicilab-copia-" + oggi() + ".json", JSON.stringify(D, null, 1)),
+  importaTesto: () => { const t = $("#testo-import").value.trim(); if(!t){ toast("Incolla prima il testo della copia."); return; } importa(t); },
+  azzera: () => chiedi("Cancellare tutte le officine?", "Si cancellano tutte le officine, i clienti e le schede di questo browser. Prima puoi salvare una copia.", "Sì, cancella tutto", () => { D.officine = []; ui.officinaId = null; salva(); vai("edu"); toast("Officine cancellate."); }, true),
+  listinoAggiungi: () => { const id = "r" + uid(); D.listino.push({id, nome:"Nuovo ricambio", prezzo:1}); salva(); ui.focus = "ln-" + id; render(); },
+  listinoElimina: el => { D.listino = D.listino.filter(x => x.id !== el.dataset.id); salva(); render(); },
+  copiaTesto: () => { const t = $("#testo-esporta"); t.select(); let ok = false; try{ ok = document.execCommand("copy"); }catch(e){} if(navigator.clipboard) navigator.clipboard.writeText(t.value).then(() => toast("Testo copiato."), () => {}); else toast(ok ? "Testo copiato." : "Seleziona il testo e copialo."); }
+};
+
+/* ---------------- MODULI (invio) ---------------- */
+const S = {
+  salvaOfficina: f => {
+    const nome = f.nome.value.trim();
+    if(!nome){ ui.modale = {tipo:"officina", err:{nome:"Scrivi il nome dell'officina."}, membri:f.membri.value}; render(); $("#off-nome").focus(); return; }
+    const o = normalizzaOfficina({id:uid(), nome, membri:f.membri.value.trim(), simbolo:f.simbolo.value, colore:f.colore.value, creata:new Date().toISOString()});
+    D.officine.push(o); ui.officinaId = o.id; ui.modale = null; salva(); vai("banco"); toast("L'officina «" + nome + "» è aperta!");
+  },
+  salvaCliente: f => {
+    const d = {nome:f.nome.value.trim(), cognome:f.cognome.value.trim(), telefono:f.telefono.value.trim(), note:f.note.value.trim()};
+    if(!d.nome){ ui.errCli = {nome:"Scrivi il nome del cliente."}; ui.bozzaCli = d; ui.focus = "cli-nome"; render(); return; }
+    ui.errCli = null; ui.bozzaCli = null; const o = off(); const ctx = f.dataset.ctx;
+    if(ctx === "modifica"){ const c = trovaCliente(f.dataset.id); Object.assign(c, d); salva(); ui.modCliente = false; render(); toast("Cliente aggiornato."); return; }
+    const c = {id:uid(), ...d, creato:new Date().toISOString()}; o.clienti.push(c); salva(); ui.formCliente = false;
+    if(ctx === "wiz"){ ui.wizCliente = c.id; const s = creaScheda(c.id); ui.schedaId = s.id; ui.passo = 2; vai("wizard"); toast("Cliente registrato: " + nomeCliente(c) + "."); }
+    else { render(); toast("Cliente registrato: " + nomeCliente(c) + "."); }
+    controllaAbilitazioni();
+  },
+  lavoroLibero: f => {
+    const s = trovaScheda(ui.schedaId); const nome = f.nome.value.trim(); const m = parseInt(f.min.value, 10);
+    if(!nome){ toast("Scrivi il nome del lavoro."); f.nome.focus(); return; }
+    s.lavori.push({id:"x-" + uid(), nome, min:isNaN(m) ? 15 : Math.max(5, Math.min(240, m)), fatto:false}); ui.msg = null; toccaScheda(s); render();
+  },
+  aggiungiRicambio: f => {
+    const s = trovaScheda(ui.schedaId); const x = D.listino.find(r => r.id === f.rid.value); if(!x) return;
+    const r = s.ricambi.find(y => y.rid === x.id && !y.recupero);
+    if(r) r.qta++; else s.ricambi.push({rid:x.id, nome:x.nome, prezzo:+x.prezzo, qta:1, origine:null});
+    toccaScheda(s); render(); toast("Aggiunto: " + x.nome + ".");
+  },
+  ricambioRecupero: f => {
+    const s = trovaScheda(ui.schedaId); const nome = f.nome.value.trim(); const p = leggiNumero(f.prezzo.value);
+    if(!nome){ toast("Scrivi che pezzo è."); f.nome.focus(); return; }
+    if(isNaN(p) || p < 0){ toast("Scrivi il prezzo con un numero, per esempio 2,50."); f.prezzo.focus(); return; }
+    s.ricambi.push({rid:null, nome, prezzo:r2(p), qta:1, origine:null, recupero:true}); toccaScheda(s); render();
+  },
+  eduPin: f => { if(f.pin.value === String(D.impostazioni.pin)){ ui.edu = true; ui.modale = null; ui.eduTab = "officine"; vai("edu"); } else { ui.modale = {tipo:"pin", err:true}; render(); } },
+  salvaImpostazioni: f => {
+    const I = D.impostazioni; const t = leggiNumero(f.tariffa.value); const iv = leggiNumero(f.ivaPct.value);
+    if(isNaN(t) || t < 0){ toast("Scrivi la tariffa con un numero."); f.tariffa.focus(); return; }
+    I.tariffa = r2(t); I.iva = f.iva.checked; I.ivaPct = isNaN(iv) ? 22 : iv; I.sconti = f.sconti.checked; I.contoComputer = f.contoComputer.checked;
+    I.lingua2 = f.lingua2.value; I.nomeAttivita = f.nomeAttivita.value.trim();
+    if(f.pin.value.trim()) I.pin = f.pin.value.trim();
+    salva(); render(); toast("Impostazioni salvate.");
+  },
+  inviaImprevisto: f => {
+    const o = D.officine.find(x => x.id === f.dataset.id); const sc = f.scelta.value;
+    const testo = sc === "libero" ? f.testo.value.trim() : IMPREVISTI[+sc];
+    if(!testo){ toast("Scrivi il testo dell'imprevisto."); f.testo.focus(); return; }
+    o.imprevisti.forEach(i => { if(!i.risolto) i.risolto = new Date().toISOString(); });
+    o.imprevisti.push({id:uid(), testo, inviato:new Date().toISOString(), risolto:null, risposta:""});
+    ui.modale = null; salva(); render(); toast("Imprevisto mandato a «" + o.nome + "».");
+  },
+  salvaRisolto: f => { const o = off(); const imp = o.imprevisti.find(i => i.id === f.dataset.id); if(imp){ imp.risolto = new Date().toISOString(); imp.risposta = f.testo.value.trim(); } ui.modale = null; salva(); render(); toast("Bravi! Imprevisto risolto."); }
+};
+
+/* ---------------- CAMPI (scrittura) ---------------- */
+const IN = {
+  cercaCli: el => { ui.cercaCli = el.value; render(); },
+  cercaC: el => { ui.cercaC = el.value; render(); },
+  cercaS: el => { ui.cercaS = el.value; render(); },
+  bici: el => { const s = trovaScheda(ui.schedaId); s.bici[el.dataset.k] = el.value; toccaScheda(s); },
+  richiesta: el => { const s = trovaScheda(ui.schedaId); s.richiesta = el.value; toccaScheda(s); },
+  risposta: el => { const s = trovaScheda(ui.schedaId); s.conto.risp[el.dataset.k] = el.value; salva(); },
+  consegna: el => { const s = trovaScheda(ui.schedaId); s.consegna = el.value; toccaScheda(s); },
+  noteScheda: el => { const s = trovaScheda(ui.schedaId); s.note = el.value; toccaScheda(s); },
+  listinoNome: el => { const x = D.listino.find(r => r.id === el.dataset.id); if(x){ x.nome = el.value; salva(); } },
+  listinoPrezzo: el => { const x = D.listino.find(r => r.id === el.dataset.id); const p = leggiNumero(el.value); if(x && !isNaN(p) && p >= 0){ x.prezzo = r2(p); salva(); } }
+};
+const CH = {
+  sconto: el => { const s = trovaScheda(ui.schedaId); s.scontoPct = +el.value; toccaScheda(s); ui.focus = "sel-sconto"; render(); },
+  prefToggle: el => { P[el.dataset.k] = el.checked; salvaPref(); render(); },
+  fileImport: el => { const f = el.files && el.files[0]; if(!f) return; const r = new FileReader(); r.onload = () => importa(String(r.result)); r.onerror = () => toast("Non riesco a leggere il file."); r.readAsText(f); }
+};
+
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-act]"); if(!el) return;
+  const f = A[el.dataset.act]; if(!f) return;
+  if(el.tagName === "BUTTON" && el.type !== "submit") e.preventDefault();
+  f(el, e);
+});
+document.addEventListener("submit", e => { const f = e.target.closest("form[data-submit]"); if(!f) return; e.preventDefault(); const fn = S[f.dataset.submit]; if(fn) fn(f); });
+document.addEventListener("input", e => { const el = e.target.closest("[data-in]"); if(el && IN[el.dataset.in]) IN[el.dataset.in](el); });
+document.addEventListener("change", e => { const el = e.target.closest("[data-ch]"); if(el && CH[el.dataset.ch]) CH[el.dataset.ch](el); });
+document.addEventListener("keydown", e => { if(e.key === "Escape" && ui.modale){ ui.modale = null; render(); } });
+window.addEventListener("afterprint", () => { $("#stampa").innerHTML = ""; });
+
+carica(); applicaPref(); render();
+</script>
+</body>
+</html>
